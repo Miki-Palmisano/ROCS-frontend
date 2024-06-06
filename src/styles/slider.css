@@ -1,0 +1,56 @@
+.slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #fff;
+    margin-top: 50px;
+    overflow-x: auto;
+    scrollbar-width: none;     
+}
+
+.slider::-webkit-scrollbar {
+    display: none;  
+}
+
+.images-container {
+    margin-top: -7px;
+    margin-bottom: -7px;
+    display: flex;
+    list-style: none;
+}
+
+button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 20px;
+    border-radius: 50%;
+}
+
+.prev {
+    left: 10px;
+    display: flex;
+    z-index: 2;
+}
+
+i {
+    scale: 2.5;
+}
+
+.next {
+    display: flex;
+    right: 10px;
+}
+
+.rullino-container{
+    display: flex;
+}
+
+.rullino-container img {
+    filter: invert(100%);
+    width: 220px;
+    height: auto;
+}

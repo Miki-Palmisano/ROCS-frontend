@@ -1,0 +1,112 @@
+[
+    {
+        "id":2,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"2",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":3,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"3",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":4,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"4",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":5,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"5",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":6,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"6",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":7,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"7",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":8,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"8",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":9,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"9",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":10,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"10",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":11,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"11",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    },
+    {
+        "id":12,
+        "title":"The Godfather",
+        "year":1972,
+        "director":"Francis Ford Coppola",
+        "duration":"12",
+        "genre":["Crime","Drama"],
+        "rate":9.2,
+        "img":"https://upload.wikimedia.org/wikipedia/en/a/af/The_Godfather%2C_The_Game.jpg"
+    }
+]
