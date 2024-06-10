@@ -11,22 +11,32 @@
 
 .header{
     background-color: #ffffff;
-    text-align: center;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
+}
+
+.desktopDisplay{
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+}
+
+.mobileDisplay{
+    display: none;
 }
 
 .header h1{
     margin-left: 20px;
     align-self: center;
+    text-align: center;
+    align-items: center;
 }
 
 .menu{
-    align-items: center;
-    justify-content: center;
     margin-left: 20px;
     display: flex;
+    text-align: center;
+    align-items: center;
 }
 
 .menu li{
@@ -39,7 +49,6 @@
     margin-left: 15px;
     margin-right: 15px;
     list-style: none;
-    
 }
 
 .menu li:hover{
@@ -58,7 +67,6 @@
 .iconContainer {
     display: flex;
     align-items: center;
-    grid-column: 4 / -1; /* Estende la searchContainer su tutte le colonne rimanenti */
 }
 
 .iconContainer i {
@@ -72,4 +80,77 @@
     color: inherit;
 }
   
+@media (max-width: 768px) { 
+    .desktopDisplay {
+        display: none;
+    }
 
+    .mobileDisplay {
+        display: flex;
+    }
+
+    .menuButton {
+        display: flex;
+        align-items: center;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: default;
+        position: absolute;
+        right: 20px;
+        top: 40px;
+        filter: invert(100%);
+    }
+
+    .sidebar {
+        position: fixed;
+        right: -250px;
+        height: 100%;
+        width: 220px;
+        background-color: #ffffff;
+        transition: right 0.3s ease-in-out;
+        z-index: 2;
+        display: block;
+        flex-direction: column;
+        padding-top: 80px;
+    }
+
+    .sidebar.active {
+        right: 0;
+    }
+
+    .sidebar li{
+        display: flex;
+        margin-top: 10px;
+        border: none;
+        background-color: #ffffff;
+        justify-content: center;
+        cursor: default;
+        font-size: 20px;
+        list-style: none;
+    }
+
+    .closeButton {
+        position: absolute;
+        top: 10px;
+        right: 30px;
+        display: flex;
+        justify-content: center;
+        font-size: 24px;
+        cursor: default;
+    }
+
+    .closeButton i {
+        font-size: 32px;
+    }
+
+    .search {
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        cursor: default;
+    }
+
+}

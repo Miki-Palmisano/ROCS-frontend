@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
 import '../styles/slider.css';
 import rullino from '../resources/rullino.jpg';
+import skull from '../resources/skull.png';
 import Card from './card';
 
 export default function App({films, loading}) {
 
   return ( 
     <div className="slider">
-        <div className="rullino-container"> 
-            {films.map(() => <img src={rullino} alt="rullino fotografico" /> )}
+        <div className="rullino-container">
+            <img src={rullino} alt="rullino fotografico"/>
         </div>
         <nav className="images-container">
-            {loading ? <h1>Loading...</h1> : films.map((f, index) => ( <Card image={f.img} index={index}/> ))}
+            {loading ? 
+              Array.from({ length: 20 }, (_, index) => (<Card image={skull} key={index} />)) 
+              : films.map((f, index) => ( <Card image={f.img} index={index}/> ))}
         </nav>
         <div className="rullino-container"> 
-            {films.map(() => <img src={rullino} alt="rullino fotografico" /> )}
+            <img src={rullino} alt="rullino fotografico"/>
         </div>
     </div> 
   ); 

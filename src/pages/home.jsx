@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import Header from "../components/header";
 import Slider from "../components/slider";
-import { set } from "mongoose";
 
 
 export default function Home() {
-  const [films, setFilms] = useState();
+  const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  
   useEffect(() => {
-    fetch('http://localhost:4000/api/film').then((res)=>{
+    fetch('http://localhost:4000/').then((res)=>{
       res.json().then((data)=>{
         setFilms(data);
         setLoading(false);
       })
-    })
+    }).catch( e => console.log(e));
   }, []);
 
 
