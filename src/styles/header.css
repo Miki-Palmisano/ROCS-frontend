@@ -109,7 +109,7 @@
         width: 220px;
         background-color: #ffffff;
         transition: right 0.3s ease-in-out;
-        z-index: 2;
+        z-index: 3;
         display: block;
         flex-direction: column;
         padding-top: 80px;

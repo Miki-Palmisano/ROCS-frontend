@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Header from "../components/header";
 import Slider from "../components/slider";
+import Header from "../components/header";
 
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <>
-    <Header/>
+    <Header />
     <h1 style={{color:'#fff'}}>Film</h1>
     <Slider films={films} loading={loading}/>
     <h1 style={{color:'#fff'}}>Solo perché sei tu</h1>
