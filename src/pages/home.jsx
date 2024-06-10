@@ -9,7 +9,7 @@ export default function Home() {
 
   
   useEffect(() => {
-    fetch('http://localhost:4000/').then((res)=>{
+    fetch('https://rocs-api.onrender.com/api/film').then((res)=>{
       res.json().then((data)=>{
         setFilms(data);
         setLoading(false);
