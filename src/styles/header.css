@@ -93,14 +93,16 @@
         display: none;
     }
 
+    .header{
+        grid-template-columns: 1fr auto;
+        justify-content: space-between;
+    }
+
     .mobileDisplay {
         display: flex;
     }
 
     .menuButton {
-        position: absolute;
-        top: 5px;
-        right: 0;
         background: none;
         border: none;
         font-size: 55px;
