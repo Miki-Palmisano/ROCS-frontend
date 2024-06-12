@@ -13,7 +13,7 @@
     background-color: #ffffff;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    border-radius: 35px;
+    border-radius: 40px;
     position: fixed;
     width: 95%;
     z-index: 5;
@@ -93,16 +93,14 @@
         display: none;
     }
 
-    .header{
-        grid-template-columns: auto auto;
-        justify-content: space-between;
-    }
-
     .mobileDisplay {
         display: flex;
     }
 
     .menuButton {
+        position: absolute;
+        top: 5px;
+        right: 0;
         background: none;
         border: none;
         font-size: 55px;
