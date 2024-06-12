@@ -4,7 +4,7 @@
     background-color: #fff;
     overflow-x: auto;
     scrollbar-width: none;
-    border-radius: 60px;
+    border-radius: 20px;
 }
 
 .slider-container {
@@ -29,7 +29,7 @@ button {
     border: none;
     color: white;
     padding: 20px;
-    border-radius: 50%;
+    border-radius: 40%;
 }
 
 .prev {
@@ -53,7 +53,8 @@ i {
 
 .rullino-container img {
     filter: invert(100%);
-    width: 4400px;
+    width: 4401px;
     height: auto;
     z-index: 2;
+    margin-left: -1px;
 }
