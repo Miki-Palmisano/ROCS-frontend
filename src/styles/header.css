@@ -13,6 +13,14 @@
     background-color: #ffffff;
     display: grid;
     grid-template-columns: 1fr 2fr;
+    border-radius: 35px;
+    position: fixed;
+    width: 95%;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+    top: 10%;
+    left: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .desktopDisplay{
@@ -71,7 +79,7 @@
 
 .iconContainer i {
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 25px;
     scale: 1.6;
 }
 
@@ -80,7 +88,7 @@
     color: inherit;
 }
   
-@media (max-width: 768px) { 
+@media (max-width: 1024px) { 
     .desktopDisplay {
         display: none;
     }
@@ -101,56 +109,39 @@
         top: 40px;
         filter: invert(100%);
     }
-
-    .sidebar {
-        position: fixed;
-        right: -250px;
-        height: 100%;
-        width: 220px;
-        background-color: #ffffff;
-        transition: right 0.3s ease-in-out;
-        z-index: 3;
-        display: block;
-        flex-direction: column;
-        padding-top: 80px;
-    }
-
-    .sidebar.active {
+    
+    .bubbles {
+        position: absolute;
+        top: 100px;
         right: 0;
-    }
-
-    .sidebar li{
-        display: flex;
-        margin-top: 10px;
-        border: none;
+        list-style-type: none;
         background-color: #ffffff;
-        justify-content: center;
-        cursor: default;
-        font-size: 20px;
-        list-style: none;
+        border-radius: 30px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
 
-    .closeButton {
-        position: absolute;
-        top: 10px;
-        right: 30px;
-        display: flex;
-        justify-content: center;
-        font-size: 24px;
-        cursor: default;
+    .bubbles li{
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
     }
 
-    .closeButton i {
-        font-size: 32px;
+    .bubbles.inactive {
+        transition: transform 1s ease, opacity 1s ease;
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    
+    .bubbles.active {
+        height: auto;
+        transition: transform 1s ease, opacity 1s ease;
+        transform: translateY(0);
+        opacity: 1;
     }
 
-    .search {
-        position: absolute;
-        bottom: 100px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 48px;
-        cursor: default;
-    }
+}
 
+body {
+    margin-top: 140px;
 }

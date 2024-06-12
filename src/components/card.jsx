@@ -12,7 +12,7 @@ export default function Card({image, index}) {
         <>
             <li onClick={() => handleSetShowInfo()} className="card-container">
                 <img src={image} key={index} className="card" alt={index + " Image"} />
-                {showInfo && 
+                {/*showInfo && 
                     <div onClick={() => handleSetShowInfo()} className="info-container" >
                         <h2>Titolo {index}</h2>
                         <p>Descrizione</p>
@@ -22,7 +22,7 @@ export default function Card({image, index}) {
                         <p>Attori</p>
                         <p>Valutazione</p> 
                     </div>
-                }
+                */}
             </li>
             
         </>

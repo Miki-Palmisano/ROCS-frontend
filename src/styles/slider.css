@@ -1,11 +1,15 @@
 .slider {
-    position: relative;
-    width: 100%;
+    width: 95%;
     overflow: hidden;
     background-color: #fff;
-    margin-top: 50px;
     overflow-x: auto;
-    scrollbar-width: none;     
+    scrollbar-width: none;
+    border-radius: 60px;
+}
+
+.slider-container {
+    display: grid;
+    place-items: center;
 }
 
 .slider::-webkit-scrollbar {
@@ -13,8 +17,6 @@
 }
 
 .images-container {
-    margin-top: -7px;
-    margin-bottom: -7px;
     display: flex;
     list-style: none;
 }

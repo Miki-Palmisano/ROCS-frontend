@@ -6,19 +6,21 @@ import Card from './card';
 export default function App({films, loading}) {
 
   return ( 
-    <div className="slider">
-        <div className="rullino-container">
-            <img src={rullino} alt="rullino fotografico"/>
-        </div>
-        <nav className="images-container">
-            {loading ? 
-              Array.from({ length: 20 }, (_, index) => (<Card image={skull} key={index} />)) 
-              : films.map((f, index) => ( <Card image={f.img} index={index}/> ))}
-        </nav>
-        <div className="rullino-container"> 
-            <img src={rullino} alt="rullino fotografico"/>
-        </div>
-    </div> 
+    <div className="slider-container">
+      <div className="slider">
+          <div className="rullino-container">
+              <img src={rullino} alt="rullino fotografico"/>
+          </div>
+          <nav className="images-container">
+              {loading ? 
+                Array.from({ length: 20 }, (_, index) => (<Card image={skull} key={index} />)) 
+                : films.map((f, index) => ( <Card image={f.img} index={index}/> ))}
+          </nav>
+          <div className="rullino-container"> 
+              <img src={rullino} alt="rullino fotografico"/>
+          </div>
+      </div> 
+    </div>
   ); 
 };
 

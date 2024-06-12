@@ -5,10 +5,10 @@ import {Link} from 'react-router-dom';
 import { useState } from 'react';
 
 export default function Header() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [bubbleOpen, setBubbleOpen] = useState(false);
 
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
+    const toggleBubble = () => {
+        setBubbleOpen(!bubbleOpen);
     };
 
     return (
@@ -33,18 +33,15 @@ export default function Header() {
                     </div>
                 </div>
                 <div className="mobileDisplay"> 
-                    <button className="menuButton" onClick={() => toggleSidebar()}> 
-                        <i className="bi bi-list" /> 
+                    <button className="menuButton" onClick={() => toggleBubble()}> 
+                        {bubbleOpen ? <i className="bi bi-x" /> : <i className="bi bi-list" />} 
                     </button>
-                    <div className={`sidebar ${sidebarOpen ? 'active' : ''}`} > 
-                        <li onClick={() => toggleSidebar()} className="closeButton"><i className="bi bi-x" /></li>
+                    <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
                         <li><Link to="/" className="linkPage">Home</Link></li>
                         <li><Link to="/film" className="linkPage">Film</Link></li>
                         <li><Link to="/serie" className="linkPage">Serie TV</Link></li>
-                        <li>Account</li>
-                        <li className="search"><input /></li>
+                        <li><Link className="linkPage">Account</Link></li>
                     </div>
-                    
                 </div>
             </div>
         </header>
