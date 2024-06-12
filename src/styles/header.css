@@ -93,19 +93,22 @@
         display: none;
     }
 
+    .header{
+        display: inline-flex;
+        justify-content: space-between;
+    }
+
     .mobileDisplay {
         display: flex;
     }
 
     .menuButton {
-        position: relative;
+        justify-content: end;
         background: none;
         border: none;
         font-size: 55px;
         cursor: default;
-        width: 100%;
-        text-align: right;
-        margin-right: 2%;
+        margin-right: 10px;
     }
 
     .menuButton i{
