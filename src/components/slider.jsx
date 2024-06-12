@@ -3,9 +3,13 @@ import rullino from '../resources/rullino.jpg';
 import skull from '../resources/skull.png';
 import Card from './card';
 
-export default function App({films, loading}) {
+export default function App({films, loading, title}) {
 
   return ( 
+    <>
+    <div className="slider-title">
+      <h2>{title}</h2>
+    </div>
     <div className="slider-container">
       <div className="slider">
           <div className="rullino-container">
@@ -21,6 +25,7 @@ export default function App({films, loading}) {
           </div>
       </div> 
     </div>
+    </>
   ); 
 };
 

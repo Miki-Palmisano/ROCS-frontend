@@ -4,7 +4,7 @@
     background-color: #fff;
     overflow-x: auto;
     scrollbar-width: none;
-    border-radius: 20px;
+    border-radius: 0px 20px 20px 20px;
 }
 
 .slider-container {
@@ -21,32 +21,6 @@
     list-style: none;
 }
 
-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    border: none;
-    color: white;
-    padding: 20px;
-    border-radius: 40%;
-}
-
-.prev {
-    left: 10px;
-    display: flex;
-    z-index: 2;
-}
-
-i {
-    scale: 2.5;
-}
-
-.next {
-    display: flex;
-    right: 10px;
-}
-
 .rullino-container{
     display: flex;
 }
@@ -57,4 +31,14 @@ i {
     height: auto;
     z-index: 2;
     margin-left: -1px;
+}
+
+.slider-title{
+    background-color: #fff;
+    border-radius: 10px 10px 0px 0px;
+    padding: 0px 10px 0px 10px;
+    width: fit-content;
+    margin-left: 2.5%;
+    margin-bottom: -25px;
+    font-size: 20px;
 }

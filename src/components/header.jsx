@@ -21,12 +21,12 @@ export default function Header() {
                     </div>
                 </Link>
                 <div className="desktopDisplay">
-                    <nav className="menu">
+                    <div className="menu">
                         <li><Link to="/" className="linkPage">Home</Link> </li>
                         <li><Link to="/film" className="linkPage">Film</Link></li>
                         <li><Link to="/serie" className="linkPage">Serie TV</Link></li>
                         <i className="bi bi-search" />
-                    </nav>
+                    </div>
                     <div className="iconContainer">
                         <p>Account</p>
                         <i className="bi bi-person" />

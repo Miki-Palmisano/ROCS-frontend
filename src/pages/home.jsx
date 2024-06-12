@@ -21,10 +21,8 @@ export default function Home() {
   return (
     <>
     <Header />
-    <h1 style={{color:'#fff', textAlign: 'center'}}>Film</h1>
-    <Slider films={films} loading={loading}/>
-    <h1 style={{color:'#fff', textAlign: 'center'}}>Solo perché sei tu</h1>
-    <Slider films={films} loading={loading}/>
+    <Slider films={films} loading={loading} title="Film"/>
+    <Slider films={films} loading={loading} title="Solo perché sei tu"/>
     </>
   );
 }
