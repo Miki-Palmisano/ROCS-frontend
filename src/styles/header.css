@@ -89,6 +89,10 @@
 }
   
 @media (max-width: 1024px) { 
+    .logoContainer{
+        margin-right: 20vw;
+    }
+
     .desktopDisplay {
         display: none;
     }
@@ -96,7 +100,6 @@
     .mobileDisplay {
         display: flex;
         justify-content: flex-end;
-        margin-right: 10px;
     }
 
     .menuButton {
