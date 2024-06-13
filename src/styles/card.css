@@ -4,6 +4,17 @@
   margin: 10px;
   border-radius: 12px;
   filter: drop-shadow(0 0 0.2rem #000);
+  transition: height 1s ease, width 1s ease, margin 1s ease;
+  z-index: 4;
+}
+
+.card:hover {
+  transition: height 1s ease, width 1s ease, margin-top 1s ease, margin-bottom 1s ease;
+  height: 420px;
+  width: 280px;
+  margin-bottom: -50px;
+  margin-top: -50px;
+  z-index: 4;
 }
 
 .card-container {

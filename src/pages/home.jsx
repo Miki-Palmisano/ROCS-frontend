@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 import Slider from "../components/slider";
 import Header from "../components/header";
+import axios from "axios";
 
 
 export default function Home() {
+  const url = 'https://rocs-api.onrender.com';
   const [films, setFilms] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingFilm, setLoadingFilm] = useState(true);
+  const [series, setSeries] = useState([]);
+  const [loadingSeries, setLoadingSeries] = useState(true);
 
   
   useEffect(() => {
-    fetch('https://rocs-api.onrender.com/api/film').then((res)=>{
-      res.json().then((data)=>{
-        setFilms(data);
-        setLoading(false);
-      })
+    axios.get(`${url}/api/film`).then((res)=>{
+      setFilms(res.data);
+      setLoadingFilm(false);
+    }).catch( e => console.log(e));
+  }, []);
+
+  useEffect(() => { 
+    axios.get(`${url}/api/serie`).then((res)=>{
+      setSeries(res.data);
+      setLoadingSeries(false);
     }).catch( e => console.log(e));
   }, []);
 
@@ -21,8 +30,9 @@ export default function Home() {
   return (
     <>
     <Header />
-    <Slider films={films} loading={loading} title="Film"/>
-    <Slider films={films} loading={loading} title="Solo perché sei tu"/>
+    <Slider elements={films} loading={loadingFilm} title="Film"/>
+    <Slider elements={series} loading={loadingSeries} title="Serie TV"/>
+    <Slider elements={films} loading={loadingFilm} title="Solo perché sei tu"/>
     </>
   );
 }

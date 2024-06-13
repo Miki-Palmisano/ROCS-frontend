@@ -1,31 +1,29 @@
 import '../styles/slider.css';
-import rullino from '../resources/rullino.jpg';
+import rullino from '../resources/rullino.png';
 import skull from '../resources/skull.png';
 import Card from './card';
 
-export default function App({films, loading, title}) {
+export default function App({elements, loading, title}) {
 
-  return ( 
-    <>
-    <div className="slider-title">
-      <h2>{title}</h2>
-    </div>
-    <div className="slider-container">
+  return (
+    <div className="sliderContainer">
+      <div className="sliderTitle">
+        <h2>{title}</h2>
+      </div>
       <div className="slider">
-          <div className="rullino-container">
-              <img src={rullino} alt="rullino fotografico"/>
-          </div>
-          <nav className="images-container">
-              {loading ? 
-                Array.from({ length: 20 }, (_, index) => (<Card image={skull} key={index} />)) 
-                : films.map((f, index) => ( <Card image={f.img} index={index}/> ))}
-          </nav>
-          <div className="rullino-container"> 
-              <img src={rullino} alt="rullino fotografico"/>
-          </div>
-      </div> 
+        <div className="rullinoContainer"> 
+            <img src={rullino} alt="rullino fotografico"/>
+        </div>
+        <div className="imagesContainer">
+            {loading ? 
+              Array.from({ length: 20 }, (_, index) => (<Card image={skull} key={index} />)) 
+              : elements.map((f, index) => ( <Card image={f.img} index={index}/> ))}
+        </div>
+        <div className="rullinoContainer"> 
+            <img src={rullino} alt="rullino fotografico"/>
+        </div>
+      </div>
     </div>
-    </>
   ); 
 };
 
