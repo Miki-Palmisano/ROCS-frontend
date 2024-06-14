@@ -1,4 +1,4 @@
-import Logo from '../resources/Logo_Transparent.png'
+import Logo from '../resources/Logo.png'
 import '../styles/header.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import {Link} from 'react-router-dom';
