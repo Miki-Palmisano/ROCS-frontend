@@ -1,0 +1,15 @@
+.footer{
+    border-top: 2px solid #ffffff;
+    margin-top: 20px;
+}
+
+.info{
+    color: #CAC8C7;
+    text-align: center;
+}
+
+.info > p + p{
+    margin-top: -10px;
+    font-size: 12px;
+}
+
