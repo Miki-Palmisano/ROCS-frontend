@@ -8,7 +8,7 @@ export default function Serie() {
     const [series, setSeries] = useState([
         {
             "id": 80,
-            "name": "Crimine",
+            "name": "Polizieschi",
             "content": [],
             "loading": true
         },
