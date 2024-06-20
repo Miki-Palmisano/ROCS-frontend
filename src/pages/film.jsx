@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Film() {
-    const [films, setfilms] = useState([
+    const [films, setFilms] = useState([
         {
             "id": 12,
             "name": "Avventura",
@@ -29,18 +29,24 @@ export default function Film() {
             "name": "Commedia",
             "content": [],
             "loading": true
+        },
+        {
+            "id": 16,
+            "name": "Animazione",
+            "content": [],
+            "loading": true
         }
     ]);
 
     useEffect(() => {
-
-        films.map(film => {
+        films.forEach(film => {
             axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/films/genres/${film.id}`).then((res) => {
-                setfilms(films => films.map(f => f.id === film.id ? { ...f, content: res.data, loading: false } : f));
-            }).catch(error => console.error('Errore durante la richiesta GET:', error));
+                setFilms(prevFilms => prevFilms.map(f => f.id === film.id ? { ...f, content: res.data, loading: false } : f));
+            }).catch(error => {
+                console.error('Errore durante la richiesta GET:', error);
+            });
         });
-
-    }, []);
+    }, []); // eslint-disable-line
 
     console.log(films);
 

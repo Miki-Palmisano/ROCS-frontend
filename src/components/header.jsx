@@ -17,10 +17,6 @@ export default function Header() {
         setBubbleOpen(!bubbleOpen);
     };
 
-    const handleChangePage = (page) => { 
-        setActivePage(page);
-    };
-
     return (
         <header>
             <div className="header">
