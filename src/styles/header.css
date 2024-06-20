@@ -11,8 +11,7 @@
 
 .header{
     background-color: #ffffff;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+    display: inline;
     border-radius: 40px;
     position: fixed;
     width: 95%;
@@ -54,23 +53,15 @@
     flex-grow: 1;
     cursor: default;
     font-size: 20px;
-    padding: 8px;
+    padding: 8px 10px 10px 0px;
     margin-left: 15px;
     margin-right: 15px;
     list-style: none;
 }
 
-.menu li:hover{
-    scale: 1.2;
-}
-
 .menu i{
-    scale: 1.4;
-    margin-left: 30px
-}
-
-.menu i:hover{
-    scale: 1.7;
+    scale: 1.3;
+    margin: 0px 10px 0px 10px;
 }
 
 .iconContainer {
@@ -88,8 +79,14 @@
     text-decoration: none;
     color: inherit;
 }
+
+.activeDesktopPage {
+    background-color: #000000;
+    filter: invert(1);
+    border-radius: 12px;
+}
   
-@media (max-width: 868px) { 
+@media (max-width: 1024px) { 
     .logoContainer{
         margin-right: 20vw;
     }
@@ -100,11 +97,12 @@
 
     .mobileDisplay {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 10px 0 10px;
     }
 
     .menuButton {
-        margin-right: 10px;
         background: none;
         border: none;
         font-size: 55px;
@@ -117,7 +115,7 @@
     
     .bubbles {
         position: absolute;
-        top: 100px;
+        top: 90px;
         right: 0;
         list-style-type: none;
         background-color: #ffffff;
@@ -128,8 +126,23 @@
 
     .bubbles li{
         margin-bottom: 10px;
-        padding: 10px;
-        text-align: center;
+        padding: 8px 4px 10px 10px;
+        font-size: 20px;
+        background-color: #ffffff;
+    }
+
+    .bubbles li.activeMobilePage{
+        filter: invert(1);
+        border-radius: 12px;
+    }
+
+    .bubbles i{
+        margin-right: 10px;
+    }
+
+    .bi.bi-person{
+        font-size: 25px;
+        margin: 0 7px 0 -3px;
     }
 
     .bubbles.inactive {
