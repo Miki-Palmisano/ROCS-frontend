@@ -20,19 +20,20 @@ export default function Info() {
 
     }, [type, id]);
 
+    console.log(info);
+
     return (
         <>
         <Header />
-        { !loading ? 
+        { !loading ?
         <div className="info-container">
             <div className="video-background">
-                <iframe
+                {info.video.key !== null ? <iframe
                     src={`https://www.youtube.com/embed/${info.video.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${info.video.key}`}
                     title={info.title}
                     frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
                     allowFullScreen
-                ></iframe>
+                ></iframe> : null}
             </div>
             <div className="infoContent">
                 <img src={info.img} alt={info.title} className="infoImage" />
