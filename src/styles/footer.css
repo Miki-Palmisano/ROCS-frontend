@@ -1,15 +1,17 @@
 .footer{
     border-top: 2px solid #ffffff;
-    margin-top: 20px;
+    background-color: #000000;
 }
 
 .info{
     color: #CAC8C7;
     text-align: center;
+    padding: 2px;
+    margin-top: -4px;
 }
 
 .info > p + p{
-    margin-top: -10px;
+    margin-top: -12px;
     font-size: 12px;
 }
 

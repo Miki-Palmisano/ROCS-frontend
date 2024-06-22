@@ -1,0 +1,45 @@
+.video-background {
+    margin-top: -140px;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.video-background iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.infoContent {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to top, #000000, #40404000);
+}
+
+.infoText {
+    width: 70%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    color: #ffffff;
+}
+
+.infoImage {
+    width: 20vw;
+    height: auto;
+    pointer-events: none;
+    margin-left: 2.5%;
+}
+
+.infoAdd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 15px;
+}
