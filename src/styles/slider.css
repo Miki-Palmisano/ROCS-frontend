@@ -7,6 +7,7 @@
     margin: 0 auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    margin-bottom: 10px;
 }
 
 .slider::-webkit-scrollbar {

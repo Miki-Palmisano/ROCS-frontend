@@ -17,10 +17,19 @@
     pointer-events: none;
 }
 
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, #000000, #40404000);
+    pointer-events: none;
+}
+
 .infoContent {
     display: flex;
     align-items: center;
-    background: linear-gradient(to top, #000000, #40404000);
 }
 
 .infoText {
@@ -41,5 +50,47 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-right: 15px;
+}
+
+.infoAdd p{
+    margin: 5px;
+}
+
+.infoProvider {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.infoProvider img {
+    width: 40px;
+    height: 40px;
+    border-radius: 30%;
+    margin-right: 10px;
+}
+
+@media (max-width: 1024px) {
+    .infoContent {
+        flex-direction: column;
+    }
+
+    .infoText {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .infoImage {
+        width: 60%;
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+
+    .video-background{
+        display: none;
+    }
+
+    .infoAdd {
+        margin-right: 0;
+    }
 }

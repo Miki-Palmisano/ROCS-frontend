@@ -16,7 +16,7 @@ export default function App({elements, loading, title}) {
         </div>
         <div className="imagesContainer">
             {loading ? 
-              Array.from({ length: 20 }, (_, index) => (<Card content={skull} key={index} />)) 
+              Array.from({ length: 20 }, (_, index) => (<Card content={{img: skull, type: null, id:0}} key={index} />)) 
               : elements.map((f, index) => ( <Card content={f} key={index} /> ))}
         </div>
         <div className="rullinoContainer"> 
