@@ -49,6 +49,7 @@ export default function Serie() {
         });
     }, []); // eslint-disable-line
 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
         <div>

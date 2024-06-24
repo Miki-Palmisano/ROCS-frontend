@@ -48,7 +48,7 @@ export default function Film() {
         });
     }, []); // eslint-disable-line
 
-    console.log(films);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
         <div>

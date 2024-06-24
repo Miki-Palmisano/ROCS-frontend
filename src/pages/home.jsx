@@ -23,6 +23,8 @@ export default function Home() {
     }).catch( e => console.log(e));
   }, []);  // eslint-disable-line
 
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
   return (
     <>
     <Header />

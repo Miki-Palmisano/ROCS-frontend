@@ -21,7 +21,6 @@ export default function Info() {
         axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/info/${id}`).then((res) => {
             setInfo(res.data);
             setLoading(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             setContents(res.data.genres.map(genre => ({ id: genre.id, name: genre.name, content: [], loading: true })));
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
@@ -38,6 +37,8 @@ export default function Info() {
             });
         });
     }, [info]); // eslint-disable-line
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
         <>
