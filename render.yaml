@@ -6,7 +6,7 @@ services:
     staticPublishPath: build
     buildCommand: npm run build
     startCommand: serve -s build
-redirects:
-  - source: /.*
-    destination: /index.html
-    status: 200
+    routes:
+      - source: /.*
+        destination: /index.html
+        status: 200
