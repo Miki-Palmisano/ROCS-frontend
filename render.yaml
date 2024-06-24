@@ -1,0 +1,12 @@
+# configurare le diverse rotte per una SPA
+services:
+  - type: web
+    name: ROCS
+    env: static
+    staticPublishPath: build
+    buildCommand: npm run build
+    startCommand: serve -s build
+redirects:
+  - source: /.*
+    destination: /index.html
+    status: 200
