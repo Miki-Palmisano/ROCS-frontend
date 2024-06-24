@@ -47,9 +47,9 @@ export default function Serie() {
                 console.error('Errore durante la richiesta GET:', error);
             });
         });
-    }, []); // eslint-disable-line
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []); // eslint-disable-line
 
     return (
         <div>

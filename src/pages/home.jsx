@@ -21,9 +21,9 @@ export default function Home() {
       setSeries(res.data);
       setLoadingSeries(false);
     }).catch( e => console.log(e));
-  }, []);  // eslint-disable-line
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);  // eslint-disable-line
 
   return (
     <>

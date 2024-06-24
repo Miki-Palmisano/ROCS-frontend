@@ -26,6 +26,7 @@ export default function Info() {
             console.error('Errore durante la richiesta GET:', error);
         });
 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [type, id]);
 
     useEffect(() => {
@@ -37,8 +38,6 @@ export default function Info() {
             });
         });
     }, [info]); // eslint-disable-line
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
         <>
