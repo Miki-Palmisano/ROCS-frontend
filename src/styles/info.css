@@ -1,4 +1,4 @@
-.video-background {
+.videoBackground {
     margin-top: -140px;
     position: absolute;
     width: 100%;
@@ -7,7 +7,7 @@
     z-index: -1;
 }
 
-.video-background iframe {
+.videoBackground iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -17,14 +17,21 @@
     pointer-events: none;
 }
 
-.gradient-overlay {
+.gradientOverlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(to top, #000000, #40404000);
-    pointer-events: none;
+}
+
+.infoText iframe {
+    margin: 10px;
+    width: 100%;
+    height: 40vh;
+    border: none;
+    padding: 0%;
 }
 
 .infoContent {
@@ -34,9 +41,17 @@
 
 .infoText {
     width: 70%;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
+    margin-left: 5%;
+    margin-right: 5%;
     color: #ffffff;
+}
+
+.infoText p {
+    margin: 5px;
+}
+
+.infoText h1 {
+    margin: 5px;
 }
 
 .infoImage {
@@ -66,7 +81,29 @@
     width: 40px;
     height: 40px;
     border-radius: 30%;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-left: 2.5%;
+}
+
+.infoAdd button{
+    background-color: #ffffff;
+    width: fit-content;
+    color: #000000;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    display: inline;
+    cursor: default;
+    padding-right: 15px;
+    margin-left: 6px;
+    margin-right: 4vw;
+}
+
+.infoContainer > h1 {
+    color: #ffffff;
+    margin-top: 20px;
+    margin-left: 2.5%;
 }
 
 @media (max-width: 1024px) {
@@ -76,21 +113,19 @@
 
     .infoText {
         width: 90%;
-        margin-left: 5%;
-        margin-right: 5%;
     }
 
     .infoImage {
         width: 60%;
-        margin-left: 15%;
-        margin-right: 15%;
+        margin: 0;
     }
 
     .video-background{
         display: none;
     }
 
-    .infoAdd {
-        margin-right: 0;
+    .infoAdd button {
+        width: 60%;
+        max-width: 180px;
     }
 }

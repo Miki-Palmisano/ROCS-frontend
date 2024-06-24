@@ -8,23 +8,6 @@
   z-index: 3;
 }
 
-.card:hover {
-  height: 390px;
-  width: 260px;
-  margin-bottom: -40px;
-  margin-top: -35px;
-}
-
 .card-container {
   display: flex;
-}
-
-@media (max-width: 768px) {
-
-  .card:hover {
-    height: 300px;
-    width: 200px;
-    margin: 10px;
-  }
-  
 }
