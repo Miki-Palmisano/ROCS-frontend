@@ -123,9 +123,4 @@
     .videoBackground{
         display: none;
     }
-
-    .infoAdd button {
-        width: 60%;
-        max-width: 180px;
-    }
 }
