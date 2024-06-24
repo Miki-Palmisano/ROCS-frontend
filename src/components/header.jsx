@@ -18,6 +18,8 @@ export default function Header() {
     };
 
     return (
+        <>
+        <div className="backgroundGradient"></div>
         <header>
             <div className="header">
                 <div className="desktopDisplay">
@@ -77,6 +79,7 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-        </header>
+        </header>  
+        </> 
     );
 }

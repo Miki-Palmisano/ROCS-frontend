@@ -9,6 +9,15 @@
     align-items: center;
 }
 
+.backgroundGradient {
+    position: fixed;
+    z-index: 4; 
+    background: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(0, 0, 0, 0.9));
+    height: 80px;
+    width: 100%;
+    margin-top: -140px;
+}
+
 .header{
     background-color: #ffffff;
     display: inline;
@@ -17,9 +26,8 @@
     width: 95%;
     z-index: 5;
     transform: translate(-50%, -50%);
-    top: 70px;
+    top: 50px;
     left: 50%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .desktopDisplay{
