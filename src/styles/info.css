@@ -59,6 +59,7 @@
     height: auto;
     pointer-events: none;
     margin-left: 2.5%;
+    border-radius: 12px;
 }
 
 .infoAdd {
