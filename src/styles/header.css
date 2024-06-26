@@ -166,6 +166,20 @@
         opacity: 1;
     }
 
+    .iconContainer li {
+        border: none;
+        background-color: #ffffff;
+        flex-grow: 1;
+        cursor: default;
+        font-size: 35px;
+        list-style: none;
+    }
+
+    .iconContainer {
+        display: flex;
+        align-items: center;
+    }
+
 }
 
 body {

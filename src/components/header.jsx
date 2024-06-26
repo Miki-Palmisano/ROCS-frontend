@@ -82,9 +82,14 @@ export default function Header() {
                             <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
                         </div>
                     </Link>
+                    <div className="iconContainer">
+                    
+                    <li className={`searchBar ${search ? 'active':''}`}><input type="text" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
+                    <li onClick={handleSearch}><i className="bi bi-search" /></li>
                     <button className="menuButton" onClick={() => toggleBubble()}> 
                         {bubbleOpen ? <i className="bi bi-x" /> : <i className="bi bi-list" />} 
                     </button>
+                    </div>
                     <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
                         <li className={activePage === '/' ? 'activeMobilePage' : ''}>
                             <Link to="/" className="linkPage"><i className="bi bi-house-fill"/>Home</Link>
@@ -98,7 +103,6 @@ export default function Header() {
                         <li>
                             <Link className="linkPage"><i className="bi bi-person" />Account</Link>
                         </li>
-                        <li onClick={handleSearch}><i className="bi bi-search"/>Cerca</li>
                     </div>
                 </div>
             </div>
