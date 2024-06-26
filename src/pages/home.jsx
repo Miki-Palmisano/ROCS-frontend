@@ -3,6 +3,7 @@ import Slider from "../components/slider";
 import Header from "../components/header";
 import axios from "axios";
 import Footer from "../components/footer";
+import { useParams } from "react-router-dom";
 
 export default function Home() {
   const GATEWAY_API = process.env.REACT_APP_API_GATEWAY_URL;
@@ -10,20 +11,23 @@ export default function Home() {
   const [loadingFilm, setLoadingFilm] = useState(true);
   const [series, setSeries] = useState([]);
   const [loadingSeries, setLoadingSeries] = useState(true);
+  const { keywords } = useParams();
 
   useEffect(() => {
-    axios.get(`${GATEWAY_API}/content/films`).then((res)=>{
-      setFilms(res.data);
+    axios.get(`${GATEWAY_API}/content/films${keywords !== undefined ? `/search/${keywords}` : ''}`).then((res)=>{
+      setFilms(res.data.filter(film => film.img !== null));
       setLoadingFilm(false);
+      console.log(res.data)
     }).catch( e => console.log(e));
 
-    axios.get(`${GATEWAY_API}/content/series`).then((res)=>{
-      setSeries(res.data);
+    axios.get(`${GATEWAY_API}/content/series${keywords !== undefined ? `/search/${keywords}` : ''}`).then((res)=>{
+      setSeries(res.data.filter(serie => serie.img !== null));
       setLoadingSeries(false);
     }).catch( e => console.log(e));
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);  // eslint-disable-line
+  }, [keywords]);  // eslint-disable-line
+
+  console.log(keywords);
 
   return (
     <>
