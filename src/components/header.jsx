@@ -11,7 +11,7 @@ export default function Header() {
     const [activePage, setActivePage] = useState(location.pathname);
     const [search, setSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
-    const { type, keywords } = useParams();
+    const { type } = useParams();
 
     useEffect(() => {
         setActivePage(location.pathname);
@@ -57,12 +57,12 @@ export default function Header() {
                                 <i className="bi bi-house-fill"/> Home
                             </Link> 
                         </li>
-                        <li className={type === 'film' ? 'activeDesktopPage' : ''}>
+                        <li className={activePage.startsWith('/page/film') ? 'activeDesktopPage' : ''}>
                             <Link to="/page/film" className="linkPage">
                                 <i className="bi bi-film"/> Film
                             </Link>
                         </li>
-                        <li className={type === 'serie' ? 'activeDesktopPage' : ''}>
+                        <li className={activePage.startsWith('/page/serie') ? 'activeDesktopPage' : ''}>
                             <Link to="/page/serie" className="linkPage">
                                 <i className="bi bi-camera-video-fill"/> Serie TV
                             </Link>
@@ -82,27 +82,23 @@ export default function Header() {
                             <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
                         </div>
                     </Link>
-                    <div className="iconContainer">
-                    
-                    <li className={`searchBar ${search ? 'active':''}`}><input type="text" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
-                    <li onClick={handleSearch}><i className="bi bi-search" /></li>
                     <button className="menuButton" onClick={() => toggleBubble()}> 
                         {bubbleOpen ? <i className="bi bi-x" /> : <i className="bi bi-list" />} 
                     </button>
-                    </div>
                     <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
-                        <li className={activePage === '/' ? 'activeMobilePage' : ''}>
-                            <Link to="/" className="linkPage"><i className="bi bi-house-fill"/>Home</Link>
+                        <li className={activePage.startsWith('/home') ? 'activeMobilePage' : ''}>
+                            <Link to="/home" className="linkPage"><i className="bi bi-house-fill"/>Home</Link>
                         </li>
-                        <li className={activePage === '/film' ? 'activeMobilePage' : ''}>
-                            <Link to="/film" className="linkPage"><i className="bi bi-film"/>Film</Link>
+                        <li className={activePage.startsWith('/page/film') ? 'activeMobilePage' : ''}>
+                            <Link to="/page/film" className="linkPage"><i className="bi bi-film"/>Film</Link>
                         </li>
-                        <li className={activePage === '/serie' ? 'activeMobilePage' : ''}>
-                            <Link to="/serie" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
+                        <li className={activePage.startsWith('/page/serie') ? 'activeMobilePage' : ''}>
+                            <Link to="/page/serie" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
                         </li>
                         <li>
                             <Link className="linkPage"><i className="bi bi-person" />Account</Link>
                         </li>
+                        <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="text" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>
                 </div>
             </div>

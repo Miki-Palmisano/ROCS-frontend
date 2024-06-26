@@ -107,7 +107,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 0 10px 0 10px;
     }
 
     .menuButton {
@@ -135,7 +134,7 @@
     .bubbles li{
         margin-bottom: 10px;
         padding: 8px 4px 10px 10px;
-        font-size: 20px;
+        font-size: 25px;
         background-color: #ffffff;
     }
 
@@ -166,18 +165,11 @@
         opacity: 1;
     }
 
-    .iconContainer li {
-        border: none;
-        background-color: #ffffff;
-        flex-grow: 1;
-        cursor: default;
-        font-size: 35px;
-        list-style: none;
-    }
-
-    .iconContainer {
-        display: flex;
-        align-items: center;
+    .mobileSearchBar input{
+        border-radius: 24px;
+        padding: 10px;
+        font-size: 25px;
+        width: 20vw;
     }
 
 }
