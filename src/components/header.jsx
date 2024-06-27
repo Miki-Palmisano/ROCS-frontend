@@ -82,17 +82,17 @@ export default function Header() {
                             <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
                         </div>
                     </Link>
-                    <button className="menuButton" onClick={() => toggleBubble()}> 
+                    <button className="menuButton" onClick={toggleBubble}> 
                         {bubbleOpen ? <i className="bi bi-x" /> : <i className="bi bi-list" />} 
                     </button>
                     <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
-                        <li className={activePage.startsWith('/home') ? 'activeMobilePage' : ''}>
+                        <li className={activePage.startsWith('/home') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
                             <Link to="/home" className="linkPage"><i className="bi bi-house-fill"/>Home</Link>
                         </li>
-                        <li className={activePage.startsWith('/page/film') ? 'activeMobilePage' : ''}>
+                        <li className={activePage.startsWith('/page/film') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
                             <Link to="/page/film" className="linkPage"><i className="bi bi-film"/>Film</Link>
                         </li>
-                        <li className={activePage.startsWith('/page/serie') ? 'activeMobilePage' : ''}>
+                        <li className={activePage.startsWith('/page/serie') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
                             <Link to="/page/serie" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
                         </li>
                         <li>
