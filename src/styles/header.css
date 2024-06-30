@@ -19,7 +19,7 @@
 }
 
 .header{
-    background-color: #ffffff;
+    background-color: #EEEEEE;
     display: inline;
     border-radius: 40px;
     position: fixed;
@@ -57,7 +57,7 @@
 
 .menu li{
     border: none;
-    background-color: #ffffff;
+    background-color: #EEEEEE;
     flex-grow: 1;
     cursor: default;
     font-size: 20px;
@@ -125,7 +125,7 @@
         top: 90px;
         right: 0;
         list-style-type: none;
-        background-color: #ffffff;
+        background-color: #EEEEEE;
         border-radius: 30px;
         padding: 15px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -135,7 +135,7 @@
         margin-bottom: 10px;
         padding: 8px 4px 10px 10px;
         font-size: 25px;
-        background-color: #ffffff;
+        background-color: #EEEEEE;
     }
 
     .bubbles li.activeMobilePage{
@@ -186,7 +186,8 @@ body {
     padding: 10px;
     font-size: 20px;
     width: 0px;
-    transition: width 0.5s ease,  border 1s ease;
+    transition: width 0.5s ease,  border 0.5s ease;
+    background-color: #EEEEEE;
 }
 
 .searchBar.active input{
@@ -196,6 +197,11 @@ body {
 
 .searchBar input::placeholder{
     color: #000000;
+}
+
+.searchBar input:focus{
+    outline: none;
+    color: #222831;
 }
 
 

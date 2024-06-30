@@ -17,7 +17,6 @@ export default function Home() {
     axios.get(`${GATEWAY_API}/content/films${keywords !== undefined ? `/search/${keywords}` : ''}`).then((res)=>{
       setFilms(res.data.filter(film => film.img !== null));
       setLoadingFilm(false);
-      console.log(res.data)
     }).catch( e => console.log(e));
 
     axios.get(`${GATEWAY_API}/content/series${keywords !== undefined ? `/search/${keywords}` : ''}`).then((res)=>{
@@ -27,13 +26,11 @@ export default function Home() {
 
   }, [keywords]);  // eslint-disable-line
 
-  console.log(keywords);
-
   return (
     <>
     <Header />
-    <Slider elements={films} loading={loadingFilm} title="Film"/>
-    <Slider elements={series} loading={loadingSeries} title="Serie TV"/>
+    {films.length === 0 ? null : <Slider elements={films} loading={loadingFilm} title="Film"/>}
+    {series.length === 0 ? null : <Slider elements={series} loading={loadingSeries} title="Serie TV"/>}
     <Footer />
     </>
   );

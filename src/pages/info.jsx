@@ -58,7 +58,7 @@ export default function Info() {
                 <div className="infoText"> 
                     <h1>{info.title} {info.tagline.length !== 0? ' - '+ info.tagline : null}</h1>
                     <div className="infoAdd">
-                        {info.video.key === null ? null : <button onClick={handlePlayTrailer}><i class="bi bi-play-fill"/> {trailer? "Nascondi":"Mostra"} Trailer</button>}
+                        {info.video.key === null ? null : <button onClick={handlePlayTrailer} className="trailer"><div className={trailer? 'activeTrailer' : ''}><i className="bi bi-play-fill"/></div> {trailer? "Nascondi":"Mostra"} Trailer</button>}
                         <p><strong>Generi:</strong> {info.genres.map((i, index) => `${i.name}${index < info.genres.length - 1 ? ', ' : ''}`)}</p>
                         <p><strong>Data di uscita: </strong>{info.release_date}</p>
                     </div>

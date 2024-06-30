@@ -2,7 +2,8 @@ import Logo from '../resources/Logo.png'
 import '../styles/header.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import {Link, useLocation, useNavigate, useParams} from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { set } from 'mongoose';
 
 export default function Header() {
     const [bubbleOpen, setBubbleOpen] = useState(false);
@@ -10,13 +11,14 @@ export default function Header() {
     const navigate = useNavigate();
     const [activePage, setActivePage] = useState(location.pathname);
     const [search, setSearch] = useState(false);
+    const { type, keywords } = useParams();
     const [searchValue, setSearchValue] = useState('');
-    const { type } = useParams();
+    const searchInputRef = useRef(null);
 
     useEffect(() => {
-        setActivePage(location.pathname);
+        setActivePage(type !== undefined ? `/page/${type}` : '/home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        setSearchValue('');
+        setSearchValue(keywords !== undefined ? keywords : '');
     }, [type]); // eslint-disable-line
 
     const toggleBubble = () => {
@@ -25,6 +27,7 @@ export default function Header() {
 
     const handleSearch = () => {
         setSearch(!search);
+        if(!search) searchInputRef.current.focus();
     }
 
     const handleSearchChange = (event) => {
@@ -68,7 +71,7 @@ export default function Header() {
                             </Link>
                         </li>
                         <li onClick={handleSearch}><i className="bi bi-search" /></li>
-                        <li className={`searchBar ${search ? 'active':''}`}><input type="text" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
+                        <li className={`searchBar ${search ? 'active':''}`}><input type="text" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
                     <div className="iconContainer">
                         <p>Account</p>

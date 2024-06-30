@@ -1,13 +1,14 @@
 .slider {
     display: grid;
     width: 95%;
+    max-width: fit-content;
     overflow: hidden;
     overflow-x: auto;
     border-radius: 0px 20px 20px 20px;
-    margin: 0 auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     margin-bottom: 10px;
+    margin-left: 2.5%;
 }
 
 .slider::-webkit-scrollbar {
@@ -17,25 +18,15 @@
 .imagesContainer {
     display: flex;
     list-style: none;
-    background-color: #ffffff;
 }
 
-.rullinoContainer{
-    display: flex;
-}
-
-.rullinoContainer img {
-    width: 4500px;
-    height: auto;
-    z-index: 2;
-}
-
-.sliderTitle{
-    background-color: #fff;
+.sliderContainer h2{
+    background-color: #EEEEEE;
     border-radius: 10px 10px 0px 0px;
     padding: 0px 10px 0px 10px;
     width: fit-content;
-    margin-left: 2.5%;
-    margin-bottom: -26px;
     font-size: 20px;
+    margin-left: 2.5%;
+    margin-bottom: -1px;
+    font-size: 26px;
 }
