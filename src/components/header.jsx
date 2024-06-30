@@ -3,7 +3,6 @@ import '../styles/header.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import {Link, useLocation, useNavigate, useParams} from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
-import { set } from 'mongoose';
 
 export default function Header() {
     const [bubbleOpen, setBubbleOpen] = useState(false);
