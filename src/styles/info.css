@@ -71,6 +71,10 @@
 
 .infoAdd p{
     margin: 5px;
+    border: 2px solid #EEEEEE;
+    border-radius: 12px;
+    padding: 5px;
+    text-align: center;
 }
 
 .infoProvider {

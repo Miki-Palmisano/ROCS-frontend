@@ -59,7 +59,7 @@ export default function Info() {
                     <h1>{info.title} {info.tagline.length !== 0? ' - '+ info.tagline : null}</h1>
                     <div className="infoAdd">
                         {info.video.key === null ? null : <button onClick={handlePlayTrailer} className="trailer"><div className={trailer? 'activeTrailer' : ''}><i className="bi bi-play-fill"/></div> {trailer? "Nascondi":"Mostra"} Trailer</button>}
-                        <p><strong>Generi:</strong> {info.genres.map((i, index) => `${i.name}${index < info.genres.length - 1 ? ', ' : ''}`)}</p>
+                        <p><strong>Generi:</strong> {info.genres.map((i, index) => `${i.name}${index < info.genres.length -1? ', ' : ''}`)}</p>
                         <p><strong>Data di uscita: </strong>{info.release_date}</p>
                     </div>
                     {trailer ? 
@@ -72,8 +72,8 @@ export default function Info() {
                     <p><strong>Descrizione:</strong> {info.description}</p>
                     <div className="infoAdd">
                         <p><strong>Stato:</strong> {info.status}</p>
-                        <p><strong>Voto: </strong>{info.rating}/10</p>
-                        <p><strong>Case di Produzione:</strong> {info.production_companies.map((i, index) => `${i.name}${index < info.genres.length - 1 ? ', ' : ''}`)}</p>
+                        <p><strong>Voto: </strong>{info.rating.toFixed(1)}/10</p>
+                        <p><strong>Case di Produzione:</strong> {info.production_companies.filter(i => i.name !== '').map((i, index) => `${i.name}${index < (info.production_companies.length -1) ? ', ' : ''}`)}</p>
                     </div>
                     {info.type === 'series' ? <div className="infoAdd"> 
                         {info.creator.length !== 0 ? <p><strong>Creatore:</strong> {info.creator.map(i => i.name)}</p> : null}
@@ -82,9 +82,9 @@ export default function Info() {
                         {info.episodes_duration.length === 0 ? null : <p><strong>Durata Episodio:</strong> {info.episodes_duration.length !== 1 ? info.episodes_duration[0]+'-'+info.episodes_duration[1]+' min' : info.episodes_duration+' min'}</p>}
                     </div> : null}
                     {info.provider !== null ? <div className="infoProvider">
-                        {info.provider.buy !== null ? <div><p><strong>Disponibile con Acquisto su:</strong></p> {info.provider.buy.map(i => <img src={`https://image.tmdb.org/t/p/w780${i.logo_path}` } alt={i.name} /> ) }</div> : null}
-                        {info.provider.rent !== null ? <div><p><strong>Disponibile con Noleggio su:</strong></p> {info.provider.rent.map(i => <img src={`https://image.tmdb.org/t/p/w780${i.logo_path}`} alt={i.name}/> ) }</div> : null}
-                        {info.provider.flatrate !== null ? <div><p><strong>Disponibile con Abbonamento su:</strong></p> {info.provider.flatrate.map(i => <img src={`https://image.tmdb.org/t/p/w780${i.logo_path}`} alt={i.name}/> ) }</div> : null}
+                        {info.provider.buy !== null ? <div><p><strong>Acquistabile su:</strong></p> {info.provider.buy.map(i => <img src={`https://image.tmdb.org/t/p/w780${i.logo_path}` } alt={i.name} /> ) }</div> : null}
+                        {info.provider.rent !== null ? <div><p><strong>Noleggiabile su:</strong></p> {info.provider.rent.map(i => <img src={`https://image.tmdb.org/t/p/w780${i.logo_path}`} alt={i.name}/> ) }</div> : null}
+                        {info.provider.flatrate !== null ? <div><p><strong>Incluso su:</strong></p> {info.provider.flatrate.map(i => <img src={`https://image.tmdb.org/t/p/w780${i.logo_path}`} alt={i.name}/> ) }</div> : null}
                     </div> : null}
                 </div>
             </div>
