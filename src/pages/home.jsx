@@ -28,10 +28,8 @@ export default function Home() {
 
   return (
     <>
-    <Header />
     {films.length === 0 ? null : <Slider elements={films} loading={loadingFilm} title="Film"/>}
     {series.length === 0 ? null : <Slider elements={series} loading={loadingSeries} title="Serie TV"/>}
-    <Footer />
     </>
   );
 }

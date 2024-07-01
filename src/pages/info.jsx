@@ -41,7 +41,6 @@ export default function Info() {
 
     return (
         <>
-        <Header />
         { !loading ?
         <div className="infoContainer">
             <div className="videoBackground">
@@ -92,7 +91,6 @@ export default function Info() {
             {contents.map(content => <Slider elements={content.content} loading={content.loading} title={content.name}/>)}
         </div>
         : null }
-        <Footer />
         </>
     )
 }

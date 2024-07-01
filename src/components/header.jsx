@@ -10,15 +10,13 @@ export default function Header() {
     const navigate = useNavigate();
     const [activePage, setActivePage] = useState(location.pathname);
     const [search, setSearch] = useState(false);
-    const { type, keywords } = useParams();
     const [searchValue, setSearchValue] = useState('');
     const searchInputRef = useRef(null);
 
     useEffect(() => {
-        setActivePage(type !== undefined ? `/page/${type}` : '/home');
+        setActivePage(location.pathname.split('/')[2] === undefined ? '/home' : '/page/'+location.pathname.split('/')[2]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        setSearchValue(keywords !== undefined ? keywords : '');
-    }, [type]); // eslint-disable-line
+    }, [location.pathname]); // eslint-disable-line
 
     const toggleBubble = () => {
         setBubbleOpen(!bubbleOpen);
@@ -47,7 +45,7 @@ export default function Header() {
         <header>
             <div className="header">
                 <div className="desktopDisplay">
-                    <Link to="/" className="linkPage">
+                    <Link to="/home" className="linkPage">
                         <div className="logoContainer">
                             <img src={Logo} alt="logo" />
                             <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
@@ -59,13 +57,13 @@ export default function Header() {
                                 <i className="bi bi-house-fill"/> Home
                             </Link> 
                         </li>
-                        <li className={activePage.startsWith('/page/film') ? 'activeDesktopPage' : ''}>
-                            <Link to="/page/film" className="linkPage">
+                        <li className={activePage.startsWith('/page/films') ? 'activeDesktopPage' : ''}>
+                            <Link to="/page/films" className="linkPage">
                                 <i className="bi bi-film"/> Film
                             </Link>
                         </li>
-                        <li className={activePage.startsWith('/page/serie') ? 'activeDesktopPage' : ''}>
-                            <Link to="/page/serie" className="linkPage">
+                        <li className={activePage.startsWith('/page/series') ? 'activeDesktopPage' : ''}>
+                            <Link to="/page/series" className="linkPage">
                                 <i className="bi bi-camera-video-fill"/> Serie TV
                             </Link>
                         </li>
@@ -78,7 +76,7 @@ export default function Header() {
                     </div>
                 </div>
                 <div className="mobileDisplay"> 
-                    <Link to="/" className="linkPage">
+                    <Link to="/home" className="linkPage">
                         <div className="logoContainer">
                             <img src={Logo} alt="logo" />
                             <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
@@ -91,11 +89,11 @@ export default function Header() {
                         <li className={activePage.startsWith('/home') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
                             <Link to="/home" className="linkPage"><i className="bi bi-house-fill"/>Home</Link>
                         </li>
-                        <li className={activePage.startsWith('/page/film') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/page/film" className="linkPage"><i className="bi bi-film"/>Film</Link>
+                        <li className={activePage.startsWith('/page/films') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
+                            <Link to="/page/films" className="linkPage"><i className="bi bi-film"/>Film</Link>
                         </li>
-                        <li className={activePage.startsWith('/page/serie') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/page/serie" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
+                        <li className={activePage.startsWith('/page/series') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
+                            <Link to="/page/series" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
                         </li>
                         <li>
                             <Link className="linkPage"><i className="bi bi-person" />Account</Link>
