@@ -1,5 +1,3 @@
-import Footer from "../components/footer";
-import Header from "../components/header";
 import Slider from "../components/slider";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -26,15 +24,12 @@ export default function Content() {
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
         });
-    }, [type]); // eslint-disable-line
-
-    useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/providers`).then((res) => {
             setStreamingProviders(res.data);
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
         });
-    }, []); // eslint-disable-line
+    }, [type]); // eslint-disable-line
 
     const handleGenreChange = (event) => {
         setSelectedGenres(event.target.value);
@@ -76,6 +71,13 @@ export default function Content() {
                             )}
                         </div>
                     )}
+                    MenuProps={{
+                        PaperProps: {
+                            style: {
+                                maxHeight: 300,
+                            },
+                        },
+                    }}
                     >
                         <MenuItem value="">Tutti i generi</MenuItem>
                         {genres.map((genre) => (
@@ -101,6 +103,13 @@ export default function Content() {
                                 ))}
                             </div>
                         )}
+                        MenuProps={{
+                            PaperProps: {
+                                style: {
+                                    maxHeight: 300,
+                                },
+                            },
+                        }}
                     >
                         {streamingProviders.map((provider) => (
                             <MenuItem key={provider.id} value={provider.id}>

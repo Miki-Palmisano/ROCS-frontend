@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import Slider from "../components/slider";
-import Header from "../components/header";
 import axios from "axios";
-import Footer from "../components/footer";
 import { useParams } from "react-router-dom";
 
 export default function Home() {

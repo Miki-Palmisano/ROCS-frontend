@@ -1,7 +1,7 @@
 import Logo from '../resources/Logo.png'
 import '../styles/header.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import {Link, useLocation, useNavigate, useParams} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 
 export default function Header() {
@@ -68,7 +68,7 @@ export default function Header() {
                             </Link>
                         </li>
                         <li onClick={handleSearch}><i className="bi bi-search" /></li>
-                        <li className={`searchBar ${search ? 'active':''}`}><input type="text" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
+                        <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
                     <div className="iconContainer">
                         <p>Account</p>
@@ -98,7 +98,7 @@ export default function Header() {
                         <li>
                             <Link className="linkPage"><i className="bi bi-person" />Account</Link>
                         </li>
-                        <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="text" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
+                        <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>
                 </div>
             </div>

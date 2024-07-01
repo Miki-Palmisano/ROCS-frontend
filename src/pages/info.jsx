@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Footer from "../components/footer";
-import Header from "../components/header";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import '../styles/info.css';

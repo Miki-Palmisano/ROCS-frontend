@@ -205,6 +205,18 @@ body {
     color: #222831;
 }
 
+.searchBar input[type="search"],
+.mobileSearchBar input[type="search"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.searchBar input[type="search"]::-webkit-search-cancel-button,
+.mobileSearchBar input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
 
 
 
