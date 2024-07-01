@@ -14,7 +14,7 @@
     border: 1px solid #ccc;
     padding: 10px;
     margin: 0 10px;
-    width: 120px;
+    width: 140px;
 }
 
 .rounded-form-control .MuiOutlinedInput-root {
@@ -23,7 +23,15 @@
 }
 
 .filter{
+    display: flex;
     margin-right: 10px;
+    margin-left: 10px;
+    align-items: center;
+}
+
+.bi-funnel-fill {
+    font-size: 30px;
+    margin-right: 5px;
 }
 
 .centered-input-label {
