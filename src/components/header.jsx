@@ -96,7 +96,7 @@ export default function Header() {
                             <Link to="/page/series" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
                         </li>
                         <li>
-                            <Link className="linkPage"><i className="bi bi-person" />Account</Link>
+                            <Link to="/account" className="linkPage"><i className="bi bi-person" />Account</Link>
                         </li>
                         <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>

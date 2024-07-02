@@ -26,8 +26,8 @@ export default function Home() {
 
   return (
     <>
-    {films.length === 0 ? null : <Slider elements={films} loading={loadingFilm} title="Film"/>}
-    {series.length === 0 ? null : <Slider elements={series} loading={loadingSeries} title="Serie TV"/>}
+    {loadingFilm ? <Slider elements={null} loading={true} title={'Caricamento Film...'} /> : <Slider elements={films} loading={loadingFilm} title="Film"/>}
+    {loadingSeries ? <Slider elements={null} loading={true} title={'Caricamento Serie...'} /> : <Slider elements={series} loading={loadingSeries} title="Serie TV"/>}
     </>
   );
 }
