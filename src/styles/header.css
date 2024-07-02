@@ -75,11 +75,12 @@
 .iconContainer {
     display: flex;
     align-items: center;
+    margin-right: 20px;
 }
 
 .iconContainer i {
     margin-left: 10px;
-    margin-right: 25px;
+    margin-right: 10px;
     scale: 1.6;
 }
 
@@ -216,6 +217,7 @@ body {
 .mobileSearchBar input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
 }
+  
 
 
 

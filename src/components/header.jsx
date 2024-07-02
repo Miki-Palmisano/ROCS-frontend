@@ -3,6 +3,8 @@ import '../styles/header.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
+import Login from './login';
+import Register from './register';
 
 export default function Header() {
     const [bubbleOpen, setBubbleOpen] = useState(false);
@@ -12,24 +14,41 @@ export default function Header() {
     const [search, setSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const searchInputRef = useRef(null);
+    const [accountOpen, setAccountOpen] = useState(false);
+    const [registerOpen, setRegisterOpen] = useState(false);
+    const [comparePasswords, setComparePasswords] = useState(true);
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        repeatPassword: '',
+        remember: false
+    });
 
     useEffect(() => {
         setActivePage(location.pathname.split('/')[2] === undefined ? '/home' : '/page/'+location.pathname.split('/')[2]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [location.pathname]); // eslint-disable-line
 
-    const toggleBubble = () => {
-        setBubbleOpen(!bubbleOpen);
-    };
+    const toggleBubble = () => { setBubbleOpen(!bubbleOpen); };
 
     const handleSearch = () => {
         setSearch(!search);
         if(!search) searchInputRef.current.focus();
     }
 
-    const handleSearchChange = (event) => {
-        setSearchValue(event.target.value);
-    };
+    const toggleAccount = () => { 
+        setAccountOpen(!registerOpen); 
+        setRegisterOpen(accountOpen);
+        setBubbleOpen(false);
+    }
+
+    const closeAccount = () => {
+        setAccountOpen(false);
+        setRegisterOpen(false);
+    }
+
+    const handleSearchChange = (event) => { setSearchValue(event.target.value); };
 
     useEffect(() => {
         if (searchValue !== '') {
@@ -38,6 +57,26 @@ export default function Header() {
             navigate(activePage);
         }
     }, [searchValue]); // eslint-disable-line
+
+    const handleChangeFormData = (event) => {
+        const { id, value, checked} = event.target;
+        const val = event.target.id === 'remember' ? checked : value;
+        setFormData((data) => ({...data, [id]: val}));
+    };
+
+    useEffect(() => {
+        setComparePasswords(formData.repeatPassword.length !== 0 ? formData.password === formData.repeatPassword : true);
+    }, [formData.password, formData.repeatPassword]);
+
+    const loginSubmit = (event) => {
+        event.preventDefault();
+        if(comparePasswords) console.log(formData);
+    };
+
+    const registerSubmit = (event) => {
+        event.preventDefault();
+        if(comparePasswords) console.log(formData);
+    }
 
     return (
         <>
@@ -70,9 +109,9 @@ export default function Header() {
                         <li onClick={handleSearch}><i className="bi bi-search" /></li>
                         <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
-                    <div className="iconContainer">
-                        <p>Account</p>
+                    <div className="iconContainer" onClick={toggleAccount}>
                         <i className="bi bi-person" />
+                        <p>Account</p>
                     </div>
                 </div>
                 <div className="mobileDisplay"> 
@@ -95,14 +134,17 @@ export default function Header() {
                         <li className={activePage.startsWith('/page/series') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
                             <Link to="/page/series" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
                         </li>
-                        <li>
-                            <Link to="/account" className="linkPage"><i className="bi bi-person" />Account</Link>
+                        <li onClick={toggleAccount}>
+                            <i className="bi bi-person" />Account
                         </li>
                         <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>
                 </div>
             </div>
-        </header>  
+            {accountOpen ? <Login loginSubmit={loginSubmit} toggleRegister={toggleAccount} changeFormData={handleChangeFormData} closeAccount={closeAccount}/> : null}
+            {registerOpen ? <Register registerSubmit={registerSubmit} comparePasswords={comparePasswords} changeFormData={handleChangeFormData} toggleAccount={toggleAccount} closeAccount={closeAccount}/> : null}
+        </header>
+        
         </> 
     );
 }

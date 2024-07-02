@@ -19,7 +19,6 @@ export default function App() {
         <Route path="/page/:type/*" element={<Content />} />
         <Route path="/page/:type/search/:keywords" element={<Content />} />
         <Route path="/info/:type/:id" element={<Info />} />
-        
       </Routes>
       <Footer />
     </BrowserRouter>
