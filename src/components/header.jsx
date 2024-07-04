@@ -26,11 +26,15 @@ export default function Header() {
     });
 
     useEffect(() => {
-        setActivePage(location.pathname.split('/')[2] === undefined ? '/home' : '/page/'+location.pathname.split('/')[2]);
+        setActivePage(location.pathname.split('/')[2] === 'search' || location.pathname.split('/')[2] === undefined ? '/home' : '/page/'+location.pathname.split('/')[2]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [location.pathname]); // eslint-disable-line
 
-    const toggleBubble = () => { setBubbleOpen(!bubbleOpen); };
+    const toggleBubble = () => { 
+        setBubbleOpen(!bubbleOpen); 
+        setAccountOpen(false);
+        setRegisterOpen(false);
+    };
 
     const handleSearch = () => {
         setSearch(!search);
@@ -92,17 +96,17 @@ export default function Header() {
                     </Link>
                     <div className="menu">
                         <li className={activePage.startsWith('/home') ? 'activeDesktopPage' : ''}>
-                            <Link to="/home" className="linkPage">
+                            <Link to={`/home${searchValue.length === 0 ? '' : `/search/${searchValue}`}`} className="linkPage">
                                 <i className="bi bi-house-fill"/> Home
                             </Link> 
                         </li>
                         <li className={activePage.startsWith('/page/films') ? 'activeDesktopPage' : ''}>
-                            <Link to="/page/films" className="linkPage">
+                            <Link to={`/page/films${searchValue.length === 0 ? '' : `/search/${searchValue}`}`} className="linkPage">
                                 <i className="bi bi-film"/> Film
                             </Link>
                         </li>
                         <li className={activePage.startsWith('/page/series') ? 'activeDesktopPage' : ''}>
-                            <Link to="/page/series" className="linkPage">
+                            <Link to={`/page/series${searchValue.length === 0 ? '' : `/search/${searchValue}`}`} className="linkPage">
                                 <i className="bi bi-camera-video-fill"/> Serie TV
                             </Link>
                         </li>

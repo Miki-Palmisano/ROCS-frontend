@@ -63,3 +63,10 @@
     background-color: #EEEEEE !important;
     color: #222831 !important;
 }
+
+@media screen and (max-width: 1024px){
+    .signContainer {
+        width: 87.5vw;
+    }
+    
+}
