@@ -3,8 +3,8 @@ import '../styles/header.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
-import Login from './login';
-import Register from './register';
+import Sign from './sign';
+import Cookie from 'js-cookie';
 
 export default function Header() {
     const [bubbleOpen, setBubbleOpen] = useState(false);
@@ -14,26 +14,20 @@ export default function Header() {
     const [search, setSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const searchInputRef = useRef(null);
-    const [accountOpen, setAccountOpen] = useState(false);
-    const [registerOpen, setRegisterOpen] = useState(false);
-    const [comparePasswords, setComparePasswords] = useState(true);
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        repeatPassword: '',
-        remember: false
-    });
+    const [showSign, setShowSign] = useState(false);
+    const [logged, setLogged] = useState(false);
+    const [username, setUsername] = useState('');
+    const [accountOption, setAccountOption] = useState(false);
 
     useEffect(() => {
-        setActivePage(location.pathname.split('/')[2] === 'search' || location.pathname.split('/')[2] === undefined ? '/home' : '/page/'+location.pathname.split('/')[2]);
+        setActivePage(location.pathname);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [location.pathname]); // eslint-disable-line
+        setSearchValue(new URLSearchParams(location.search).get('search') || '');
+    }, [location]); // eslint-disable-line
 
     const toggleBubble = () => { 
-        setBubbleOpen(!bubbleOpen); 
-        setAccountOpen(false);
-        setRegisterOpen(false);
+        setBubbleOpen(!bubbleOpen);
+        setShowSign(false);
     };
 
     const handleSearch = () => {
@@ -41,46 +35,40 @@ export default function Header() {
         if(!search) searchInputRef.current.focus();
     }
 
-    const toggleAccount = () => { 
-        setAccountOpen(!registerOpen); 
-        setRegisterOpen(accountOpen);
+    const handleSearchChange = (event) => { 
+        setSearchValue(event.target.value);
+    };
+
+    const handleShowSign = () => {
+        setShowSign(!showSign);
         setBubbleOpen(false);
     }
 
-    const closeAccount = () => {
-        setAccountOpen(false);
-        setRegisterOpen(false);
+    const showAcccountOption = () => {
+        setAccountOption(!accountOption);
     }
 
-    const handleSearchChange = (event) => { setSearchValue(event.target.value); };
+    const logOut = () => {
+        Cookie.remove('token');
+        Cookie.remove('user');
+        window.location.reload();
+    }
+
+    useEffect(() => {
+        if(Cookie.get('token') !== undefined){
+            setLogged(true);
+            setUsername(Cookie.get('user'));
+        }
+        else setLogged(false);
+    }, []);
 
     useEffect(() => {
         if (searchValue !== '') {
-            navigate(`${activePage}/search/${searchValue}`);
+            navigate(`${activePage}?search=${searchValue} `);
         } else {
             navigate(activePage);
         }
     }, [searchValue]); // eslint-disable-line
-
-    const handleChangeFormData = (event) => {
-        const { id, value, checked} = event.target;
-        const val = event.target.id === 'remember' ? checked : value;
-        setFormData((data) => ({...data, [id]: val}));
-    };
-
-    useEffect(() => {
-        setComparePasswords(formData.repeatPassword.length !== 0 ? formData.password === formData.repeatPassword : true);
-    }, [formData.password, formData.repeatPassword]);
-
-    const loginSubmit = (event) => {
-        event.preventDefault();
-        if(comparePasswords) console.log(formData);
-    };
-
-    const registerSubmit = (event) => {
-        event.preventDefault();
-        if(comparePasswords) console.log(formData);
-    }
 
     return (
         <>
@@ -96,27 +84,27 @@ export default function Header() {
                     </Link>
                     <div className="menu">
                         <li className={activePage.startsWith('/home') ? 'activeDesktopPage' : ''}>
-                            <Link to={`/home${searchValue.length === 0 ? '' : `/search/${searchValue}`}`} className="linkPage">
+                            <Link to={`/home${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <i className="bi bi-house-fill"/> Home
                             </Link> 
                         </li>
                         <li className={activePage.startsWith('/page/films') ? 'activeDesktopPage' : ''}>
-                            <Link to={`/page/films${searchValue.length === 0 ? '' : `/search/${searchValue}`}`} className="linkPage">
+                            <Link to={`/page/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <i className="bi bi-film"/> Film
                             </Link>
                         </li>
                         <li className={activePage.startsWith('/page/series') ? 'activeDesktopPage' : ''}>
-                            <Link to={`/page/series${searchValue.length === 0 ? '' : `/search/${searchValue}`}`} className="linkPage">
+                            <Link to={`/page/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <i className="bi bi-camera-video-fill"/> Serie TV
                             </Link>
                         </li>
                         <li onClick={handleSearch}><i className="bi bi-search" /></li>
                         <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
-                    <div className="iconContainer" onClick={toggleAccount}>
+                    {logged ? <div className="iconContainer" onClick={showAcccountOption}> Ciao, {username} </div> : <div className="iconContainer" onClick={handleShowSign}>
                         <i className="bi bi-person" />
                         <p>Account</p>
-                    </div>
+                    </div> }
                 </div>
                 <div className="mobileDisplay"> 
                     <Link to="/home" className="linkPage">
@@ -138,15 +126,17 @@ export default function Header() {
                         <li className={activePage.startsWith('/page/series') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
                             <Link to="/page/series" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
                         </li>
-                        <li onClick={toggleAccount}>
+                        {logged ? <li>Ciao, {username}</li> : <li onClick={handleShowSign}>
                             <i className="bi bi-person" />Account
-                        </li>
+                        </li> }
                         <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>
                 </div>
             </div>
-            {accountOpen ? <Login loginSubmit={loginSubmit} toggleRegister={toggleAccount} changeFormData={handleChangeFormData} closeAccount={closeAccount}/> : null}
-            {registerOpen ? <Register registerSubmit={registerSubmit} comparePasswords={comparePasswords} changeFormData={handleChangeFormData} toggleAccount={toggleAccount} closeAccount={closeAccount}/> : null}
+            {showSign && !logged ? <Sign /> : null}
+            {accountOption ? <div className="accountOption"> 
+                <li onClick={logOut}><i className="bi-person-walking"/><p>Esci</p><i className="bi bi-door-open" /></li>
+                </div> : null}
         </header>
         
         </> 

@@ -1,19 +1,22 @@
 import Slider from "../components/slider";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import '../styles/content.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { FormControl, InputLabel, Select, MenuItem, Checkbox, Chip, Grid } from '@mui/material';
+import qs from 'qs';
 
 export default function Content() {
     const [contents, setContents] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { type, keywords } = useParams();
     const [streamingProviders, setStreamingProviders] = useState([]);
     const [genres, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedProviders, setSelectedProviders] = useState([]);
+    const navigate = useNavigate();
+    const { type } = useParams();
+    const keywords = new URLSearchParams(useLocation().search).get('search');
 
     useEffect(() => {
         setLoading(true);
@@ -32,23 +35,46 @@ export default function Content() {
     }, [type]); // eslint-disable-line
 
     const handleGenreChange = (event) => {
+        if(selectedGenres.length === 0) navigate(`/page/${type}`);
         setSelectedGenres(event.target.value);
     };
 
     const handleProviderChange = (event) => {
+        if(selectedProviders.length === 0) navigate(`/page/${type}`);
         setSelectedProviders(event.target.value);
     };
 
+    const handleDeleteFilters = () => {
+        setSelectedGenres([]);
+        setSelectedProviders([]);
+    }
+
     useEffect(() => {
-        if(keywords !== undefined) {
-            setSelectedGenres([]);
-            setSelectedProviders([]);
-        }
-        genres.forEach(g => axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}${selectedProviders.length === 0 ? '' : `/providers/${selectedProviders.join('|')}`}/genres/${selectedGenres.length === 0 ? g.id : g.id+','+selectedGenres}${keywords !== undefined ? `/search/${keywords}`:''}`).then((res) => {
-            setContents(content => content.map(c => c.id !== g.id ? c : ({ ...c, content: res.data.filter(item => item.img !== null), loading: false})));
-        }).catch(error => {
-            console.error('Errore durante la richiesta GET:', error);
-        } ));
+        handleDeleteFilters();
+    }, [type]); // eslint-disable-line
+
+    useEffect(() => {
+        if(keywords !== null) handleDeleteFilters();
+        
+        genres.forEach(g => {
+
+            const params = {
+                keywords: keywords,
+                providerId: selectedProviders.length > 0 ? selectedProviders.join('|') : null,
+                genreId: selectedGenres.length !== 0 ? selectedGenres + ',' + g.id : g.id,
+            };
+
+            const queryString = qs.stringify(params, { skipNulls: true, addQueryPrefix: true });
+
+            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}${keywords !== null ? `/search`:''}${queryString}`;
+            axios.get(url)
+                .then((res) => {
+                    setContents(content => content.map(c => c.id !== g.id ? c : ({ ...c, content: res.data.filter(item => item.img !== null), loading: false})));
+                })
+                .catch(error => {
+                    console.error('Errore durante la richiesta GET:', error);
+                })
+        });
     }, [loading, keywords, selectedGenres, selectedProviders]); // eslint-disable-line
 
     return (
@@ -58,31 +84,33 @@ export default function Content() {
                 <FormControl className="rounded-form-control">
                     <InputLabel className="centered-input-label" id="genre-label">Genere</InputLabel>
                     <Select
-                    labelId="genre-label"
-                    id="genre-select"
-                    value={selectedGenres}
-                    onChange={handleGenreChange}
-                    renderValue={(selected) => (
-                        <div>
-                            {selected && selected !== '' ? (
-                                <Chip key={selected} label={genres.find(g => g.id === selected)?.name || "Tutti i generi"} />
-                            ) : (
-                                "Tutti i generi"
-                            )}
-                        </div>
-                    )}
-                    MenuProps={{
-                        PaperProps: {
-                            style: {
-                                maxHeight: 300,
+                        labelId="genre-label"
+                        id="genre-select"
+                        multiple
+                        value={selectedGenres}
+                        onChange={handleGenreChange}
+                        renderValue={(selected) => (
+                            <div>
+                                {selected.map((id) => {
+                                    const genre = genres.find(genre => genre.id === id);
+                                    return <Chip key={id} label={genre ? genre.name : ''} />;
+                                })}
+                            </div>
+                        )}
+                        MenuProps={{
+                            PaperProps: {
+                                style: {
+                                    maxHeight: 300,
+                                },
                             },
-                        },
-                    }}
+                        }}
                     >
-                        <MenuItem value="">Tutti i generi</MenuItem>
                         {genres.map((genre) => (
                             <MenuItem key={genre.id} value={genre.id}>
-                            {genre.name}
+                                <Checkbox checked={selectedGenres.includes(genre.id)} />
+                                <Grid >
+                                    {genre.name}
+                                </Grid>
                             </MenuItem>
                         ))}
                     </Select>
@@ -99,7 +127,7 @@ export default function Content() {
                         renderValue={(selected) => (
                             <div>
                                 {selected.map((id) => (
-                                    <Chip key={id} className="customChip" label={<img src={streamingProviders.find(p => p.id === id).logo} className="providerLogo" alt={selectedProviders+' logo'}/> || "Tutti i Provider"} />
+                                    <Chip key={id} className="customChip" label={<img src={streamingProviders.find(p => p.id === id).logo} className="providerLogo" alt={selectedProviders+' logo'}/>} />
                                 ))}
                             </div>
                         )}
@@ -122,13 +150,14 @@ export default function Content() {
                         ))}
                     </Select>
                 </FormControl>
+                <i className="bi bi-x" onClick={handleDeleteFilters} />
             </div>
 
             {loading ? (
                 <Slider elements={null} loading={true} title={'Caricamento...'} />
             ) : (
-                contents.filter(c => c.content.length !== 0).filter(c => c.id !== selectedGenres).map(c => (
-                    <Slider key={c.id} elements={c.content} loading={c.loading} title={selectedGenres.length !== 0 ? genres.find(g => g.id === selectedGenres).name + ' / ' + c.name : c.name} />
+                contents.filter(c => c.content.length !== 0).map(c => (
+                    <Slider key={c.id} elements={c.content} loading={c.loading} title={selectedGenres.length !== 0 && !genres.filter(g => selectedGenres.includes(g.id)).map(g => g.name).includes(c.name) ? genres.filter(g => selectedGenres.includes(g.id)).map(g => g.name).join(' / ') + ' / ' + c.name : c.name} />
                 ))
             )}
         </div>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation} from "react-router-dom";
 import axios from "axios";
 import '../styles/info.css';
 import Slider from "../components/slider";
+import qs from 'qs';
 
 export default function Info() {
     const { type, id } = useParams();
@@ -10,6 +11,7 @@ export default function Info() {
     const [loading, setLoading] = useState(true);
     const [contents, setContents] = useState([]);
     const [trailer, setTrailer] = useState(false);
+    const keywords = new URLSearchParams(useLocation().search).get('search');
 
     const handlePlayTrailer = () => {
         setTrailer(!trailer);
@@ -29,13 +31,19 @@ export default function Info() {
 
     useEffect(() => {
         contents.forEach(content => {
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/genres/${content.id}`).then((res) => {
-                setContents(prevContent => prevContent.map(c => c.id === content.id ? { ...c, content: res.data, loading: false } : c));
+            const params = {
+                keywords: keywords,
+                genreId: content.id,
+            };
+            const queryString = qs.stringify(params, { skipNulls: true, addQueryPrefix: true });
+
+            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}${keywords !== null ? `/search` : ''}${queryString}`).then((res) => {
+                setContents(prevContent => prevContent.map(c => c.id === content.id ? { ...c, content: res.data.filter(f => f.img !== null), loading: false } : c));
             }).catch(error => {
                 console.error('Errore durante la richiesta GET:', error);
             });
         });
-    }, [info]); // eslint-disable-line
+    }, [info, keywords]); // eslint-disable-line
 
     return (
         <>

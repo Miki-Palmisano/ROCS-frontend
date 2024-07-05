@@ -12,8 +12,7 @@
 }
 
 .signContainer i {
-    font-size: 30px;
-    margin-right: 5px;
+    display: none;
 }
 
 .signContainer p {
@@ -27,6 +26,11 @@
     background-color: #EEEEEE;
     border: 1px solid #222831;
     border-radius: 12px;
+}
+
+.redirectButton {
+    color:#222831;
+    font-size: 14px;
 }
 
 .signContainer button:hover{
@@ -67,6 +71,12 @@
 @media screen and (max-width: 1024px){
     .signContainer {
         width: 87.5vw;
+    }
+
+    .signContainer i {
+        display: flex;
+        font-size: 30px;
+        margin-right: 5px;
     }
     
 }

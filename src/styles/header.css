@@ -76,6 +76,7 @@
     display: flex;
     align-items: center;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .iconContainer i {
@@ -216,6 +217,43 @@ body {
 .searchBar input[type="search"]::-webkit-search-cancel-button,
 .mobileSearchBar input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
+}
+
+.accountOption {
+    position: absolute;
+    top: 90px;
+    right: 2.5%;
+    list-style-type: none;
+    background-color: #EEEEEE;
+    border-radius: 30px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.accountOption li{
+    display: flex;
+    align-items: center;
+    background-color: #EEEEEE;
+    cursor: pointer;
+}
+
+.accountOption i {
+    font-size: 25px;
+    margin-right: 5px;
+    transform: translateX(0px);
+}
+  
+.accountOption li i,
+.accountOption li p {
+    transition: transform 1s ease-in-out;
+}
+
+.accountOption:hover li i.bi-person-walking {
+    transform: translateX(50px);
+}
+
+.accountOption:hover li p {
+    transform: translateX(-10px);
 }
   
 

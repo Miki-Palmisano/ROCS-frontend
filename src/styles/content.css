@@ -14,7 +14,8 @@
     border: 1px solid #ccc;
     padding: 10px;
     margin: 0 10px;
-    width: 130px;
+    width: fit-content;
+    min-width: 120px !important;
 }
 
 .rounded-form-control .MuiOutlinedInput-root {
@@ -73,4 +74,19 @@
 .customChip {
     background-color: transparent !important;
     margin-left: -20px !important;
+}
+
+.filterContainer i {
+    font-size: 40px;
+    margin-left: 5px;
+}
+
+@media (max-width: 1024px) {
+    .rounded-form-control {
+        width: 180px;
+    }
+    
+    .filterContainer {
+        width: 93%;
+    }
 }
