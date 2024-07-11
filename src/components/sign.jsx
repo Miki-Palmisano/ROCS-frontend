@@ -36,7 +36,7 @@ export default function Sign({closeAccount}) {
 
     const setCookie = (response) => {
         const expirationDate = new Date();
-        expirationDate.setMinutes(expirationDate.getMinutes() + 1);
+        expirationDate.setMinutes(expirationDate.getHours + 1);
         Cookie.set('user', response.data.username, { expires: expirationDate });
         Cookie.set('token', response.data.token, { expires: expirationDate });
         window.location.reload();

@@ -1,12 +1,12 @@
 import Logo from '../resources/Logo.png'
 import '../styles/header.css'
-import 'bootstrap-icons/font/bootstrap-icons.css'
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import Sign from './sign';
 import Cookie from 'js-cookie';
 import { Avatar } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
+import {Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom} from '@mui/icons-material';
 
 export default function Header() {
     const { logout, isAuthenticated } = useAuth0();
@@ -117,24 +117,24 @@ export default function Header() {
                     <div className="menu">
                         <li className={location.pathname === '/' ? 'activeDesktopPage' : ''}>
                             <Link to={`/${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
-                                <i className="bi bi-house-fill"/> Home
+                                <div className="linkLabel"> <Home className="linkIcon"/> Home </div>
                             </Link> 
                         </li>
                         <li className={location.pathname === '/films' ? 'activeDesktopPage' : ''}>
                             <Link to={`/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
-                                <i className="bi bi-film"/> Film
+                                <div className="linkLabel"><Movie className="linkIcon"/> Film</div>
                             </Link>
                         </li>
                         <li className={location.pathname === '/series' ? 'activeDesktopPage' : ''}>
                             <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
-                                <i className="bi bi-camera-video-fill"/> Serie TV
+                                <div className="linkLabel"><Tv className="linkIcon"/> Serie TV</div>
                             </Link>
                         </li>
                         <li onClick={handleSearch}><i className="bi bi-search" /></li>
                         <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
                     {logged ? <div className="iconContainer" onClick={showAcccountOption}> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> : <div className="iconContainer" onClick={handleShowSign}>
-                        <i className="bi bi-person" />
+                        <Person />
                         <p>Account</p>
                     </div> }
                 </div>
@@ -150,28 +150,36 @@ export default function Header() {
                     </button>
                     <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
                         <li className={activePage.startsWith('/home') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/home" className="linkPage"><i className="bi bi-house-fill"/>Home</Link>
+                            <Link to="/home" className="linkPage"><div className="linkLabel"> <Home /> Home </div></Link>
                         </li>
                         <li className={activePage.startsWith('/page/films') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/page/films" className="linkPage"><i className="bi bi-film"/>Film</Link>
+                            <Link to="/page/films" className="linkPage"><div className="linkLabel"><Movie /> Film</div></Link>
                         </li>
                         <li className={activePage.startsWith('/page/series') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/page/series" className="linkPage"><i className="bi bi-camera-video-fill"/>Serie TV</Link>
+                            <Link to="/page/series" className="linkPage"><div className="linkLabel"><Tv /> Serie TV</div></Link>
                         </li>
 
                         {logged ? <li style={{cursor: 'pointer'}} onClick={showAcccountOption}><Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px', marginLeft: '-5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar>Account</li> 
-                        : <li onClick={handleShowSign}><i className="bi bi-person" />Account</li> }
+                        : <li onClick={handleShowSign}><Person /> Account</li> }
                         <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>
                 </div>
             </div>
             {showSign && !logged ? <Sign closeAccount={handleShowSign}/> : null}
-            {accountOption ? 
+            {accountOption && Cookie.get('token') !== undefined ? 
                 <div className="accountOption"> 
-                    <p>Ciao, <strong>{username}</strong></p>
-                    <li><Link to="/account" className="linkPage"><i className="bi bi-person-fill" />Profilo</Link></li>
-                    <li onClick={logOut}><i className="bi-person-walking"/><p>Esci</p><i className="bi bi-door-open" /></li>
-                </div> : null}
+                <p><strong>{username}</strong></p>
+                <li>
+                    <Link to="/account" className="linkPage">
+                        <div className="linkLabel"><Person  /> Profilo </div>
+                    </Link>
+                </li>
+                <li onClick={logOut}>
+                    <DirectionsWalk className="icon" />
+                    <p className="text">Esci</p>
+                    <MeetingRoom />
+                </li>
+            </div> : null}
         </header>
         
         </> 

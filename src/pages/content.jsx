@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import '../styles/content.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import { FormControl, InputLabel, Select, MenuItem, Checkbox, Chip, Grid } from '@mui/material';
+import {FilterAlt, Close} from '@mui/icons-material';
 import qs from 'qs';
 
 export default function Content() {
@@ -86,7 +86,7 @@ export default function Content() {
     return (
         <div>
             <div className="filterContainer">
-                <div className="filter"><i className="bi bi-funnel-fill"/>Filtri</div>
+                <div className="filter"><FilterAlt className="filterIcon"/>Filtri</div>
                 <FormControl className="rounded-form-control">
                     <InputLabel className="centered-input-label" id="genre-label">Genere</InputLabel>
                     <Select
@@ -156,7 +156,7 @@ export default function Content() {
                         ))}
                     </Select>
                 </FormControl>
-                <i className="bi bi-x" onClick={handleDeleteFilters} />
+                <Close onClick={handleDeleteFilters} />
             </div>
 
             {loading ? 
