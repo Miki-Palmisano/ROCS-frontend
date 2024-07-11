@@ -7,7 +7,7 @@ import Cookie from 'js-cookie';
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Sign({closeAccount}) {
-    const { loginWithPopup, logout, user, isAuthenticated, isLoading, getAccessTokenSilently} = useAuth0();
+    const { loginWithPopup, user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
     const [registerOpen, setRegisterOpen] = useState(false);
     const [accountOpen, setAccountOpen] = useState(true);
     const [message, setMessage] = useState({id: '', message: ''});
@@ -34,6 +34,14 @@ export default function Sign({closeAccount}) {
         else setMessage({id: '', message: ''})
     }, [formData]); // eslint-disable-line
 
+    const setCookie = (response) => {
+        const expirationDate = new Date();
+        expirationDate.setMinutes(expirationDate.getMinutes() + 1);
+        Cookie.set('user', response.data.username, { expires: expirationDate });
+        Cookie.set('token', response.data.token, { expires: expirationDate });
+        window.location.reload();
+    }
+
     useEffect(() => {
         if (!isLoading)
           if (isAuthenticated) {
@@ -52,9 +60,7 @@ export default function Sign({closeAccount}) {
                     }
                 )
                 .then((response) => {
-                    Cookie.set('user', response.data.username);
-                    Cookie.set('token', response.data.token);
-                    window.location.reload();
+                    setCookie(response);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -70,17 +76,15 @@ export default function Sign({closeAccount}) {
             return;
         }
         
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/login`, { 
-                email: formData.email.toUpperCase(), password: formData.password });
-            Cookie.set('user', response.data.username);
-            Cookie.set('token', response.data.token);
-            window.location.reload();
-        } catch (error) {
-            console.error('Errore durante la richiesta POST:', error);
-            if(error.response.status === 401) setMessage({id: 'login', message: error.response.data.message});
-            else setMessage({id: 'login', message: 'Errore durante il login. Per favore, riprova.'});
-        }
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/login`, { 
+            email: formData.email.toUpperCase(), password: formData.password })
+            .then((response) => {
+                setCookie(response);
+            }).catch((error) => {
+                console.error('Errore durante la richiesta POST:', error);
+                if(error.response.status === 401) setMessage({id: 'login', message: error.response.data.message});
+                else setMessage({id: 'login', message: 'Errore durante il login. Per favore, riprova.'});
+            });   
     };
 
     const registerSubmit = async (event) => {
@@ -101,12 +105,6 @@ export default function Sign({closeAccount}) {
             }
             console.error(error)
         }
-    }
-
-    const logOut = () => {
-        Cookie.remove('token');
-        Cookie.remove('user');
-        if(isAuthenticated) logout();
     }
 
     const changeFormData = (event) => {
@@ -205,7 +203,6 @@ export default function Sign({closeAccount}) {
                     >
                         Accedi con GitHub
                     </Button>
-                    <button onClick={logOut}>LogOut</button>
                 </Box>
             </div> : null}
             {registerOpen ? 

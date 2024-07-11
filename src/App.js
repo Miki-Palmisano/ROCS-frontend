@@ -13,8 +13,9 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/*" element={<Home />} />
-        <Route path="/:type/*" element={<Content />} />
-        <Route path="/info/:type/:id" element={<Info />} />
+        <Route path="/films/*" element={<Content />} />
+        <Route path="/series/*" element={<Content />} />
+        <Route path="/info/:type" element={<Info />} />
       </Routes>
       <Footer />
     </BrowserRouter>
