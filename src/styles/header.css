@@ -138,6 +138,8 @@
         padding: 8px 4px 10px 10px;
         font-size: 25px;
         background-color: #EEEEEE;
+        display: flex;
+        align-items: center;
     }
 
     .bubbles li.activeMobilePage{
@@ -174,6 +176,10 @@
         width: 20vw;
         border: 1px solid #000000;
         background-color: #EEEEEE;
+    }
+
+    .accountOption{
+        font-size: 25px;
     }
 
 }
@@ -228,6 +234,7 @@ body {
     border-radius: 30px;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
 }
 
 .accountOption li{
@@ -238,9 +245,18 @@ body {
 }
 
 .accountOption i {
-    font-size: 25px;
     margin-right: 5px;
     transform: translateX(0px);
+}
+
+.bi-door-open {
+    font-size: 25px;
+    margin: 0 7px 0 -3px;
+}
+
+.bi-person-walking {
+    font-size: 22px;
+    margin: 0 7px 0 -3px;
 }
   
 .accountOption li i,
@@ -248,8 +264,8 @@ body {
     transition: transform 1s ease-in-out;
 }
 
-.accountOption:hover li i.bi-person-walking {
-    transform: translateX(50px);
+.accountOption:hover li i.bi-person-walking , .icons{
+    transform: translateX(65px);
 }
 
 .accountOption:hover li p {

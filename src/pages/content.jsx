@@ -9,6 +9,7 @@ import qs from 'qs';
 
 export default function Content() {
     const [contents, setContents] = useState([]);
+    const [searchResults, setSearchResults] = useState({id: 0, name: 'Risultati per: ', content: [], loading: true});
     const [loading, setLoading] = useState(true);
     const [streamingProviders, setStreamingProviders] = useState([]);
     const [genres, setGenres] = useState([]);
@@ -57,25 +58,30 @@ export default function Content() {
         if(keywords !== null) handleDeleteFilters();
         
         genres.forEach(g => {
-
             const params = {
-                keywords: keywords,
                 providerId: selectedProviders.length > 0 ? selectedProviders.join('|') : null,
-                genreId: selectedGenres.length !== 0 ? selectedGenres + ',' + g.id : g.id,
+                genreId: selectedGenres.length !== 0 ? selectedGenres.join(',') + ',' + g.id : g.id,
             };
 
             const queryString = qs.stringify(params, { skipNulls: true, addQueryPrefix: true });
 
-            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}${keywords !== null ? `/search`:''}${queryString}`;
+            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}${queryString}`;
             axios.get(url)
                 .then((res) => {
-                    setContents(content => content.map(c => c.id !== g.id ? c : ({ ...c, content: res.data.filter(item => item.img !== null), loading: false})));
+                    setContents(content => content.map(c => c.id !== g.id ? c : { ...c, content: res.data.filter(item => item.img !== null), loading: false}));
                 })
                 .catch(error => {
                     console.error('Errore durante la richiesta GET:', error);
                 })
         });
-    }, [loading, keywords, selectedGenres, selectedProviders]); // eslint-disable-line
+    }, [loading, selectedGenres, selectedProviders]); // eslint-disable-line
+
+    useEffect(() => {
+        if(keywords !== null){
+            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/search?keywords=${keywords}`
+            axios.get(url).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
+        } else setSearchResults({...searchResults, content: [], loading: true})
+    }, [keywords]); //eslint-disable-line
 
     return (
         <div>
@@ -153,13 +159,17 @@ export default function Content() {
                 <i className="bi bi-x" onClick={handleDeleteFilters} />
             </div>
 
-            {loading ? (
+            {loading ? 
                 <Slider elements={null} loading={true} title={'Caricamento...'} />
-            ) : (
-                contents.filter(c => c.content.length !== 0).map(c => (
-                    <Slider key={c.id} elements={c.content} loading={c.loading} title={selectedGenres.length !== 0 && !genres.filter(g => selectedGenres.includes(g.id)).map(g => g.name).includes(c.name) ? genres.filter(g => selectedGenres.includes(g.id)).map(g => g.name).join(' / ') + ' / ' + c.name : c.name} />
-                ))
-            )}
+             : <>
+                {searchResults.loading ? null : <Slider key={searchResults.id} elements={searchResults.content} loading={searchResults.loading} title={searchResults.name + keywords}/>}
+                {contents.filter(c => c.content.length !== 0).map(c => (
+                    <Slider key={c.id} 
+                            elements={c.content} 
+                            loading={c.loading} 
+                            title={selectedGenres.length !== 0 && !genres.filter(g => selectedGenres.includes(g.id)).map(g => g.name).includes(c.name) ? genres.filter(g => selectedGenres.includes(g.id)).map(g => g.name).join(' / ') + ' / ' + c.name : c.name} />
+                ))}
+            </>}
         </div>
     );
 }
