@@ -89,22 +89,20 @@ export default function Sign({closeAccount}) {
 
     const registerSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/register`, {
-            email: formData.email.toUpperCase(), username: formData.username, password: formData.password });
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/register`, {
+        email: formData.email.toUpperCase(), username: formData.username, password: formData.password }).then((response) => {
             if(response.status === 200) {
                 toggleSign();
                 setMessage({id: 'accountCreated', message: 'Account creato correttamente, Accedi'})
             }
-        }catch (error) {
-            if(error.response && error.response.status === 409) {
-                if(error.response.data.message === 'Email già esistente')
-                    setMessage({id: 'email', message: error.response.data.message})
-                else if (error.response.data.message === 'Username già in uso')
-                    setMessage({id: 'username', message: error.response.data.message})
-            }
-            console.error(error)
-        }
+        }).catch((error) => {
+        if(error.response && error.response.status === 409) {
+            if(error.response.data.message === 'Email già esistente')
+                setMessage({id: 'email', message: error.response.data.message})
+            else if (error.response.data.message === 'Username già in uso')
+                setMessage({id: 'username', message: error.response.data.message})
+            console.error(error);
+        }});
     }
 
     const changeFormData = (event) => {
