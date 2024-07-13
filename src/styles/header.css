@@ -142,7 +142,8 @@
 
     .iconMenu{
         scale: 2;
-        margin-right: 15px;
+        margin-right: 10px;
+        color: #000000;
     }
 
     .bi.bi-person{
