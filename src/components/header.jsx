@@ -6,7 +6,7 @@ import Sign from './sign';
 import Cookie from 'js-cookie';
 import { Avatar } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import {Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom} from '@mui/icons-material';
+import {Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search} from '@mui/icons-material';
 
 export default function Header() {
     const { logout, isAuthenticated } = useAuth0();
@@ -31,6 +31,7 @@ export default function Header() {
     const toggleBubble = () => { 
         setBubbleOpen(!bubbleOpen);
         setShowSign(false);
+        setAccountOption(false);
     };
 
     const handleSearch = () => {
@@ -115,22 +116,22 @@ export default function Header() {
                         </div>
                     </Link>
                     <div className="menu">
-                        <li className={location.pathname === '/' ? 'activeDesktopPage' : ''}>
+                        <li className={location.pathname === '/' ? 'activeDesktopPage' : ''} onClick={closeAll}>
                             <Link to={`/${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"> <Home className="linkIcon"/> Home </div>
                             </Link> 
                         </li>
-                        <li className={location.pathname === '/films' ? 'activeDesktopPage' : ''}>
+                        <li className={location.pathname === '/films' ? 'activeDesktopPage' : ''} onClick={closeAll}>
                             <Link to={`/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"><Movie className="linkIcon"/> Film</div>
                             </Link>
                         </li>
-                        <li className={location.pathname === '/series' ? 'activeDesktopPage' : ''}>
+                        <li className={location.pathname === '/series' ? 'activeDesktopPage' : ''} onClick={closeAll}>
                             <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"><Tv className="linkIcon"/> Serie TV</div>
                             </Link>
                         </li>
-                        <li onClick={handleSearch}><i className="bi bi-search" /></li>
+                        <li onClick={handleSearch} className="linkLabel"><Search /></li>
                         <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
                     {logged ? <div className="iconContainer" onClick={showAcccountOption}> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> : <div className="iconContainer" onClick={handleShowSign}>
@@ -167,11 +168,10 @@ export default function Header() {
             </div>
             {showSign && !logged ? <Sign closeAccount={handleShowSign}/> : null}
             {accountOption && Cookie.get('token') !== undefined ? 
-                <div className="accountOption"> 
-                <p><strong>{username}</strong></p>
+                <div className="accountOption">
                 <li>
                     <Link to="/account" className="linkPage">
-                        <div className="linkLabel"><Person  /> Profilo </div>
+                        <div className="linkLabel" onClick={showAcccountOption}><Person  /> Profilo </div>
                     </Link>
                 </li>
                 <li onClick={logOut}>
@@ -181,7 +181,6 @@ export default function Header() {
                 </li>
             </div> : null}
         </header>
-        
         </> 
     );
 }

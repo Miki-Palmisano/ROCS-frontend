@@ -227,13 +227,9 @@ body {
 
 .accountOption {
     position: fixed;
-    top: 90px;
+    top: 85px;
     right: 2.5%;
     list-style-type: none;
-    background-color: #EEEEEE;
-    border-radius: 30px;
-    padding: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     font-size: 20px;
     z-index: 4;
 }
@@ -242,7 +238,19 @@ body {
     display: flex;
     align-items: center;
     background-color: #EEEEEE;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 24px;
+    margin: 5px;
+    height: 40px;
+    width: auto;
     cursor: pointer;
+    border: 2px solid #222831;
+}
+
+.accountOption li:hover {
+    background-color: #222831;
+    color: #EEEEEE;
+    border: 2px solid #EEEEEE;
 }
 
 .accountOption li .icon {

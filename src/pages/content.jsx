@@ -55,7 +55,6 @@ export default function Content() {
     }, [type]); // eslint-disable-line
 
     useEffect(() => {
-        if(keywords !== null) handleDeleteFilters();
         
         genres.forEach(g => {
             const params = {
