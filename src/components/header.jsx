@@ -162,7 +162,7 @@ export default function Header() {
 
                         {logged ? <li style={{cursor: 'pointer'}} onClick={showAcccountOption}><Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px', marginLeft: '-5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar>Account</li> 
                         : <li onClick={handleShowSign}><Person /> Account</li> }
-                        <li className={`mobileSearchBar ${search ? 'active':''}`}><i className="bi bi-search" onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
+                        <li className={`mobileSearchBar ${search ? 'active':''}`}><Search onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>
                 </div>
             </div>
