@@ -6,7 +6,7 @@ import Sign from './sign';
 import Cookie from 'js-cookie';
 import { Avatar } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import {Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search} from '@mui/icons-material';
+import {Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search, Close, Menu} from '@mui/icons-material';
 
 export default function Header() {
     const { logout, isAuthenticated } = useAuth0();
@@ -147,7 +147,7 @@ export default function Header() {
                         </div>
                     </Link>
                     <button className="menuButton"> 
-                        {bubbleOpen || accountOption ? <i onClick={closeAll} className="bi bi-x" /> : <i onClick={toggleBubble} className="bi bi-list" />} 
+                        {bubbleOpen || accountOption ? <Close onClick={closeAll} className="iconMenu"/> : <Menu onClick={toggleBubble} className="iconMenu"/>} 
                     </button>
                     <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
                         <li className={activePage.startsWith('/home') ? 'activeMobilePage' : ''} onClick={toggleBubble}>

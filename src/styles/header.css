@@ -111,10 +111,8 @@
         border: none;
         font-size: 55px;
         cursor: default;
-    }
-
-    .menuButton .icon{
-        color: #000000;
+        display: flex;
+        align-items: center;
     }
     
     .bubbles {
@@ -142,8 +140,9 @@
         border-radius: 12px;
     }
 
-    .bubbles .icon{
-        margin-right: 10px;
+    .iconMenu{
+        scale: 2;
+        margin-right: 15px;
     }
 
     .bi.bi-person{
