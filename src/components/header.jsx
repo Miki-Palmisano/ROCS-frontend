@@ -150,14 +150,14 @@ export default function Header() {
                         {bubbleOpen || accountOption ? <Close onClick={closeAll} className="iconMenu"/> : <Menu onClick={toggleBubble} className="iconMenu"/>} 
                     </button>
                     <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
-                        <li className={activePage.startsWith('/home') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/home" className="linkPage"><div className="linkLabel"> <Home /> Home </div></Link>
+                        <li className={location.pathname === '/' ? 'activeMobilePage' : ''} onClick={toggleBubble}>
+                            <Link to={`/${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"> <Home /> Home </div></Link>
                         </li>
-                        <li className={activePage.startsWith('/page/films') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/page/films" className="linkPage"><div className="linkLabel"><Movie /> Film</div></Link>
+                        <li className={location.pathname === '/films' ? 'activeMobilePage' : ''} onClick={toggleBubble}>
+                            <Link to={`/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"><Movie /> Film</div></Link>
                         </li>
-                        <li className={activePage.startsWith('/page/series') ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to="/page/series" className="linkPage"><div className="linkLabel"><Tv /> Serie TV</div></Link>
+                        <li className={location.pathname === '/series' ? 'activeMobilePage' : ''} onClick={toggleBubble}>
+                            <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"><Tv /> Serie TV</div></Link>
                         </li>
 
                         {logged ? <li style={{cursor: 'pointer'}} onClick={showAcccountOption}><Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px', marginLeft: '-5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar>Account</li> 
