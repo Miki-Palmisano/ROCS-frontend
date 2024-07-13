@@ -1,5 +1,5 @@
 import '../styles/slider.css';
-import skull from '../resources/skull.png';
+import skull from '../assets/skull.png';
 import Card from './card';
 
 export default function App({elements, loading, title}) {

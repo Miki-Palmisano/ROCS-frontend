@@ -1,6 +1,6 @@
 import '../styles/card.css'
 import {Link} from 'react-router-dom';
-import rullino from '../resources/rullino.png';
+import rullino from '../assets/rullino.png';
 
 export default function Card({content, index}) {
     return (
