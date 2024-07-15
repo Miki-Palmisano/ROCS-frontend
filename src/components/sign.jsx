@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { TextField, Box, Button, Checkbox, Grid, FormControlLabel, Divider } from "@mui/material";
-import { Google, GitHub, Facebook } from '@mui/icons-material';
+import { Google, GitHub, Facebook, Close } from '@mui/icons-material';
 import '../styles/sign.css';
 import Cookie from 'js-cookie';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -119,7 +119,7 @@ export default function Sign({closeAccount}) {
         <>
             {accountOpen ? 
             <div className="signContainer">
-                <i className="bi bi-x" onClick={closeAccount} />
+                <Close onClick={closeAccount} />
                 <Box component="form" onSubmit={loginSubmit} noValidate sx={{ mt: 1 }}>
                     {message.id === 'accountCreated' ? <h2>{message.message}</h2> : null}
                     {message.id === 'login' ? <p>{message.message}</p> : null}
@@ -205,7 +205,7 @@ export default function Sign({closeAccount}) {
             </div> : null}
             {registerOpen ? 
             <div className="signContainer">
-                <i className="bi bi-x" onClick={closeAccount} />
+                <Close onClick={closeAccount} />
                 <Box component="form" onSubmit={registerSubmit} sx={{ mt: 1 }}>
                     {message.id === 'username' ? <p>{message.message}</p> : null}
                     <TextField

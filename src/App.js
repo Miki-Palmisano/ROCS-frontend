@@ -16,7 +16,7 @@ export default function App() {
         <Route path="/films/*" element={<Content />} />
         <Route path="/series/*" element={<Content />} />
         <Route path="/account/*" element={<Account />} />
-        <Route path="/info/:type" element={<Info />} />
+        <Route path="/info/:type/:id" element={<Info />} />
       </Routes>
       <Footer />
     </>

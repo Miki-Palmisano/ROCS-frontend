@@ -58,9 +58,114 @@
     width: 20vw;
     height: auto;
     pointer-events: none;
-    margin-left: 2.5%;
-    border-radius: 12px;
+    border-radius: 14px;
     border: 2px solid #EEEEEE;
+}
+
+.imageContainer {
+    position: relative;
+    margin-left: 2.5%;
+}
+
+.listConteiner {
+    position: absolute;
+    display: flex;
+    width: 90%;
+}
+
+.buttons {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 10px;
+}
+
+.infoBackground.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background: linear-gradient(to top, #EEEEEE, #EEEEEE60);
+}
+
+.addListContent{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+.addListContent .MuiSelect-root,
+.addListContent .MuiInputBase-root {
+    border-radius: 14px;
+}
+
+.addListContent .MuiInputBase-root {
+    border-radius: 14px;
+}
+
+.addList.show {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 70%;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.addList.show p{
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.MuiInputLabel-shrink {
+    background-color: #EEEEEE00;
+    width: fit-content;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.stateForm {
+    width: 100px;
+}
+
+.addList.hide {
+    display: none ;
+}
+
+.heartButton,
+.plusButton {
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid #EEEEEE;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #EEEEEE;
+    margin-bottom: 15px;
+}
+
+.heartButton.active, .heartButton.active:hover{
+    color: #ff0000;
+    border: 1px solid #ff0000;
+}
+
+.heartButton:hover,
+.plusButton:hover {
+    background-color: #EEEEEE;
+    color: #222831;
+    border: 1px solid #222831;
+}
+
+.heartButton.active:hover{
+    color: #ff0000;
 }
 
 .infoAdd {
@@ -121,19 +226,11 @@
     border: none;
     border-radius: 24px;
     cursor: pointer;
-  }
+}
   
-  .trailer i{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-    scale: 1.3;
-  }
-  
-  .trailer .activeTrailer {
+.trailer .activeTrailer {
     transform: rotate(90deg);
-  }
+}
 
 @media (max-width: 1024px) {
     .infoContent {
@@ -145,8 +242,7 @@
     }
 
     .infoImage {
-        width: 60%;
-        margin: 0;
+        width: 60vw;
     }
 
     .videoBackground{

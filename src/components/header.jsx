@@ -62,7 +62,7 @@ export default function Header() {
     const logOut = () => {
         Cookie.remove('token');
         Cookie.remove('user');
-        if(isAuthenticated) logout({ returnTo: window.location.origin });
+        if(isAuthenticated) logout();
         window.location.reload();
     }
 

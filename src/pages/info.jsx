@@ -4,19 +4,50 @@ import axios from "axios";
 import '../styles/info.css';
 import Slider from "../components/slider";
 import Cookie from 'js-cookie';
+import { Favorite, PlaylistAdd, PlayArrow, PlaylistAddCheck } from "@mui/icons-material";
+import { Button, Select, MenuItem, TextField, FormControl, InputLabel } from "@mui/material";
 
 export default function Info() {
-    const { type } = useParams();
-    const id = new URLSearchParams(useLocation().search).get('id');
+    const { type, id } = useParams();
     const [info, setInfo] = useState({});
     const [loading, setLoading] = useState(true);
     const [contents, setContents] = useState([]);
     const [trailer, setTrailer] = useState(false);
-    
+    const [favorite, setFavorite] = useState(false);
+    const [addList, setAddList] = useState(false);
+    const [list, setList] = useState([]);
+    const [inList, setInList] = useState(false);
+    const [searchResults, setSearchResults] = useState({id: 0, name: 'Risultati per: ', content: [], loading: true});
+    const keywords = new URLSearchParams(useLocation().search).get('search');
 
     const handlePlayTrailer = () => {
         setTrailer(!trailer);
     }
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/favorite?itemId=${id}&type=${type.substring(0, type.length - 1)}`, 
+        { 
+            headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+        }).then((res) => {
+            if(res.status === 200) setFavorite(true);
+        }).catch(error => {
+            if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
+        });
+    }, [id, type]); //eslint-disable-line
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list/state?itemId=${id}&type=${type.substring(0, type.length - 1)}`,
+            { 
+                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+            }).then((res) => {
+                if(res.status === 200) {
+                    setList({state: res.data.status, vote: res.data.vote});
+                    setInList(true);
+                }
+            }).catch(error => {
+                console.error('Errore durante la richiesta GET:', error);
+            });
+    }, [id, type, inList]); //eslint-disable-line
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/info/${id}`).then((res) => {
@@ -32,13 +63,64 @@ export default function Info() {
 
     useEffect(() => {
         contents.forEach(content => {
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}?=${content.id}`).then((res) => {
+            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}?genreId=${content.id}`).then((res) => {
                 setContents(prevContent => prevContent.map(c => c.id === content.id ? { ...c, content: res.data.filter(f => f.img !== null), loading: false } : c));
             }).catch(error => {
                 console.error('Errore durante la richiesta GET:', error);
             });
         });
     }, [info]); // eslint-disable-line
+
+    useEffect(() => {
+        if(keywords !== null){
+            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/search?keywords=${keywords}`
+            axios.get(url).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
+        } else setSearchResults({...searchResults, content: [], loading: true})
+    }, [keywords]); //eslint-disable-line
+
+    const handleAddFavorite = () => {
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/favorite`, 
+            {
+                itemId: id,
+                type: type.substring(0, type.length - 1),
+                image: info.img
+            }, 
+            { 
+                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+            }).then((res) => {
+                if(res.status === 200) setFavorite(!favorite);
+            }).catch(error => {
+                console.error('Errore durante la richiesta POST:', error);
+        });
+    }
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setList((data) => ({...data, [name]: value}));
+    }
+
+    const toggleAddList = () => {
+        setAddList(!addList);
+    }
+
+    const handleAddList = () => {
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list`, 
+            {
+                itemId: id,
+                type: type.substring(0, type.length - 1),
+                image: info.img,
+                status: list.state,
+                vote: list.vote
+            }, 
+            { 
+                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+            }).then((res) => {
+                setInList(true);
+                if(res.status === 200) setAddList(false);
+            }).catch(error => {
+                console.error('Errore durante la richiesta POST:', error);
+        });
+    }
 
     return (
         <>
@@ -54,11 +136,63 @@ export default function Info() {
                 <div className="gradientOverlay"></div>
             </div>
             <div className="infoContent">
-                <img src={info.img} alt={info.title} className="infoImage" />
+                <div className="imageContainer ">
+                    <img src={info.img} alt={info.title} className="infoImage" />
+                    <div className={`infoBackground ${addList ? 'overlay' : ''}`}></div>
+                    {Cookie.get('token') ? 
+                    <>
+                        <div className="listContainer">
+                            <FormControl className={`addList ${addList ? 'show' : 'hide'}`} onSubmit={handleAddList}>
+                                <p>{inList ? 'Aggiorna la tua lista' : 'Aggiungi alla tua lista'}</p>
+                                <div className="addListContent">
+                                    <FormControl className="stateForm">
+                                        <InputLabel id="stateLabel">Stato</InputLabel>
+                                        <Select
+                                            labelId="stateLabel"
+                                            id="state"
+                                            name="state"
+                                            value={list.state || ""}
+                                            onChange={handleChange}
+                                        >
+                                            <MenuItem value="Visto">Visto</MenuItem>
+                                            <MenuItem value="Da Vedere">Da Vedere</MenuItem>
+                                            <MenuItem value="Sto Vedendo">Sto Vedendo</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <TextField 
+                                        label="Voto"
+                                        name="vote"
+                                        type="number"
+                                        value={list.vote || ""}
+                                        inputProps={{
+                                            step: 0.01,
+                                            min: 0,
+                                            max: 10
+                                        }}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    className="submitButton"
+                                    onClick={handleAddList}
+                                >
+                                    Aggiungi
+                                </Button>
+                            </FormControl>
+                            <div className="buttons">
+                                <button className={`heartButton ${favorite ? 'active' : ''}`} onClick={handleAddFavorite}><Favorite /></button>
+                                <button className="plusButton" onClick={toggleAddList}>{inList ? <PlaylistAddCheck /> : <PlaylistAdd />}</button>
+                            </div>
+                        </div> 
+                    </>: null}
+                </div>
                 <div className="infoText"> 
-                    <h1>{info.title} {info.tagline.length !== 0? ' - '+ info.tagline : null} {Cookie.get('token') ? '<3' : ''}</h1>
+                    <h1>{info.title} {info.tagline.length !== 0? ' - '+ info.tagline : null}</h1>
                     <div className="infoAdd">
-                        {info.video.key === null ? null : <button onClick={handlePlayTrailer} className="trailer"><div className={trailer? 'activeTrailer' : ''}><i className="bi bi-play-fill"/></div> {trailer? "Nascondi":"Mostra"} Trailer</button>}
+                        {info.video.key === null ? null : <button onClick={handlePlayTrailer} className="trailer"><div className={trailer? 'activeTrailer' : ''}><PlayArrow /></div> {trailer? "Nascondi":"Mostra"} Trailer</button>}
                         <p><strong>Generi:</strong> {info.genres.map((i, index) => <span key={i.id}>{i.name}{index < info.genres.length - 1 ? ', ' : ''}</span>)}</p>
                         <p><strong>Data di uscita: </strong>{info.release_date}</p>
                     </div>
@@ -72,7 +206,7 @@ export default function Info() {
                     <p><strong>Descrizione:</strong> {info.description}</p>
                     <div className="infoAdd">
                         <p><strong>Stato:</strong> {info.status}</p>
-                        <p><strong>Voto: </strong>{info.rating.toFixed(1)}/10</p>
+                        <p><strong>Valutazione Media: </strong>{info.rating.toFixed(1)}/10</p>
                         <p><strong>Case di Produzione:</strong> {info.production_companies.filter(i => i.name !== '').map((i, index) => <span key={i.id}>{i.name}{index < (info.production_companies.length - 1) ? ', ' : ''}</span>)}</p>
                     </div>
                     {info.type === 'series' ? <div className="infoAdd"> 
@@ -89,6 +223,7 @@ export default function Info() {
                 </div>
             </div>
             <h1>Altri film dello stesso genere</h1>
+            {searchResults.loading ? null : <Slider key={searchResults.id} elements={searchResults.content} loading={searchResults.loading} title={searchResults.name + keywords}/>}
             {contents.map(content => <Slider key={content.id} elements={content.content} loading={content.loading} title={content.name}/>)}
         </div>
         : null }

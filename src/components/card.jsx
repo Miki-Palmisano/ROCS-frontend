@@ -6,7 +6,7 @@ export default function Card({content, index}) {
     return (
         <div className="cards">
             <img src={rullino} alt={index} className="rullino"/>
-            <Link to={`/info/${content.type}?id=${content.id}`}>
+            <Link to={`/info/${content.type}/${content.id}`}>
                 <li>
                     <img src={content.img} key={index} className="card" alt={index + " Image"} />
                 </li>

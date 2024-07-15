@@ -102,13 +102,6 @@ export default function Content() {
                                 })}
                             </div>
                         )}
-                        MenuProps={{
-                            PaperProps: {
-                                style: {
-                                    maxHeight: 300,
-                                },
-                            },
-                        }}
                     >
                         {genres.map((genre) => (
                             <MenuItem key={genre.id} value={genre.id}>
@@ -136,13 +129,6 @@ export default function Content() {
                                 ))}
                             </div>
                         )}
-                        MenuProps={{
-                            PaperProps: {
-                                style: {
-                                    maxHeight: 300,
-                                },
-                            },
-                        }}
                     >
                         {streamingProviders.map((provider) => (
                             <MenuItem key={provider.id} value={provider.id}>
