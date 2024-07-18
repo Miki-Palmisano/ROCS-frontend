@@ -10,6 +10,7 @@ export default function Sign({closeAccount}) {
     const { loginWithPopup, user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
     const [registerOpen, setRegisterOpen] = useState(false);
     const [accountOpen, setAccountOpen] = useState(true);
+    const [accountLoading, setAccountLoading] = useState(false);
     const [message, setMessage] = useState({id: '', message: ''});
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+|~=`{}$begin:math:display$$end:math:display$:";'<>?,.]).{8,}$/;
@@ -39,6 +40,7 @@ export default function Sign({closeAccount}) {
         expirationDate.setMinutes(expirationDate.getHours + 1);
         Cookie.set('user', response.data.username, { expires: expirationDate });
         Cookie.set('token', response.data.token, { expires: expirationDate });
+        setAccountLoading(false);
         window.location.reload();
     }
 
@@ -46,6 +48,7 @@ export default function Sign({closeAccount}) {
         if (!isLoading)
           if (isAuthenticated) {
             getAccessTokenSilently().then((token) => {
+                setAccountLoading(true);
                 axios.post(
                     `${process.env.REACT_APP_API_GATEWAY_URL}/database/user/auth`,
                     {
@@ -120,6 +123,7 @@ export default function Sign({closeAccount}) {
             {accountOpen ? 
             <div className="signContainer">
                 <Close onClick={closeAccount} />
+                {accountLoading ? <h2>Caricamento...</h2> : null}
                 <Box component="form" onSubmit={loginSubmit} noValidate sx={{ mt: 1 }}>
                     {message.id === 'accountCreated' ? <h2>{message.message}</h2> : null}
                     {message.id === 'login' ? <p>{message.message}</p> : null}
