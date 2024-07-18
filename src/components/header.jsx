@@ -26,6 +26,7 @@ export default function Header() {
         setActivePage(location.pathname);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setSearchValue(new URLSearchParams(location.search).get('search') || '');
+        setBubbleOpen(false);
     }, [location]); // eslint-disable-line
 
     const toggleBubble = () => { 
@@ -138,6 +139,19 @@ export default function Header() {
                         <Person />
                         <p>Account</p>
                     </div> }
+                    {accountOption && Cookie.get('token') !== undefined ? 
+                        <div className="accountOption">
+                        <li>
+                            <Link to="/account" className="linkPage">
+                                <div className="linkLabel" onClick={showAcccountOption}><Person  /> Profilo </div>
+                            </Link>
+                        </li>
+                        <li onClick={logOut}>
+                            <DirectionsWalk className="icon" />
+                            <p className="text">Esci</p>
+                            <MeetingRoom />
+                        </li>
+                    </div> : null}
                 </div>
                 <div className="mobileDisplay"> 
                     <Link to="/home" className="linkPage">
@@ -160,26 +174,16 @@ export default function Header() {
                             <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"><Tv /> Serie TV</div></Link>
                         </li>
 
-                        {logged ? <li style={{cursor: 'pointer'}} onClick={showAcccountOption}><Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px', marginLeft: '-5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar>Account</li> 
+                        {logged ? <> 
+                            <li className={location.pathname === '/account' ? 'activeMobilePage' : ''} style={{cursor: 'pointer'}}><Link to="/account" className="linkPage"><Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px', marginLeft: '-5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar>Profilo</Link></li> 
+                            <li onClick={logOut}> <DirectionsWalk className="icon" /> Esci <MeetingRoom /> </li>
+                            </>
                         : <li onClick={handleShowSign}><Person /> Account</li> }
                         <li className={`mobileSearchBar ${search ? 'active':''}`}><Search onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
                     </div>
                 </div>
             </div>
             {showSign && !logged ? <Sign closeAccount={handleShowSign}/> : null}
-            {accountOption && Cookie.get('token') !== undefined ? 
-                <div className="accountOption">
-                <li>
-                    <Link to="/account" className="linkPage">
-                        <div className="linkLabel" onClick={showAcccountOption}><Person  /> Profilo </div>
-                    </Link>
-                </li>
-                <li onClick={logOut}>
-                    <DirectionsWalk className="icon" />
-                    <p className="text">Esci</p>
-                    <MeetingRoom />
-                </li>
-            </div> : null}
         </header>
         </> 
     );

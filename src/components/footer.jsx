@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import '../styles/footer.css';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 export default function Footer() {
     const [state, setState] = useState();
+    const location = useLocation();
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/state`).then((res) => {
@@ -11,7 +13,7 @@ export default function Footer() {
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
         });
-    }, []);
+    }, [location]);
 
     return (
         <>

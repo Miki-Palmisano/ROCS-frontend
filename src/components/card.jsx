@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import rullino from '../assets/rullino.png';
 
 export default function Card({content, index}) {
+
     return (
         <div className="cards">
             <img src={rullino} alt={index} className="rullino"/>

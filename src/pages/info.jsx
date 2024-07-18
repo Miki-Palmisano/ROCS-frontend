@@ -31,12 +31,15 @@ export default function Info() {
         }).then((res) => {
             if(res.status === 200) setFavorite(true);
         }).catch(error => {
-            if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
+            if(error.response.status === 401) {
+                Cookie.remove('token');
+                Cookie.remove('user');
+            } else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
         });
     }, [id, type]); //eslint-disable-line
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list/state?itemId=${id}&type=${type.substring(0, type.length - 1)}`,
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list/state?itemId=${id}&type=${type}`,
             { 
                 headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
             }).then((res) => {
@@ -45,6 +48,10 @@ export default function Info() {
                     setInList(true);
                 }
             }).catch(error => {
+                if(error.response && error.response.status === 401) {
+                    Cookie.remove('token');
+                    Cookie.remove('user');
+                }
                 console.error('Errore durante la richiesta GET:', error);
             });
     }, [id, type, inList]); //eslint-disable-line
@@ -82,7 +89,7 @@ export default function Info() {
         axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/favorite`, 
             {
                 itemId: id,
-                type: type.substring(0, type.length - 1),
+                type: type,
                 image: info.img
             }, 
             { 
@@ -90,6 +97,10 @@ export default function Info() {
             }).then((res) => {
                 if(res.status === 200) setFavorite(!favorite);
             }).catch(error => {
+                if(error.response.status === 401) {
+                    Cookie.remove('token');
+                    Cookie.remove('user');
+                }
                 console.error('Errore durante la richiesta POST:', error);
         });
     }
@@ -107,7 +118,7 @@ export default function Info() {
         axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list`, 
             {
                 itemId: id,
-                type: type.substring(0, type.length - 1),
+                type: type,
                 image: info.img,
                 status: list.state,
                 vote: list.vote
@@ -118,6 +129,30 @@ export default function Info() {
                 setInList(true);
                 if(res.status === 200) setAddList(false);
             }).catch(error => {
+                if(error.response.status === 401) {
+                    Cookie.remove('token');
+                    Cookie.remove('user');
+                }
+                console.error('Errore durante la richiesta POST:', error);
+        });
+    }
+
+    const handleRemoveList = () => {
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list/remove`, 
+            {
+                itemId: id,
+                type: type
+            }, 
+            { 
+                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+            }).then((res) => {
+                setInList(false);
+                if(res.status === 200) setAddList(false);
+            }).catch(error => {
+                if(error.response.status === 401) {
+                    Cookie.remove('token');
+                    Cookie.remove('user');
+                } 
                 console.error('Errore durante la richiesta POST:', error);
         });
     }
@@ -181,6 +216,15 @@ export default function Info() {
                                 >
                                     Aggiungi
                                 </Button>
+                                {inList ? <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    className="submitButton"
+                                    onClick={handleRemoveList}
+                                >
+                                    Rimuovi
+                                </Button> : null}
                             </FormControl>
                             <div className="buttons">
                                 <button className={`heartButton ${favorite ? 'active' : ''}`} onClick={handleAddFavorite}><Favorite /></button>

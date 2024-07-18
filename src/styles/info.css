@@ -168,6 +168,10 @@
     color: #ff0000;
 }
 
+.submitButton {
+    margin: 5px !important;
+}
+
 .infoAdd {
     display: flex;
     justify-content: space-between;
