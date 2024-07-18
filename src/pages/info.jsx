@@ -25,7 +25,7 @@ export default function Info() {
     }
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/favorite?itemId=${id}&type=${type.substring(0, type.length - 1)}`, 
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/favorite?itemId=${id}&type=${type}`, 
         { 
             headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
         }).then((res) => {

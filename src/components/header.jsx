@@ -110,7 +110,7 @@ export default function Header() {
         <header>
             <div className="header">
                 <div className="desktopDisplay">
-                    <Link to="/home" className="linkPage">
+                    <Link to="/" className="linkPage">
                         <div className="logoContainer">
                             <img src={Logo} alt="logo" />
                             <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
@@ -154,7 +154,7 @@ export default function Header() {
                     </div> : null}
                 </div>
                 <div className="mobileDisplay"> 
-                    <Link to="/home" className="linkPage">
+                    <Link to="/" className="linkPage">
                         <div className="logoContainer">
                             <img src={Logo} alt="logo" />
                             <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}

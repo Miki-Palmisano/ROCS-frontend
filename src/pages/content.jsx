@@ -105,7 +105,7 @@ export default function Content() {
                     >
                         {genres.map((genre) => (
                             <MenuItem key={genre.id} value={genre.id}>
-                                <Checkbox checked={selectedGenres.includes(genre.id)} />
+                                <Checkbox className="custom-checkbox" checked={selectedGenres.includes(genre.id)} />
                                 <Grid >
                                     {genre.name}
                                 </Grid>

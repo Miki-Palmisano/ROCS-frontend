@@ -3,6 +3,7 @@ import { useEffect, useState} from "react";
 import axios from "axios";
 import Slider from "../components/slider";
 import '../styles/account.css';
+import Home from "./home";
 
 export default function Account() {
     const token = Cookie.get('token');
@@ -47,6 +48,7 @@ export default function Account() {
                 <h1>Ciao {username}{loadingList ? ', comincia ad aggiungere qualcosa alla tua lista!' : ', queste sono le tue liste!'}</h1>
             </div>
             {list.filter(l => l.list.length !== 0).map((item, index) => <Slider key={index} elements={item.list} loading={false} title={item.name}/> )}
+            {loadingList ? <Home /> : null}
         </>
     );
 }
