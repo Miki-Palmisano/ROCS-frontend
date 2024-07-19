@@ -2,3 +2,18 @@
     color: #EEEEEE;
     text-align: center;
 }
+
+.addListButton{
+    font-size: 25px;
+    border: 1px solid #EEEEEE;
+    background-color: transparent;
+    color: #EEEEEE;
+    border-radius: 14px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.addListButton:hover{
+    background-color: #EEEEEE;
+    color: #222831;
+}

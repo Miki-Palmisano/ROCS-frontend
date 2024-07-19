@@ -175,63 +175,62 @@ export default function Info() {
                     <img src={info.img} alt={info.title} className="infoImage" />
                     <div className={`infoBackground ${addList ? 'overlay' : ''}`}></div>
                     {Cookie.get('token') ? 
-                    <>
-                        <div className="listContainer">
-                            <FormControl className={`addList ${addList ? 'show' : 'hide'}`} onSubmit={handleAddList}>
-                                <p>{inList ? 'Aggiorna la tua lista' : 'Aggiungi alla tua lista'}</p>
-                                <div className="addListContent">
-                                    <FormControl className="stateForm">
-                                        <InputLabel id="stateLabel">Stato</InputLabel>
-                                        <Select
-                                            labelId="stateLabel"
-                                            id="state"
-                                            name="state"
-                                            value={list.state || ""}
-                                            onChange={handleChange}
-                                        >
-                                            <MenuItem value="Visto">Visto</MenuItem>
-                                            <MenuItem value="Da Vedere">Da Vedere</MenuItem>
-                                            <MenuItem value="Sto Vedendo">Sto Vedendo</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                    <TextField 
-                                        label="Voto"
-                                        name="vote"
-                                        type="number"
-                                        value={list.vote || ""}
-                                        inputProps={{
-                                            step: 0.01,
-                                            min: 0,
-                                            max: 10
-                                        }}
+                    <div className="listContainer">
+                        <FormControl className={`addList ${addList ? 'show' : 'hide'}`} onSubmit={handleAddList}>
+                            <p>{inList ? 'Aggiorna la tua lista' : 'Aggiungi alla tua lista'}</p>
+                            <div className="addListContent">
+                                <FormControl className="stateForm">
+                                    <InputLabel id="stateLabel">Stato</InputLabel>
+                                    <Select
+                                        labelId="stateLabel"
+                                        id="state"
+                                        name="state"
+                                        value={list.state || ""}
                                         onChange={handleChange}
-                                    />
-                                </div>
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    className="submitButton"
-                                    onClick={handleAddList}
-                                >
-                                    Aggiungi
-                                </Button>
-                                {inList ? <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    className="submitButton"
-                                    onClick={handleRemoveList}
-                                >
-                                    Rimuovi
-                                </Button> : null}
-                            </FormControl>
-                            <div className="buttons">
-                                <button className={`heartButton ${favorite ? 'active' : ''}`} onClick={handleAddFavorite}><Favorite /></button>
-                                <button className="plusButton" onClick={toggleAddList}>{inList ? <PlaylistAddCheck /> : <PlaylistAdd />}</button>
+                                    >
+                                        <MenuItem value="Visto">Visto</MenuItem>
+                                        <MenuItem value="Da Vedere">Da Vedere</MenuItem>
+                                        <MenuItem value="Sto Vedendo">Sto Vedendo</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <TextField 
+                                    label="Voto"
+                                    name="vote"
+                                    type="number"
+                                    value={list.vote || ""}
+                                    inputProps={{
+                                        step: 0.01,
+                                        min: 0,
+                                        max: 10
+                                    }}
+                                    onChange={handleChange}
+                                />
                             </div>
-                        </div> 
-                    </>: null}
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                className="submitButton"
+                                onClick={handleAddList}
+                            >
+                                Aggiungi
+                            </Button>
+                            {inList ? <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                className="submitButton"
+                                onClick={handleRemoveList}
+                            >
+                                Rimuovi
+                            </Button> : null}
+                        </FormControl>
+                        <div className="buttons">
+                            <button className={`heartButton ${favorite ? 'active' : ''}`} onClick={handleAddFavorite}><Favorite /></button>
+                            <button className="plusButton" onClick={toggleAddList}>{inList ? <PlaylistAddCheck /> : <PlaylistAdd />}</button>
+                        </div>
+                    </div> 
+                    : null}
                 </div>
                 <div className="infoText"> 
                     <h1>{info.title} {info.tagline.length !== 0? ' - '+ info.tagline : null}</h1>

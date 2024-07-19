@@ -3,7 +3,7 @@ import { useEffect, useState} from "react";
 import axios from "axios";
 import Slider from "../components/slider";
 import '../styles/account.css';
-import Home from "./home";
+import { Link } from "react-router-dom";
 
 export default function Account() {
     const token = Cookie.get('token');
@@ -46,9 +46,12 @@ export default function Account() {
         <>
             <div className="accountSettings">
                 <h1>Ciao {username}{loadingList ? ', comincia ad aggiungere qualcosa alla tua lista!' : ', queste sono le tue liste!'}</h1>
+                {loadingList ? <>
+                    <p>Per aggiungere un Film o una Serie TV alla tua lista, cercale nelle sezioni dedicate nel menu, clicca sulla copertina e aggiungile tramite le icone disposte sopra</p>
+                    <Link to="/" > <button className="addListButton">Aggiungi</button> </Link>
+                </> : null}
             </div>
             {list.filter(l => l.list.length !== 0).map((item, index) => <Slider key={index} elements={item.list} loading={false} title={item.name}/> )}
-            {loadingList ? <Home /> : null}
         </>
     );
 }

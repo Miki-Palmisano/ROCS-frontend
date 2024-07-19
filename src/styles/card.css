@@ -4,13 +4,11 @@
   margin: 12px;
   border-radius: 12px;
   border: 1px solid #222831;
-  transition: height 0.5s ease, width 0.5s ease, margin 0.5s ease;
   z-index: 3;
 }
 
-.card:hover{
-  filter: drop-shadow(0px 0px 5px #000000);
-  transition: filter 0.5s ease;
+.card:hover {
+  filter: drop-shadow(0 0 7px #222831);
 }
 
 .cards {
@@ -21,12 +19,38 @@
   width: fit-content;
 }
 
-.cards li{
-  background-color: #EEEEEE;
-  margin-top: -5px;
-}
-
 .rullino {
   width: 226px;
   margin: 0;
+}
+
+.additionalInfo {
+  position: absolute;
+  font-size: 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 0 10px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 12px 15px 12px;
+  border-top: 1px solid #EEEEEE;
+  border-radius: 0 0 14px 14px;
+}
+
+.cardContainer {
+  display: inline-block;
+  position: relative;
+  margin-top: -5px;
+  margin-bottom: -5px;
+  background-color: #EEEEEE;
+}
+
+.linkPage {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
 }
