@@ -13,7 +13,7 @@ export default function Header() {
     const [bubbleOpen, setBubbleOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-    const [activePage, setActivePage] = useState(location.pathname);
+    const [activePage, setActivePage] = useState();
     const [search, setSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const searchInputRef = useRef(null);
@@ -27,7 +27,7 @@ export default function Header() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setSearchValue(new URLSearchParams(location.search).get('search') || '');
         setBubbleOpen(false);
-    }, [location]); // eslint-disable-line
+    }, [location.pathname]); // eslint-disable-line
 
     const toggleBubble = () => { 
         setBubbleOpen(!bubbleOpen);
