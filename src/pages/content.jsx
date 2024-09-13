@@ -21,14 +21,14 @@ export default function Content() {
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content${type}/genres`).then((res) => {
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}${type}/genres`).then((res) => {
             setContents(res.data.map(genre => ({ id: genre.id, name: genre.name, content: [], loading: true })));
             setGenres(res.data);
             setLoading(false);
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
         });
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content${type}/providers`).then((res) => {
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}${type}/providers`).then((res) => {
             setStreamingProviders(res.data);
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
@@ -64,7 +64,7 @@ export default function Content() {
 
             const queryString = qs.stringify(params, { skipNulls: true, addQueryPrefix: true });
 
-            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content${type}${queryString}`;
+            const url = `${process.env.REACT_APP_API_GATEWAY_URL}${type}${queryString}`;
             axios.get(url)
                 .then((res) => {
                     setContents(content => content.map(c => c.id !== g.id ? c : { ...c, content: res.data.filter(item => item.img !== null), loading: false}));
@@ -77,7 +77,7 @@ export default function Content() {
 
     useEffect(() => {
         if(keywords !== null){
-            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content${type}/search?keywords=${keywords}`
+            const url = `${process.env.REACT_APP_API_GATEWAY_URL}${type}/search?keywords=${keywords}`
             axios.get(url).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
         } else setSearchResults({...searchResults, content: [], loading: true})
     }, [keywords]); //eslint-disable-line

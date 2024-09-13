@@ -1,10 +1,9 @@
 .card {
   width: 200px;
   height: 300px;
-  margin: 12px;
-  border-radius: 12px;
+  margin: 10px;
+  border-radius: 10px;
   border: 1px solid #222831;
-  z-index: 3;
 }
 
 .card:hover {
@@ -19,8 +18,8 @@
 }
 
 .rullino {
-  width: 226px;
-  margin: 0;
+  display: block;
+  width: 222px;
 }
 
 .additionalInfo {
@@ -34,15 +33,14 @@
   padding: 0 10px 0 10px;
   display: flex;
   justify-content: space-between;
-  margin: 0 12px 15px 12px;
+  margin: 0 10px 14px 10px;
   border-top: 1px solid #EEEEEE;
-  border-radius: 0 0 14px 14px;
+  border-radius: 0 0 10px 10px;
 }
 
 .cardContainer {
   display: inline-block;
   position: relative;
-  margin-top: -5px;
   background-color: #EEEEEE;
 }
 

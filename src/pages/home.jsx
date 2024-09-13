@@ -12,12 +12,12 @@ export default function Home() {
   const keywords = new URLSearchParams(useLocation().search).get('search');
 
   useEffect(() => {
-    axios.get(`${GATEWAY_API}/content/films${keywords !== null ? `/search?keywords=${keywords}` : ''}`).then((res)=>{
+    axios.get(`${GATEWAY_API}/films${keywords !== null ? `/search?keywords=${keywords}` : ''}`).then((res)=>{
       setFilms(res.data.filter(film => film.img !== null));
       setLoadingFilm(false);
     }).catch( e => console.log(e));
 
-    axios.get(`${GATEWAY_API}/content/series${keywords !== null ? `/search?keywords=${keywords}` : ''}`).then((res)=>{
+    axios.get(`${GATEWAY_API}/series${keywords !== null ? `/search?keywords=${keywords}` : ''}`).then((res)=>{
       setSeries(res.data.filter(serie => serie.img !== null));
       setLoadingSeries(false);
     }).catch( e => console.log(e));

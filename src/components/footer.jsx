@@ -8,8 +8,8 @@ export default function Footer() {
     const location = useLocation();
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/state`).then((res) => {
-            setState(res.data);
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/status`).then((res) => {
+            setState(res.status === 200);
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
         });
@@ -20,15 +20,14 @@ export default function Footer() {
         <footer className="footer"> 
             <div className="info">
                 <p>© 2024 ROCS - All right reserved.</p>
-                <p>Catalogo di film e serie tv fornito da TMDB. Disponibilità su piattaforme streaming fornite da JustWatch. Trailer provenienti da YouTube</p>
-                <p>Sviluppato da Miki Palmisano</p>
+                <p>Catalogo di film e serie tv fornito da <a href="https://www.themoviedb.org">TMDB</a>. Disponibilità su piattaforme streaming fornite da <a href="https://www.justwatch.com/it/serie-tv/the-grand-tour">JustWatch</a>. Trailer provenienti da <a href="https://www.youtube.com">YouTube</a></p>
+                <p>Sviluppato da <a href="https://github.com/Miki-Palmisano">Miki Palmisano</a></p>
                 <div className="serviceState">
-                    {!state ? <p>Sito Offline <span className="status-dot offline"/></p> : state.map((s, index) => (
-                        <p key={index}>
-                        {s.service}: {s.status === 200 ? 'Online ' : 'Offline '}
-                        <span className={`status-dot ${s.status === 200 ? 'online' : 'offline'}`} />
-                        </p>
-                    ))}
+                    {!state ? <p>Server Offline <span className="status-dot offline"/></p> : <>
+                        Server: {state ? 'Online ' : 'Offline '}
+                        <span className={`status-dot ${state ? 'online' : 'offline'}`} />
+                        </>
+                    }
                 </div>
             </div>
         </footer>

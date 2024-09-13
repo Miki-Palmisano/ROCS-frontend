@@ -15,11 +15,15 @@
     font-size: 12px;
 }
 
+.info a{
+    color: #CAC8C7;
+}
+
 .serviceState {
     display: flex;
     justify-content: center;
     font-size: 12px;
-    margin-top: -15px;
+    margin-top: -12px;
 }
 
 .serviceState p {
@@ -31,7 +35,8 @@
     width: 10px;
     border-radius: 50%;
     display: inline-block;
-    margin-right: 5px;
+    margin-left: 3px;
+    margin-top: 3px;
 }
   
 .online {

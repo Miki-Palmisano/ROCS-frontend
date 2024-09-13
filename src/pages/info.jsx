@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import '../styles/info.css';
 import Slider from "../components/slider";
-import Cookie from 'js-cookie';
 import { Favorite, PlaylistAdd, PlayArrow, PlaylistAddCheck } from "@mui/icons-material";
 import { Button, Select, MenuItem, TextField, FormControl, InputLabel } from "@mui/material";
+import UserContext from "../context/userContext";
 
 export default function Info() {
     const { type, id } = useParams();
@@ -17,6 +17,7 @@ export default function Info() {
     const [addList, setAddList] = useState(false);
     const [list, setList] = useState([]);
     const [inList, setInList] = useState(false);
+    const {isLogged, logOut} = useContext(UserContext);
     const [searchResults, setSearchResults] = useState({id: 0, name: 'Risultati per: ', content: [], loading: true});
     const keywords = new URLSearchParams(useLocation().search).get('search');
 
@@ -25,39 +26,19 @@ export default function Info() {
     }
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/favorite/state?itemId=${id}&type=${type}`, 
-        { 
-            headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
-        }).then((res) => {
-            if(res.status === 200) setFavorite(true);
-        }).catch(error => {
-            if(error.response.status === 401) {
-                Cookie.remove('token');
-                Cookie.remove('user');
-            } else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
-        });
-    }, [id, type]); //eslint-disable-line
-
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list/state?itemId=${id}&type=${type}`,
+        if(isLogged) {
+            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/users/favorite/state?itemId=${id}&type=${type}`, 
             { 
-                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+                withCredentials: true 
             }).then((res) => {
-                if(res.status === 200) {
-                    setList({state: res.data.status, vote: res.data.vote});
-                    setInList(true);
-                }
+                if(res.status === 200) setFavorite(true);
             }).catch(error => {
-                if(error.response && error.response.status === 401) {
-                    Cookie.remove('token');
-                    Cookie.remove('user');
-                }
-                console.error('Errore durante la richiesta GET:', error);
+                if(error.response.status === 401) logOut();
+                else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
             });
-    }, [id, type, inList]); //eslint-disable-line
+        }
 
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/info/${id}`).then((res) => {
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/${type}/info/${id}`).then((res) => {
             setInfo(res.data);
             setLoading(false);
             setContents(res.data.genres.map(genre => ({ id: genre.id, name: genre.name, content: [], loading: true })));
@@ -66,11 +47,26 @@ export default function Info() {
         });
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [type, id]);
+    }, [id, type]); //eslint-disable-line
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list/state?itemId=${id}&type=${type}`,
+            { 
+                withCredentials: true 
+            }).then((res) => {
+                if(res.status === 200) {
+                    setList({state: res.data.status, vote: res.data.vote});
+                    setInList(true);
+                }
+            }).catch(error => {
+                if(error.response.status === 401) logOut();
+                else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
+            });
+    }, [id, type, inList]); //eslint-disable-line
 
     useEffect(() => {
         contents.forEach(content => {
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}?genreId=${content.id}`).then((res) => {
+            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/${type}?genreId=${content.id}`).then((res) => {
                 setContents(prevContent => prevContent.map(c => c.id === content.id ? { ...c, content: res.data.filter(f => f.img !== null), loading: false } : c));
             }).catch(error => {
                 console.error('Errore durante la richiesta GET:', error);
@@ -80,28 +76,25 @@ export default function Info() {
 
     useEffect(() => {
         if(keywords !== null){
-            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/content/${type}/search?keywords=${keywords}`
+            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/${type}/search?keywords=${keywords}`
             axios.get(url).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
         } else setSearchResults({...searchResults, content: [], loading: true})
     }, [keywords]); //eslint-disable-line
 
     const handleAddFavorite = () => {
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/favorite`, 
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/favorite`, 
             {
                 itemId: id,
                 type: type,
                 image: info.img
             }, 
             { 
-                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+                withCredentials: true 
             }).then((res) => {
                 if(res.status === 200) setFavorite(!favorite);
             }).catch(error => {
-                if(error.response.status === 401) {
-                    Cookie.remove('token');
-                    Cookie.remove('user');
-                }
-                console.error('Errore durante la richiesta POST:', error);
+                if(error.response.status === 401) logOut();
+                else console.error('Errore durante la richiesta POST:', error);
         });
     }
 
@@ -115,7 +108,7 @@ export default function Info() {
     }
 
     const handleAddList = () => {
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list`, 
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list`, 
             {
                 itemId: id,
                 type: type,
@@ -124,36 +117,30 @@ export default function Info() {
                 vote: list.vote
             }, 
             { 
-                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+                withCredentials: true 
             }).then((res) => {
                 setInList(true);
                 if(res.status === 200) setAddList(false);
             }).catch(error => {
-                if(error.response.status === 401) {
-                    Cookie.remove('token');
-                    Cookie.remove('user');
-                }
-                console.error('Errore durante la richiesta POST:', error);
+                if(error.response.status === 401) logOut();
+                else console.error('Errore durante la richiesta POST:', error);
         });
     }
 
     const handleRemoveList = () => {
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list/remove`, 
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list/remove`, 
             {
                 itemId: id,
                 type: type
             }, 
             { 
-                headers: { Authorization: `Bearer ${Cookie.get('token')}` } 
+                withCredentials: true 
             }).then((res) => {
                 setInList(false);
                 if(res.status === 200) setAddList(false);
             }).catch(error => {
-                if(error.response.status === 401) {
-                    Cookie.remove('token');
-                    Cookie.remove('user');
-                } 
-                console.error('Errore durante la richiesta POST:', error);
+                if(error.response.status === 401) logOut();
+                else console.error('Errore durante la richiesta POST:', error);
         });
     }
 
@@ -174,7 +161,7 @@ export default function Info() {
                 <div className="imageContainer ">
                     <img src={info.img} alt={info.title} className="infoImage" />
                     <div className={`infoBackground ${addList ? 'overlay' : ''}`}></div>
-                    {Cookie.get('token') ? 
+                    {isLogged ? 
                     <div className="listContainer">
                         <FormControl className={`addList ${addList ? 'show' : 'hide'}`} onSubmit={handleAddList}>
                             <p>{inList ? 'Aggiorna la tua lista' : 'Aggiungi alla tua lista'}</p>

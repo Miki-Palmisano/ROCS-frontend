@@ -9,8 +9,8 @@ export default function Auth0Configuration ({ children }) {
             authorizationParams={{
                 redirect_uri: window.location.origin + window.location.pathname,
                 audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+                scope: 'openid profile email offline_access'
             }}
-            useRefreshTokens={true}
             cacheLocation="localstorage"
             >
             {children}

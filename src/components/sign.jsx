@@ -1,13 +1,14 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { TextField, Box, Button, Checkbox, Grid, FormControlLabel, Divider } from "@mui/material";
 import { Google, GitHub, Facebook, Close } from '@mui/icons-material';
 import '../styles/sign.css';
-import Cookie from 'js-cookie';
 import { useAuth0 } from "@auth0/auth0-react";
+import UserContext from '../context/userContext';
 
 export default function Sign({closeAccount}) {
     const { loginWithPopup, user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+    const {setIsLogged, setUsername} = useContext(UserContext);
     const [registerOpen, setRegisterOpen] = useState(false);
     const [accountOpen, setAccountOpen] = useState(true);
     const [accountLoading, setAccountLoading] = useState(false);
@@ -35,22 +36,13 @@ export default function Sign({closeAccount}) {
         else setMessage({id: '', message: ''})
     }, [formData]); // eslint-disable-line
 
-    const setCookie = (response) => {
-        const expirationDate = new Date();
-        expirationDate.setMinutes(expirationDate.getHours + 1);
-        Cookie.set('user', response.data.username, { expires: expirationDate });
-        Cookie.set('token', response.data.token, { expires: expirationDate });
-        setAccountLoading(false);
-        window.location.reload();
-    }
-
     useEffect(() => {
         if (!isLoading)
           if (isAuthenticated) {
             getAccessTokenSilently().then((token) => {
                 setAccountLoading(true);
                 axios.post(
-                    `${process.env.REACT_APP_API_GATEWAY_URL}/database/user/auth`,
+                    `${process.env.REACT_APP_API_GATEWAY_URL}/users/auth`,
                     {
                         email: user.email,
                         username: user.nickname,
@@ -63,7 +55,9 @@ export default function Sign({closeAccount}) {
                     }
                 )
                 .then((response) => {
-                    setCookie(response);
+                    setAccountLoading(false);
+                    setIsLogged(true);
+                    setUsername(response.data.username);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -79,10 +73,12 @@ export default function Sign({closeAccount}) {
             return;
         }
         
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/login`, { 
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/login`, { 
             email: formData.email.toUpperCase(), password: formData.password })
             .then((response) => {
-                setCookie(response);
+                setAccountLoading(false);
+                setIsLogged(true);
+                setUsername(response.data.username);
             }).catch((error) => {
                 console.error('Errore durante la richiesta POST:', error);
                 if(error.response.status === 401) setMessage({id: 'login', message: error.response.data.message});
@@ -92,7 +88,7 @@ export default function Sign({closeAccount}) {
 
     const registerSubmit = async (event) => {
         event.preventDefault();
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/register`, {
+        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/register`, {
         email: formData.email.toUpperCase(), username: formData.username, password: formData.password }).then((response) => {
             if(response.status === 200) {
                 toggleSign();

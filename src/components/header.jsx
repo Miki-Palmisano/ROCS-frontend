@@ -1,15 +1,14 @@
 import Logo from '../assets/Logo.png'
 import '../styles/header.css'
-import {Link, useLocation, useNavigate} from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import Sign from './sign';
-import Cookie from 'js-cookie';
 import { Avatar } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
-import {Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search, Close, Menu} from '@mui/icons-material';
+import { Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search, Close, Menu } from '@mui/icons-material';
+import { useContext } from 'react';
+import UserContext from '../context/userContext';
 
 export default function Header() {
-    const { logout, isAuthenticated } = useAuth0();
     const [bubbleOpen, setBubbleOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
@@ -18,8 +17,7 @@ export default function Header() {
     const [searchValue, setSearchValue] = useState('');
     const searchInputRef = useRef(null);
     const [showSign, setShowSign] = useState(false);
-    const [logged, setLogged] = useState(false);
-    const [username, setUsername] = useState('');
+    const {isLogged, logOut, username} = useContext(UserContext);
     const [accountOption, setAccountOption] = useState(false);
 
     useEffect(() => {
@@ -60,13 +58,6 @@ export default function Header() {
         setAccountOption(false);
     }
 
-    const logOut = () => {
-        Cookie.remove('token');
-        Cookie.remove('user');
-        if(isAuthenticated) logout();
-        window.location.reload();
-    }
-
     function stringToColor(string) {
         let hash = 0;
         let i;
@@ -86,14 +77,6 @@ export default function Header() {
       
         return color;
     }
-
-    useEffect(() => {
-        if(Cookie.get('token') !== undefined){
-            setLogged(true);
-            setUsername(Cookie.get('user'));
-        }
-        else setLogged(false);
-    }, []);
 
     useEffect(() => {
         if (searchValue !== '') {
@@ -135,11 +118,11 @@ export default function Header() {
                         <li onClick={handleSearch} className="linkLabel"><Search /></li>
                         <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
-                    {logged ? <div className="iconContainer" onClick={showAcccountOption}> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> : <div className="iconContainer" onClick={handleShowSign}>
+                    {isLogged ? <div className="iconContainer" onClick={showAcccountOption}> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> : <div className="iconContainer" onClick={handleShowSign}>
                         <Person />
                         <p>Account</p>
                     </div> }
-                    {accountOption && Cookie.get('token') !== undefined ? 
+                    {accountOption ? 
                         <div className="accountOption">
                         <li>
                             <Link to="/account" className="linkPage">
@@ -174,7 +157,7 @@ export default function Header() {
                             <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"><Tv /> Serie TV</div></Link>
                         </li>
 
-                        {logged ? <> 
+                        {isLogged ? <> 
                             <li className={location.pathname === '/account' ? 'activeMobilePage' : ''} style={{cursor: 'pointer'}}><Link to="/account" className="linkPage"><Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px', marginLeft: '-5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar>Profilo</Link></li> 
                             <li onClick={logOut}> <DirectionsWalk className="icon" /> Esci <MeetingRoom /> </li>
                             </>
@@ -183,7 +166,7 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-            {showSign && !logged ? <Sign closeAccount={handleShowSign}/> : null}
+            {showSign && !isLogged ? <Sign closeAccount={handleShowSign}/> : null}
         </header>
         </> 
     );

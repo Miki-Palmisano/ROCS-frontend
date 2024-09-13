@@ -1,13 +1,12 @@
-import Cookie from "js-cookie";
-import { useEffect, useState} from "react";
+import { useContext, useEffect, useState} from "react";
 import axios from "axios";
 import Slider from "../components/slider";
 import '../styles/account.css';
 import { Link } from "react-router-dom";
+import UserContext from "../context/userContext";
 
 export default function Account() {
-    const token = Cookie.get('token');
-    const username = Cookie.get('user');
+    const {logOut, username} = useContext(UserContext);
     const [loadingList, setLoadingList] = useState(true);
     const [list, setList] = useState([
         {
@@ -30,16 +29,15 @@ export default function Account() {
     ]);
 
     useEffect(() => {
-        if(token === undefined) window.location.href = '/';
-    }, [token]);
-
-    useEffect(() => {
-        list.map(l => axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/database/user/list?listId=${l.id}`, {
-            headers: { Authorization: `Bearer ${token}`} }).then((res) => {
+        list.map(l => axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list?listId=${l.id}`, { 
+            withCredentials: true }).then((res) => {
                 if(res.data.length !== 0) setLoadingList(false);
                 setList(prev => prev.map(item => item.id === l.id ? { ...item, list: res.data } : item));
-            })
-        );
+            }).catch(error => {
+                if(error.response.status === 401) logOut();
+                else console.error('Errore durante la richiesta GET:', error);
+            }
+        ));
     }, []); // eslint-disable-line
 
     return (
