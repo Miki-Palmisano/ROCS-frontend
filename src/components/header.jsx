@@ -9,7 +9,6 @@ import { useContext } from 'react';
 import UserContext from '../context/userContext';
 
 export default function Header() {
-    const [bubbleOpen, setBubbleOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const [activePage, setActivePage] = useState();
@@ -19,19 +18,13 @@ export default function Header() {
     const [showSign, setShowSign] = useState(false);
     const {isLogged, logOut, username} = useContext(UserContext);
     const [accountOption, setAccountOption] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
         setActivePage(location.pathname);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setSearchValue(new URLSearchParams(location.search).get('search') || '');
-        setBubbleOpen(false);
     }, [location.pathname]); // eslint-disable-line
-
-    const toggleBubble = () => { 
-        setBubbleOpen(!bubbleOpen);
-        setShowSign(false);
-        setAccountOption(false);
-    };
 
     const handleSearch = () => {
         setSearch(!search);
@@ -49,11 +42,10 @@ export default function Header() {
 
     const showAcccountOption = () => {
         setAccountOption(!accountOption);
-        setBubbleOpen(false);
+        
     }
 
     const closeAll = () => {
-        setBubbleOpen(false);
         setShowSign(false);
         setAccountOption(false);
     }
@@ -87,6 +79,45 @@ export default function Header() {
         }
     }, [searchValue]); // eslint-disable-line
 
+    const currentPage = () => {
+        if (location.pathname.includes('/films')) {
+            return (
+                <div className="logoOnly" onClick={() => setIsExpanded(true)}>
+                    <Movie fontSize="large"/> Film
+                </div>
+            );
+        } else if (location.pathname.includes('/series')) {
+            return (
+                <div className="logoOnly" onClick={() => setIsExpanded(true)}>
+                    <Tv fontSize="large"/> Serie TV
+                </div>
+            );
+        } else if (location.pathname.includes('/account')) {
+            return (
+                <div className="logoOnly" onClick={() => setIsExpanded(true)}>
+                    <Avatar sx={{ bgcolor: stringToColor(username) }}>
+                        {username.substring(0, 2).toUpperCase()}
+                    </Avatar>
+                    Profilo
+                </div>
+            );
+        } else if (location.pathname.includes('/search')) {
+            return (
+                <div className="logoOnly" onClick={() => setIsExpanded(true)}>
+                    <Search fontSize="large"/> Cerca
+                </div>
+            );
+        } else {
+            // Default: Logo
+            return (
+                <div className="logoOnly" onClick={() => setIsExpanded(true)}>
+                    <img src={Logo} alt="logo" />
+                    <h1>ROCS</h1>
+                </div>
+            );
+        }
+    };
+
     return (
         <>
         <div className="backgroundGradient"></div>
@@ -118,7 +149,8 @@ export default function Header() {
                         <li onClick={handleSearch} className="linkLabel"><Search /></li>
                         <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
-                    {isLogged ? <div className="iconContainer" onClick={showAcccountOption}> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> : <div className="iconContainer" onClick={handleShowSign}>
+                    {isLogged ? <div className="iconContainer" onClick={showAcccountOption}> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> 
+                    : <div className="iconContainer" onClick={handleShowSign}>
                         <Person />
                         <p>Account</p>
                     </div> }
@@ -136,37 +168,56 @@ export default function Header() {
                         </li>
                     </div> : null}
                 </div>
-                <div className="mobileDisplay"> 
-                    <Link to="/" className="linkPage">
-                        <div className="logoContainer">
-                            <img src={Logo} alt="logo" />
-                            <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
-                        </div>
-                    </Link>
-                    <button className="menuButton"> 
-                        {bubbleOpen || accountOption ? <Close onClick={closeAll} className="iconMenu"/> : <Menu onClick={toggleBubble} className="iconMenu"/>} 
-                    </button>
-                    <div className={`bubbles ${bubbleOpen ? 'active' : 'inactive'}`} >
-                        <li className={location.pathname === '/' ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to={`/${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"> <Home /> Home </div></Link>
-                        </li>
-                        <li className={location.pathname === '/films' ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to={`/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"><Movie /> Film</div></Link>
-                        </li>
-                        <li className={location.pathname === '/series' ? 'activeMobilePage' : ''} onClick={toggleBubble}>
-                            <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage"><div className="linkLabel"><Tv /> Serie TV</div></Link>
-                        </li>
+                
+                    <div className={`mobileDisplay ${isExpanded ? 'expanded' : ''}`}>
+                    {!isExpanded && (
+                            currentPage()
+                    )}
 
-                        {isLogged ? <> 
-                            <li className={location.pathname === '/account' ? 'activeMobilePage' : ''} style={{cursor: 'pointer'}}><Link to="/account" className="linkPage"><Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px', marginLeft: '-5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar>Profilo</Link></li> 
-                            <li onClick={logOut}> <DirectionsWalk className="icon" /> Esci <MeetingRoom /> </li>
+                        {isExpanded && (
+                            <>
+                                <Link to="/films" className="linkPage">
+                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                        <Movie fontSize="large"/> Film
+                                    </div>
+                                </Link>
+
+                                <Link to="/series" className="linkPage">
+                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                        <Tv fontSize="large"/> Serie TV
+                                    </div>
+                                </Link>
+
+                                <Link to="/" className="linkPage">
+                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                        <img src={Logo} alt="logo" />
+                                        <h1>ROCS</h1>
+                                    </div>
+                                </Link>
+
+                                {isLogged ? <Link to="/account" className="linkPage">
+                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                        <Avatar sx={{ bgcolor: stringToColor(username) }}>
+                                            {username.substring(0, 2).toUpperCase()}
+                                        </Avatar>
+                                        Profilo
+                                    </div>
+                                </Link> : <div className="pageContainer" onClick={handleShowSign}>
+                                    <Person fontSize="large"/>
+                                    Account
+                                </div>
+                                }
+
+                                <Link to="/search" className="linkPage">
+                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                        <Search fontSize="large"/> Cerca
+                                    </div>
+                                </Link>
                             </>
-                        : <li onClick={handleShowSign}><Person /> Account</li> }
-                        <li className={`mobileSearchBar ${search ? 'active':''}`}><Search onClick={handleSearch}/><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange}/></li>
+                        )}
                     </div>
-                </div>
+                    {showSign && !isLogged ? <Sign closeAccount={handleShowSign}/> : null}
             </div>
-            {showSign && !isLogged ? <Sign closeAccount={handleShowSign}/> : null}
         </header>
         </> 
     );

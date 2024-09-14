@@ -1,279 +1,277 @@
-.logoContainer img{
-    width: 60px;
-    height: 60px;
-    margin-left: 10px;
-}
 
-.logoContainer{
-    display: flex;
-    align-items: center;
-}
-
-.backgroundGradient {
-    position: fixed;
-    z-index: 4; 
-    background: linear-gradient(to top, rgba(0, 0, 0, 0), rgb(0, 0, 0, 0.9));
-    height: 150px;
-    width: 100%;
-    margin-top: -140px;
-}
-
-.header{
-    background-color: #EEEEEE;
-    display: inline;
-    border-radius: 40px;
-    position: fixed;
-    width: 95%;
-    z-index: 5;
-    transform: translate(-50%, -50%);
-    top: 50px;
-    left: 50%;
-}
-
-.desktopDisplay{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.mobileDisplay{
-    display: none;
-}
-
-.header h1{
-    margin-left: 20px;
-    font-size: 28px;
-    align-self: center;
-    text-align: center;
-    align-items: center;
-}
-
-.menu{
-    margin-left: 20px;
-    display: flex;
-    text-align: center;
-    align-items: center;
-}
-
-.menu li{
-    border: none;
-    background-color: #EEEEEE;
-    flex-grow: 1;
-    cursor: default;
-    font-size: 20px;
-    padding: 8px;
-    margin-left: 15px;
-    margin-right: 15px;
-    list-style: none;
-}
-
-.linkLabel{
-    display: flex;
-    align-items: center;
-}
-
-.iconContainer {
-    display: flex;
-    font-size: 20px;
-    align-items: center;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-.linkPage {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    align-items: center;
-}
-
-.activeDesktopPage {
-    background-color: #000000;
-    filter: invert(1);
-    border-radius: 12px;
-}
   
 @media (max-width: 1024px) { 
-    .logoContainer{
-        margin-right: 20vw;
-    }
-
     .desktopDisplay {
         display: none;
     }
 
     .mobileDisplay {
+        position: fixed;
+        bottom: 1%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 75px; 
+        height: 75px; 
+        background-color: #EEEEEE;
+        border-radius: 50%; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.5s ease-in-out; 
+        z-index: 10;
+        cursor: pointer;
+        border: 2px solid #222831;
+    }
+
+    .pageContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;  
+    }
+
+    .pageContainer img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .pageContainer h1 {
+        font-size: 18px;
+        margin: -5px 0 0px 0px;
+    }
+
+    .mobileDisplay .logoOnly {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: -5px;
+    }
+
+    .mobileDisplay .logoOnly h1 {
+        margin: -5px 0 0px 0px;
+        font-size: 18px;
+    }
+
+    .mobileDisplay .logoOnly img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .mobileDisplay.expanded {
+        width: 95%; 
+        border-radius: 40px; 
+        bottom: 1%; 
+        justify-content: space-around; 
+        cursor: default;
+    }
+
+    .mobileDisplay.expanded .pageContainer {
+        animation: fadeIn 0.4s ease-in-out 0.3s forwards;
+    }
+    
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .linkPage {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (min-width: 1024px) {
+    .logoContainer img{
+        width: 60px;
+        height: 60px;
+        margin-left: 10px;
+    }
+    
+    .logoContainer{
+        display: flex;
+        align-items: center;
+    }
+    
+    .backgroundGradient {
+        position: fixed;
+        z-index: 4; 
+        background: linear-gradient(to top, rgba(0, 0, 0, 0), rgb(0, 0, 0, 0.9));
+        height: 150px;
+        width: 100%;
+        margin-top: -140px;
+    }
+    
+    .header{
+        background-color: #EEEEEE;
+        display: inline;
+        border-radius: 40px;
+        position: fixed;
+        width: 95%;
+        z-index: 5;
+        transform: translate(-50%, -50%);
+        top: 50px;
+        left: 50%;
+    }
+    
+    .desktopDisplay{
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
-    .menuButton {
-        background: none;
+    
+    .mobileDisplay{
+        display: none;
+    }
+    
+    .header h1{
+        margin-left: 20px;
+        font-size: 28px;
+        align-self: center;
+        text-align: center;
+        align-items: center;
+    }
+    
+    .menu{
+        margin-left: 20px;
+        display: flex;
+        text-align: center;
+        align-items: center;
+    }
+    
+    .menu li{
         border: none;
-        font-size: 55px;
+        background-color: #EEEEEE;
+        flex-grow: 1;
         cursor: default;
+        font-size: 20px;
+        padding: 8px;
+        margin-left: 15px;
+        margin-right: 15px;
+        list-style: none;
+    }
+    
+    .linkLabel{
         display: flex;
         align-items: center;
     }
     
-    .bubbles {
-        position: absolute;
-        top: 90px;
-        right: 0;
-        list-style-type: none;
-        background-color: #EEEEEE;
-        border-radius: 30px;
-        padding: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    .iconContainer {
+        display: flex;
+        font-size: 20px;
+        align-items: center;
+        margin-right: 20px;
+        cursor: pointer;
     }
-
-    .bubbles li{
-        margin-bottom: 10px;
-        padding: 8px 4px 10px 10px;
-        font-size: 25px;
-        background-color: #EEEEEE;
+    
+    .linkPage {
+        text-decoration: none;
+        color: inherit;
         display: flex;
         align-items: center;
     }
-
-    .bubbles li.activeMobilePage{
+    
+    .activeDesktopPage {
+        background-color: #000000;
         filter: invert(1);
         border-radius: 12px;
     }
 
-    .iconMenu{
-        scale: 2;
-        margin-right: 3vw;
-        color: #000000;
-    }
-
-    .bi.bi-person{
-        font-size: 25px;
-        margin: 0 7px 0 -3px;
-    }
-
-    .bubbles.inactive {
-        transition: transform 1s ease, opacity 1s ease;
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    
-    .bubbles.active {
-        transition: transform 1s ease, opacity 1s ease;
-        height: auto;
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    .mobileSearchBar input{
+    .searchBar input{
+        border: 0px solid #000000;
         border-radius: 24px;
+        margin-left: -40px;
         padding: 10px;
-        font-size: 25px;
-        width: 25vw;
-        border: 1px solid #000000;
+        font-size: 20px;
+        width: 0px;
+        transition: width 0.5s ease,  border 0.5s ease;
         background-color: #EEEEEE;
     }
-
-    .accountOption{
-        font-size: 25px;
+    
+    .searchBar.active input{
+        border: 1px solid #000000;
+        width: 15vw;
+    }
+    
+    .searchBar input::placeholder{
+        color: #000000;
+    }
+    
+    .searchBar input:focus{
+        outline: none;
+        color: #222831;
+    }
+    
+    .searchBar input[type="search"],
+    .mobileSearchBar input[type="search"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    .searchBar input[type="search"]::-webkit-search-cancel-button,
+    .mobileSearchBar input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button;
+    }
+    
+    .linkIcon {
+        margin-right: 5px;
+    }
+    
+    .accountOption {
+        position: fixed;
+        top: 70px;
+        right: 0;
+        list-style-type: none;
+        font-size: 20px;
         z-index: 4;
     }
-
-}
-
-body {
-    margin-top: 120px;
-}
-
-.searchBar input{
-    border: 0px solid #000000;
-    border-radius: 24px;
-    margin-left: -40px;
-    padding: 10px;
-    font-size: 20px;
-    width: 0px;
-    transition: width 0.5s ease,  border 0.5s ease;
-    background-color: #EEEEEE;
-}
-
-.searchBar.active input{
-    border: 1px solid #000000;
-    width: 15vw;
-}
-
-.searchBar input::placeholder{
-    color: #000000;
-}
-
-.searchBar input:focus{
-    outline: none;
-    color: #222831;
-}
-
-.searchBar input[type="search"],
-.mobileSearchBar input[type="search"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-.searchBar input[type="search"]::-webkit-search-cancel-button,
-.mobileSearchBar input[type="search"]::-webkit-search-cancel-button {
-    -webkit-appearance: searchfield-cancel-button;
-}
-
-.linkIcon {
-    margin-right: 5px;
-}
-
-.accountOption {
-    position: fixed;
-    top: 70px;
-    right: 0;
-    list-style-type: none;
-    font-size: 20px;
-    z-index: 4;
-}
-
-.accountOption li {
-    display: flex;
-    align-items: center;
-    background-color: #EEEEEE;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 24px;
-    margin: 5px;
-    height: 40px;
-    width: auto;
-    cursor: pointer;
-    border: 2px solid #222831;
-}
-
-.accountOption li:hover {
-    background-color: #222831;
-    color: #EEEEEE;
-    border: 2px solid #EEEEEE;
-}
-
-.accountOption li .icon {
-    transform: translateX(0px);
-}
-
-.accountOption li .text {
-    transition: transform 1s ease-in-out;
-}
-
-.accountOption li .icon,
-.accountOption li .text {
-    transition: transform 1s ease-in-out;
-}
-
-.accountOption li:hover .icon {
-    transform: translateX(65px);
-}
-
-.accountOption li:hover .text {
-    transform: translateX(-10px);
+    
+    .accountOption li {
+        display: flex;
+        align-items: center;
+        background-color: #EEEEEE;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        border-radius: 24px;
+        margin: 5px;
+        height: 40px;
+        width: auto;
+        cursor: pointer;
+        border: 2px solid #222831;
+    }
+    
+    .accountOption li:hover {
+        background-color: #222831;
+        color: #EEEEEE;
+        border: 2px solid #EEEEEE;
+    }
+    
+    .accountOption li .icon {
+        transform: translateX(0px);
+    }
+    
+    .accountOption li .text {
+        transition: transform 1s ease-in-out;
+    }
+    
+    .accountOption li .icon,
+    .accountOption li .text {
+        transition: transform 1s ease-in-out;
+    }
+    
+    .accountOption li:hover .icon {
+        transform: translateX(65px);
+    }
+    
+    .accountOption li:hover .text {
+        transform: translateX(-10px);
+    }
 }
   
 

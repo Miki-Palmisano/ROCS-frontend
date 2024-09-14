@@ -17,3 +17,13 @@
     background-color: #EEEEEE;
     color: #222831;
 }
+
+.logoutButton{
+    font-size: 25px;
+    border: 1px solid #EEEEEE;
+    background-color: transparent;
+    color: #EEEEEE;
+    border-radius: 14px;
+    margin: 10px 10px 10px 0;
+    cursor: pointer;
+}

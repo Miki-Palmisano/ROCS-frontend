@@ -44,6 +44,7 @@ export default function Account() {
         <>
             <div className="accountSettings">
                 <h1>Ciao {username}{loadingList ? ', comincia ad aggiungere qualcosa alla tua lista!' : ', queste sono le tue liste!'}</h1>
+                <button className="logoutButton" onClick={logOut}>Logout</button>
                 {loadingList ? <>
                     <p>Per aggiungere un Film o una Serie TV alla tua lista, cercale nelle sezioni dedicate nel menu, clicca sulla copertina e aggiungile tramite le icone disposte sopra</p>
                     <Link to="/" > <button className="addListButton">Aggiungi</button> </Link>
