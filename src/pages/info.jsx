@@ -50,6 +50,7 @@ export default function Info() {
     }, [id, type]); //eslint-disable-line
 
     useEffect(() => {
+        if(isLogged) {
         axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list/state?itemId=${id}&type=${type}`,
             { 
                 withCredentials: true 
@@ -62,6 +63,7 @@ export default function Info() {
                 if(error.response.status === 401) logOut();
                 else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
             });
+        }
     }, [id, type, inList]); //eslint-disable-line
 
     useEffect(() => {

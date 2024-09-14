@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const UserProvider = ({ children }) => {
 
-    const {logout} = useAuth0();
+    const {logout, isAuthenticated} = useAuth0();
 
     const [isLogged, setIsLogged] = useState(() => {
         const savedStatus = localStorage.getItem('isLogged');
@@ -27,7 +27,7 @@ const UserProvider = ({ children }) => {
         await axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/logout`, {}, { withCredentials: true });
         setIsLogged(false);
         localStorage.removeItem('username');
-        logout();
+        if(isAuthenticated) logout();
     }
 
     return (
