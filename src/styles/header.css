@@ -1,6 +1,10 @@
 
   
 @media (max-width: 1024px) { 
+    body {
+        margin-bottom: 90px;
+    }
+
     .desktopDisplay {
         display: none;
     }
@@ -88,6 +92,10 @@
 }
 
 @media (min-width: 1024px) {
+    body {
+        margin-top: 120px;
+    }
+
     .logoContainer img{
         width: 60px;
         height: 60px;
