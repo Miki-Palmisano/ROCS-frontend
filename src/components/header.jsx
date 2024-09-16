@@ -18,7 +18,7 @@ export default function Header() {
     const [showSign, setShowSign] = useState(false);
     const {isLogged, logOut, username} = useContext(UserContext);
     const [accountOption, setAccountOption] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     useEffect(() => {
         setActivePage(location.pathname);

@@ -10,21 +10,22 @@
     }
 
     .mobileDisplay {
+        filter: invert(1);
         position: fixed;
-        bottom: 1%;
+        bottom: 2%;
         left: 50%;
         transform: translateX(-50%);
-        width: 75px; 
-        height: 75px; 
+        width: 80px; 
+        height: 80px; 
         background-color: #EEEEEE;
         border-radius: 50%; 
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: all 0.5s ease-in-out; 
+        transition: all 0.4s ease-in-out; 
         z-index: 10;
         cursor: pointer;
-        border: 2px solid #222831;
+        border: 1px solid #222831;
     }
 
     .pageContainer {
@@ -32,11 +33,12 @@
         flex-direction: column;
         align-items: center;
         opacity: 0;  
+        margin-top: -5px;
     }
 
     .pageContainer img {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
     }
 
     .pageContainer h1 {
@@ -58,20 +60,20 @@
     }
 
     .mobileDisplay .logoOnly img {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
     }
 
     .mobileDisplay.expanded {
-        width: 95%; 
+        width: 90%; 
         border-radius: 40px; 
-        bottom: 1%; 
+        bottom: 2%; 
         justify-content: space-around; 
         cursor: default;
     }
 
     .mobileDisplay.expanded .pageContainer {
-        animation: fadeIn 0.4s ease-in-out 0.3s forwards;
+        animation: fadeIn 0.4s ease-in-out 0.2s forwards;
     }
     
     @keyframes fadeIn {
