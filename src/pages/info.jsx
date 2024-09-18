@@ -5,7 +5,7 @@ import '../styles/info.css';
 import Slider from "../components/slider";
 import { Favorite, PlaylistAdd, PlayArrow, PlaylistAddCheck } from "@mui/icons-material";
 import { Button, Select, MenuItem, TextField, FormControl, InputLabel } from "@mui/material";
-import UserContext from "../context/userContext";
+import UserContext from "../contexts/userContext";
 
 export default function Info() {
     const { type, id } = useParams();

@@ -4,7 +4,7 @@ import { TextField, Box, Button, Checkbox, Grid, FormControlLabel, Divider } fro
 import { Google, GitHub, Facebook, Close } from '@mui/icons-material';
 import '../styles/sign.css';
 import { useAuth0 } from "@auth0/auth0-react";
-import UserContext from '../context/userContext';
+import UserContext from '../contexts/userContext';
 
 export default function Sign({closeAccount}) {
     const { loginWithPopup, user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();

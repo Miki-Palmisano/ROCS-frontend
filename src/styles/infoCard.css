@@ -1,0 +1,144 @@
+.infoCardContainer {
+    width: 95%;
+    display: flex;
+    margin: 10px auto;
+    border: 1px solid #ffffff;
+    border-radius: 24px;
+}
+
+.infoCardContainer img{
+    width: 160px;
+    height: 320;
+    border-radius: 24px;
+}
+
+.infoCardText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: 10px;
+    color: #ffffff;
+}
+
+.infoCardText p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.infoType {
+    border: 1px solid #ffffff;
+    border-radius: 24px;
+    padding: 11px 10px;
+}
+
+.infoType span:first-child {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.infoType span {
+    border-radius: 24px;
+}
+
+.linkPage {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.listContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.list {
+    margin: 0 5px 0 5px;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    color: #ffffff;
+    padding: 10px;
+    z-index: 4;
+}
+
+.list.active {
+    color: #ff0000;
+    border: 1px solid #ff0000;
+}
+
+.addList {
+    margin: 0 5px 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    flex-direction: column;
+    color: #ffffff;
+}
+
+.submit {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-radius: 24px !important;
+    margin-bottom: 10px !important;
+}
+
+.formSelect, .formInput {
+    background-color: #000000;
+    color: #ffffff !important;
+    margin-bottom: 10px !important;
+    width: 100%;
+}
+
+.formSelect .MuiSelect-select, .formInput .MuiInputBase-input {
+    background-color: #000000; 
+    color: #ffffff; 
+    border-radius: 24px;
+}
+
+.formSelect .MuiOutlinedInput-notchedOutline, .formInput .MuiOutlinedInput-notchedOutline {
+    border-color: #ffffff;
+    border-radius: 24px;
+}
+
+.formSelect .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+.formInput .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,
+.formSelect .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline,
+.formInput .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #ffffff !important;
+}
+
+.formSelect .MuiInputLabel-root, .formInput .MuiInputLabel-root {
+    color: #ffffff;
+}
+
+.formSelect .MuiInputLabel-root.Mui-focused, 
+.formInput .MuiInputLabel-root.Mui-focused,
+.formSelect .MuiInputLabel-root.MuiInputLabel-shrink, 
+.formInput .MuiInputLabel-root.MuiInputLabel-shrink {
+    background-color: #000000 !important; 
+    color: #ffffff !important; 
+}
+
+.formSelect .MuiSelect-icon, .formInput .MuiSelect-icon {
+    color: #ffffff;
+}
+
+.formSelect .MuiMenuItem-root, .formInput .MuiMenuItem-root {
+    background-color: #000000;
+    color: #ffffff; 
+}
+
+.formSelect .MuiMenuItem-root:hover, .formInput .MuiMenuItem-root:hover {
+    background-color: #333333;
+}

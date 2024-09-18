@@ -28,7 +28,7 @@
     border-color: #222831; 
 }
 
-.Mui-checked{
+.custom-checkbox .Mui-checked{
     color:#222831 !important;  
 }
 
@@ -50,15 +50,13 @@
     width: 80%;
 }
 
-.MuiInputLabel-shrink {
+.genre-select .MuiInputLabel-shrink {
     background-color: #EEEEEE;
     color: #222831 !important;
     width: fit-content;
     margin-left: 20px;
     margin-top: 5px;
 }
-
-
 
 .provider {
     display: flex;

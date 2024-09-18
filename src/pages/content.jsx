@@ -36,12 +36,10 @@ export default function Content() {
     }, [type]); // eslint-disable-line
 
     const handleGenreChange = (event) => {
-        if(selectedGenres.length === 0) navigate(`${type}`);
         setSelectedGenres(event.target.value);
     };
 
     const handleProviderChange = (event) => {
-        if(selectedProviders.length === 0) navigate(`${type}`);
         setSelectedProviders(event.target.value);
     };
 
@@ -55,7 +53,6 @@ export default function Content() {
     }, [type]); // eslint-disable-line
 
     useEffect(() => {
-        
         genres.forEach(g => {
             const params = {
                 providerId: selectedProviders.length > 0 ? selectedProviders.join('|') : null,
@@ -75,11 +72,11 @@ export default function Content() {
         });
     }, [loading, selectedGenres, selectedProviders]); // eslint-disable-line
 
-    useEffect(() => {
+    useEffect(() => { 
         if(keywords !== null){
             const url = `${process.env.REACT_APP_API_GATEWAY_URL}${type}/search?keywords=${keywords}`
             axios.get(url).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
-        } else setSearchResults({...searchResults, content: [], loading: true})
+        }
     }, [keywords]); //eslint-disable-line
 
     return (
@@ -92,6 +89,7 @@ export default function Content() {
                         labelId="genre-label"
                         id="genre-select"
                         multiple
+                        className="genre-select"
                         value={selectedGenres}
                         onChange={handleGenreChange}
                         renderValue={(selected) => (

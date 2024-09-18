@@ -4,9 +4,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import Sign from './sign';
 import { Avatar } from '@mui/material';
-import { Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search, Close, Menu } from '@mui/icons-material';
+import { Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search} from '@mui/icons-material';
 import { useContext } from 'react';
-import UserContext from '../context/userContext';
+import UserContext from '../contexts/userContext';
 
 export default function Header() {
     const location = useLocation();
@@ -83,13 +83,13 @@ export default function Header() {
         if (location.pathname.includes('/films')) {
             return (
                 <div className="logoOnly" onClick={() => setIsExpanded(true)}>
-                    <Movie fontSize="large"/> Film
+                    <Movie className="icon"/> Film
                 </div>
             );
         } else if (location.pathname.includes('/series')) {
             return (
                 <div className="logoOnly" onClick={() => setIsExpanded(true)}>
-                    <Tv fontSize="large"/> Serie TV
+                    <Tv className="icon"/> Serie TV
                 </div>
             );
         } else if (location.pathname.includes('/account')) {
@@ -104,7 +104,7 @@ export default function Header() {
         } else if (location.pathname.includes('/search')) {
             return (
                 <div className="logoOnly" onClick={() => setIsExpanded(true)}>
-                    <Search fontSize="large"/> Cerca
+                    <Search className="icon"/> Cerca
                 </div>
             );
         } else {
@@ -131,17 +131,17 @@ export default function Header() {
                         </div>
                     </Link>
                     <div className="menu">
-                        <li className={location.pathname === '/' ? 'activeDesktopPage' : ''} onClick={closeAll}>
+                        <li className={!location.pathname.includes('films') && !location.pathname.includes('series') ? 'activeDesktopPage' : ''} onClick={closeAll}>
                             <Link to={`/${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"> <Home className="linkIcon"/> Home </div>
                             </Link> 
                         </li>
-                        <li className={location.pathname === '/films' ? 'activeDesktopPage' : ''} onClick={closeAll}>
+                        <li className={location.pathname.includes('films') ? 'activeDesktopPage' : ''} onClick={closeAll}>
                             <Link to={`/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"><Movie className="linkIcon"/> Film</div>
                             </Link>
                         </li>
-                        <li className={location.pathname === '/series' ? 'activeDesktopPage' : ''} onClick={closeAll}>
+                        <li className={location.pathname.includes('series') ? 'activeDesktopPage' : ''} onClick={closeAll}>
                             <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"><Tv className="linkIcon"/> Serie TV</div>
                             </Link>
@@ -169,54 +169,54 @@ export default function Header() {
                     </div> : null}
                 </div>
                 
-                    <div className={`mobileDisplay ${isExpanded ? 'expanded' : ''}`}>
-                    {!isExpanded && (
-                            currentPage()
-                    )}
+                <div className={`mobileDisplay ${isExpanded ? 'expanded' : ''}`}>
+                {!isExpanded && (
+                        currentPage()
+                )}
 
-                        {isExpanded && (
-                            <>
-                                <Link to="/films" className="linkPage">
-                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                        <Movie fontSize="large"/> Film
-                                    </div>
-                                </Link>
-
-                                <Link to="/series" className="linkPage">
-                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                        <Tv fontSize="large"/> Serie TV
-                                    </div>
-                                </Link>
-
-                                <Link to="/" className="linkPage">
-                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                        <img src={Logo} alt="logo" />
-                                        <h1>ROCS</h1>
-                                    </div>
-                                </Link>
-
-                                {isLogged ? <Link to="/account" className="linkPage">
-                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                        <Avatar sx={{ bgcolor: stringToColor(username) }}>
-                                            {username.substring(0, 2).toUpperCase()}
-                                        </Avatar>
-                                        Profilo
-                                    </div>
-                                </Link> : <div className="pageContainer" onClick={handleShowSign}>
-                                    <Person fontSize="large"/>
-                                    Account
+                    {isExpanded && (
+                        <>
+                            <Link to="/films" className="linkPage">
+                                <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                    <Movie className="icon"/> Film
                                 </div>
-                                }
+                            </Link>
 
-                                <Link to="/search" className="linkPage">
-                                    <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                        <Search fontSize="large"/> Cerca
-                                    </div>
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                    {showSign && !isLogged ? <Sign closeAccount={handleShowSign}/> : null}
+                            <Link to="/series" className="linkPage">
+                                <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                    <Tv className="icon"/> Serie TV
+                                </div>
+                            </Link>
+
+                            <Link to="/" className="linkPage">
+                                <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                    <img src={Logo} alt="logo" />
+                                    <h1>ROCS</h1>
+                                </div>
+                            </Link>
+
+                            {isLogged ? <Link to="/account" className="linkPage">
+                                <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                    <Avatar sx={{ bgcolor: stringToColor(username) }}>
+                                        {username.substring(0, 2).toUpperCase()}
+                                    </Avatar>
+                                    Profilo
+                                </div>
+                            </Link> : <div className="pageContainer" onClick={handleShowSign}>
+                                <Person className="icon"/>
+                                Account
+                            </div>
+                            }
+
+                            <Link to="/search" className="linkPage">
+                                <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                    <Search className="icon"/> Cerca
+                                </div>
+                            </Link>
+                        </>
+                    )}
+                </div>
+                {showSign && !isLogged ? <Sign closeAccount={handleShowSign}/> : null}
             </div>
         </header>
         </> 

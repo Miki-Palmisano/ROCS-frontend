@@ -3,7 +3,7 @@ import axios from "axios";
 import Slider from "../components/slider";
 import '../styles/account.css';
 import { Link } from "react-router-dom";
-import UserContext from "../context/userContext";
+import UserContext from "../contexts/userContext";
 
 export default function Account() {
     const {logOut, username} = useContext(UserContext);
