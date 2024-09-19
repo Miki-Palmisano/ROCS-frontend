@@ -48,6 +48,7 @@ export default function Sign({closeAccount}) {
                         username: user.nickname,
                     },
                     {
+                        withCredentials: true,
                         headers: {
                             authorization: `Bearer ${token}`,     
                         },
@@ -73,7 +74,7 @@ export default function Sign({closeAccount}) {
         }
         
         axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/login`, { 
-            email: formData.email.toUpperCase(), password: formData.password })
+            email: formData.email.toUpperCase(), password: formData.password }, { withCredentials: true })
             .then((response) => {
                 setAccountLoading(false);
                 setIsLogged(true);
