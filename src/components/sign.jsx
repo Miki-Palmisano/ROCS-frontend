@@ -48,7 +48,6 @@ export default function Sign({closeAccount}) {
                         username: user.nickname,
                     },
                     {
-                        withCredentials: true,
                         headers: {
                             authorization: `Bearer ${token}`,     
                         },
