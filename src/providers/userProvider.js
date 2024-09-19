@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import UserContext from '../contexts/userContext';
 import { useAuth0 } from '@auth0/auth0-react';
-import axios from 'axios';
 
 const UserProvider = ({ children }) => {
 
@@ -17,21 +16,27 @@ const UserProvider = ({ children }) => {
         return savedUsername;
     });
 
+    const [id, setId] = useState(() => {
+        const savedId = localStorage.getItem('id');
+        return savedId;
+    });
+
     useEffect(() => {
         // Aggiorna localStorage quando lo stato cambia
         localStorage.setItem('isLogged', isLogged ? 'true' : 'false');
         localStorage.setItem('username', username);
-    }, [isLogged, username]);
+        localStorage.setItem('id', id);
+    }, [isLogged, username, id]);
 
     const logOut = async () => {
-        await axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/logout`, {}, { withCredentials: true });
-        setIsLogged(false);
+        /*setIsLogged(false);
         localStorage.removeItem('username');
-        if(isAuthenticated) logout();
+        localStorage.removeItem('id');
+        if(isAuthenticated) logout();*/
     }
 
     return (
-        <UserContext.Provider value={{ isLogged, setIsLogged, username, setUsername, logOut }}>
+        <UserContext.Provider value={{ isLogged, setIsLogged, username, setUsername, logOut, id, setId }}>
             {children}
         </UserContext.Provider>
     );

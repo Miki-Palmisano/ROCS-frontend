@@ -4,10 +4,13 @@ import Slider from "../components/slider";
 import '../styles/account.css';
 import { Link } from "react-router-dom";
 import UserContext from "../contexts/userContext";
+import { authorization, listEndpoint } from "../endpoints/userEndpoint";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Account() {
-    const {logOut, username} = useContext(UserContext);
+    const {logOut, username, id} = useContext(UserContext);
     const [loadingList, setLoadingList] = useState(true);
+    const { getAccessTokenSilently } = useAuth0();
     const [list, setList] = useState([
         {
             id: 'filmList',
@@ -29,15 +32,16 @@ export default function Account() {
     ]);
 
     useEffect(() => {
-        list.map(l => axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list?listId=${l.id}`, { 
-            withCredentials: true }).then((res) => {
-                if(res.data.length !== 0) setLoadingList(false);
-                setList(prev => prev.map(item => item.id === l.id ? { ...item, list: res.data } : item));
-            }).catch(error => {
-                if(error.response.status === 401) logOut();
-                else console.error('Errore durante la richiesta GET:', error);
-            }
-        ));
+        getAccessTokenSilently().then((token) => {
+            list.map(l => axios.get(listEndpoint(l.id), authorization(token, id)).then((res) => {
+                    if(res.data.length !== 0) setLoadingList(false);
+                    setList(prev => prev.map(item => item.id === l.id ? { ...item, list: res.data } : item));
+                }).catch(error => {
+                    if(error.response.status === 401) logOut();
+                    else console.error('Errore durante la richiesta GET:', error);
+                }
+            ))
+        });
     }, []); // eslint-disable-line
 
     return (

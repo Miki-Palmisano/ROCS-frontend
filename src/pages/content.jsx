@@ -1,11 +1,12 @@
 import Slider from "../components/slider";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import '../styles/content.css';
 import { FormControl, InputLabel, Select, MenuItem, Checkbox, Chip, Grid } from '@mui/material';
-import {FilterAlt, Close} from '@mui/icons-material';
+import { FilterAlt, Close } from '@mui/icons-material';
 import qs from 'qs';
+import { genreEndpoint, providerEndpoint, queryEndpoint, searchEndpoint } from "../endpoints/contentEndpoint";
 
 export default function Content() {
     const [contents, setContents] = useState([]);
@@ -15,20 +16,19 @@ export default function Content() {
     const [genres, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedProviders, setSelectedProviders] = useState([]);
-    const navigate = useNavigate();
     const type = useLocation().pathname;
     const keywords = new URLSearchParams(useLocation().search).get('search');
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}${type}/genres`).then((res) => {
+        axios.get( genreEndpoint(type) ).then((res) => {
             setContents(res.data.map(genre => ({ id: genre.id, name: genre.name, content: [], loading: true })));
             setGenres(res.data);
             setLoading(false);
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
         });
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}${type}/providers`).then((res) => {
+        axios.get( providerEndpoint(type) ).then((res) => {
             setStreamingProviders(res.data);
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
@@ -61,8 +61,7 @@ export default function Content() {
 
             const queryString = qs.stringify(params, { skipNulls: true, addQueryPrefix: true });
 
-            const url = `${process.env.REACT_APP_API_GATEWAY_URL}${type}${queryString}`;
-            axios.get(url)
+            axios.get(queryEndpoint(type, queryString))
                 .then((res) => {
                     setContents(content => content.map(c => c.id !== g.id ? c : { ...c, content: res.data.filter(item => item.img !== null), loading: false}));
                 })
@@ -73,10 +72,8 @@ export default function Content() {
     }, [loading, selectedGenres, selectedProviders]); // eslint-disable-line
 
     useEffect(() => { 
-        if(keywords !== null){
-            const url = `${process.env.REACT_APP_API_GATEWAY_URL}${type}/search?keywords=${keywords}`
-            axios.get(url).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
-        }
+        if(keywords !== null)
+            axios.get(searchEndpoint(type, keywords)).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
     }, [keywords]); //eslint-disable-line
 
     return (

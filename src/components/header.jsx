@@ -2,11 +2,13 @@ import Logo from '../assets/Logo.png'
 import '../styles/header.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
-import Sign from './sign';
 import { Avatar } from '@mui/material';
-import { Home, Movie, Tv, Person, DirectionsWalk, MeetingRoom, Search} from '@mui/icons-material';
+import { Home, Movie, Tv, Person, Search} from '@mui/icons-material';
 import { useContext } from 'react';
 import UserContext from '../contexts/userContext';
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from 'axios';
+import {authorization, authEndpoint} from '../endpoints/userEndpoint';
 
 export default function Header() {
     const location = useLocation();
@@ -15,16 +17,48 @@ export default function Header() {
     const [search, setSearch] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const searchInputRef = useRef(null);
-    const [showSign, setShowSign] = useState(false);
-    const {isLogged, logOut, username} = useContext(UserContext);
-    const [accountOption, setAccountOption] = useState(false);
     const [isExpanded, setIsExpanded] = useState(true);
+
+    const { loginWithPopup, isAuthenticated, isLoading, getAccessTokenSilently,  user } = useAuth0();
+    const { setIsLogged, isLogged, setUsername , username, logOut, setId } = useContext(UserContext);
 
     useEffect(() => {
         setActivePage(location.pathname);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setSearchValue(new URLSearchParams(location.search).get('search') || '');
     }, [location.pathname]); // eslint-disable-line
+
+    // Login with Auth0
+    const handleLogin = async () => {
+        await loginWithPopup();
+    }
+
+    useEffect(() => {
+        if (!isLoading)
+          if (isAuthenticated && !isLogged) {
+            getAccessTokenSilently().then((token) => {
+                console.log(token);
+                axios.post( authEndpoint,
+                    {
+                        email: user.email,
+                        username: user.nickname,
+                    },
+                    authorization(token)
+                ).then((response) => {
+                    setIsLogged(true);
+                    setUsername(response.data.username);
+                    setId(response.data.id);
+                }).catch((error) => {
+                    if(error.response.status === 401) {
+                        console.log('Unauthorized');
+                        logOut();
+                    }else{
+                        console.log('Error:', error);
+                    }
+                });
+            });
+        }
+    }, [isAuthenticated]); // eslint-disable-line
 
     const handleSearch = () => {
         setSearch(!search);
@@ -35,20 +69,6 @@ export default function Header() {
         event.preventDefault();
         setSearchValue(event.target.value);
     };
-
-    const handleShowSign = () => {
-        setShowSign(!showSign);
-    }
-
-    const showAcccountOption = () => {
-        setAccountOption(!accountOption);
-        
-    }
-
-    const closeAll = () => {
-        setShowSign(false);
-        setAccountOption(false);
-    }
 
     function stringToColor(string) {
         let hash = 0;
@@ -131,17 +151,17 @@ export default function Header() {
                         </div>
                     </Link>
                     <div className="menu">
-                        <li className={!location.pathname.includes('films') && !location.pathname.includes('series') ? 'activeDesktopPage' : ''} onClick={closeAll}>
+                        <li className={!location.pathname.includes('films') && !location.pathname.includes('series') ? 'activeDesktopPage' : ''}>
                             <Link to={`/${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"> <Home className="linkIcon"/> Home </div>
                             </Link> 
                         </li>
-                        <li className={location.pathname.includes('films') ? 'activeDesktopPage' : ''} onClick={closeAll}>
+                        <li className={location.pathname.includes('films') ? 'activeDesktopPage' : ''}>
                             <Link to={`/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"><Movie className="linkIcon"/> Film</div>
                             </Link>
                         </li>
-                        <li className={location.pathname.includes('series') ? 'activeDesktopPage' : ''} onClick={closeAll}>
+                        <li className={location.pathname.includes('series') ? 'activeDesktopPage' : ''}>
                             <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
                                 <div className="linkLabel"><Tv className="linkIcon"/> Serie TV</div>
                             </Link>
@@ -149,24 +169,11 @@ export default function Header() {
                         <li onClick={handleSearch} className="linkLabel"><Search /></li>
                         <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
                     </div>
-                    {isLogged ? <div className="iconContainer" onClick={showAcccountOption}> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> 
-                    : <div className="iconContainer" onClick={handleShowSign}>
+                    {isLogged ? <Link to ="/account" className='linkPage'><div className="iconContainer"> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> </Link>
+                    : <div className="iconContainer" onClick={handleLogin}>
                         <Person />
                         <p>Account</p>
                     </div> }
-                    {accountOption ? 
-                        <div className="accountOption">
-                        <li>
-                            <Link to="/account" className="linkPage">
-                                <div className="linkLabel" onClick={showAcccountOption}><Person  /> Profilo </div>
-                            </Link>
-                        </li>
-                        <li onClick={logOut}>
-                            <DirectionsWalk className="icon" />
-                            <p className="text">Esci</p>
-                            <MeetingRoom />
-                        </li>
-                    </div> : null}
                 </div>
                 
                 <div className={`mobileDisplay ${isExpanded ? 'expanded' : ''}`}>
@@ -202,7 +209,7 @@ export default function Header() {
                                     </Avatar>
                                     Profilo
                                 </div>
-                            </Link> : <div className="pageContainer" onClick={handleShowSign}>
+                            </Link> : <div className="pageContainer" onClick={handleLogin}>
                                 <Person className="icon"/>
                                 Account
                             </div>
@@ -216,7 +223,6 @@ export default function Header() {
                         </>
                     )}
                 </div>
-                {showSign && !isLogged ? <Sign closeAccount={handleShowSign}/> : null}
             </div>
         </header>
         </> 

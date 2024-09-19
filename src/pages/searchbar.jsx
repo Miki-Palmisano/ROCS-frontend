@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
 import InfoCard from '../components/infoCard';
+import { allPopularEndpoint, allSearchEndpoint } from '../endpoints/contentEndpoint';
 
 export default function Searchbar() {
     const location = useLocation();
@@ -30,7 +31,7 @@ export default function Searchbar() {
                 page: pageCount,
             }, { skipNulls: true, addQueryPrefix: true });
 
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/all/search${queryString}`).then((res) => {
+            axios.get(allSearchEndpoint(queryString)).then((res) => {
                 setSearchResults(res.data.content);
                 setTotalPages(res.data.totalPages);
             }).catch(e => console.log(e));
@@ -42,7 +43,7 @@ export default function Searchbar() {
                 page: pageCount,
             }, { skipNulls: true, addQueryPrefix: true });
 
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/all/popular${queryString}`).then((res) => {
+            axios.get(allPopularEndpoint(queryString)).then((res) => {
                 setSearchResults(res.data.content);
                 setTotalPages(res.data.totalPages);
             }).catch(e => console.log(e));
@@ -56,7 +57,7 @@ export default function Searchbar() {
                 page: pageCount,
             }, { skipNulls: true, addQueryPrefix: true });
 
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/all/search${queryString}`).then((res) => {
+            axios.get(allSearchEndpoint(queryString)).then((res) => {
                 setSearchResults([...searchResults, ...res.data.content]);
                 setTotalPages(res.data.totalPages);
             }).catch(e => console.log(e));
@@ -65,7 +66,7 @@ export default function Searchbar() {
                 page: pageCount,
             }, { skipNulls: true, addQueryPrefix: true });
 
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/all/popular${queryString}`).then((res) => {
+            axios.get(allPopularEndpoint(queryString)).then((res) => {
                 setSearchResults([...searchResults, ...res.data.content]);
                 setTotalPages(res.data.totalPages);
             }).catch(e => console.log(e));
