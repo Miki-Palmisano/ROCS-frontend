@@ -49,7 +49,6 @@ export default function InfoCard({content}) {
                 }).catch(error => {
                     if(error.response.status === 401) logOut();
                     else if (error.response.status !== 404) console.error('Errore durante la richiesta POST:', error);
-                    console.log(error);
             });
         });
     }

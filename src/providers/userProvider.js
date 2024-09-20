@@ -22,13 +22,12 @@ const UserProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        // Aggiorna localStorage quando lo stato cambia
         localStorage.setItem('isLogged', isLogged ? 'true' : 'false');
         localStorage.setItem('username', username);
         localStorage.setItem('id', id);
     }, [isLogged, username, id]);
 
-    const logOut = async () => {
+    const logOut = () => {
         setIsLogged(false);
         localStorage.removeItem('username');
         localStorage.removeItem('id');
