@@ -8,7 +8,7 @@ const UserProvider = ({ children }) => {
 
     const [isLogged, setIsLogged] = useState(() => {
         const savedStatus = localStorage.getItem('isLogged');
-        return savedStatus === 'true'; // Converte la stringa 'true' in booleano
+        return savedStatus === 'true';
     });
 
     const [username, setUsername] = useState(() => {
@@ -29,10 +29,10 @@ const UserProvider = ({ children }) => {
     }, [isLogged, username, id]);
 
     const logOut = async () => {
-        /*setIsLogged(false);
+        setIsLogged(false);
         localStorage.removeItem('username');
         localStorage.removeItem('id');
-        if(isAuthenticated) logout();*/
+        if(isAuthenticated) logout();
     }
 
     return (

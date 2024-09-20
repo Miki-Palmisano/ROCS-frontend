@@ -159,7 +159,7 @@ export default function InfoCard({content}) {
                         </div>)}
                         {!addList && (
                         <div className="infoType">
-                            <span>{content.type === 'films' ? 'FILM' : 'SERIE TV'} </span>
+                            <span>{content.type === 'films' ? 'FILM' : 'SERIE'} </span>
                             <span>{content.year.split('-')[0]}</span>
                         </div>)}
                         {isLogged && (<button className="list" onClick={toggleAddList}>{inList ? <PlaylistAddCheck /> : <PlaylistAdd />}</button>)}

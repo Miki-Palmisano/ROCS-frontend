@@ -37,7 +37,6 @@ export default function Header() {
         if (!isLoading)
           if (isAuthenticated && !isLogged) {
             getAccessTokenSilently().then((token) => {
-                console.log(token);
                 axios.post( authEndpoint,
                     {
                         email: user.email,

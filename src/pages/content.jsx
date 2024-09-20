@@ -12,11 +12,22 @@ export default function Content() {
     const [contents, setContents] = useState([]);
     const [searchResults, setSearchResults] = useState({id: 0, name: 'Risultati per: ', content: [], loading: true});
     const [loading, setLoading] = useState(true);
-    const [streamingProviders, setStreamingProviders] = useState([]);
-    const [genres, setGenres] = useState([]);
-    const [selectedGenres, setSelectedGenres] = useState([]);
-    const [selectedProviders, setSelectedProviders] = useState([]);
+
+    // Recupera selectedGenres dal localStorage o imposta un array vuoto se non esiste
+    const [selectedGenres, setSelectedGenres] = useState(() => {
+        const savedSelectedGenres = localStorage.getItem('selectedGenres');
+        return savedSelectedGenres ? JSON.parse(savedSelectedGenres) : [];
+    });
+
+    // Recupera selectedProviders dal localStorage o imposta un array vuoto se non esiste
+    const [selectedProviders, setSelectedProviders] = useState(() => {
+        const savedSelectedProviders = localStorage.getItem('selectedProviders');
+        return savedSelectedProviders ? JSON.parse(savedSelectedProviders) : [];
+    });
+
     const type = useLocation().pathname;
+    const [genres, setGenres] = useState([]);
+    const [streamingProviders, setStreamingProviders] = useState([]);
     const keywords = new URLSearchParams(useLocation().search).get('search');
 
     useEffect(() => {
@@ -30,10 +41,21 @@ export default function Content() {
         });
         axios.get( providerEndpoint(type) ).then((res) => {
             setStreamingProviders(res.data);
+            setLoading(false);
         }).catch(error => {
             console.error('Errore durante la richiesta GET:', error);
         });
     }, [type]); // eslint-disable-line
+
+    // Effetto per salvare selectedGenres nel localStorage quando cambia
+    useEffect(() => {
+        localStorage.setItem('selectedGenres', JSON.stringify(selectedGenres));
+    }, [selectedGenres]);
+
+    // Effetto per salvare selectedProviders nel localStorage quando cambia
+    useEffect(() => {
+        localStorage.setItem('selectedProviders', JSON.stringify(selectedProviders));
+    }, [selectedProviders]);
 
     const handleGenreChange = (event) => {
         setSelectedGenres(event.target.value);
@@ -43,14 +65,15 @@ export default function Content() {
         setSelectedProviders(event.target.value);
     };
 
-    const handleDeleteFilters = () => {
-        setSelectedGenres([]);
-        setSelectedProviders([]);
-    }
-
     useEffect(() => {
-        handleDeleteFilters();
-    }, [type]); // eslint-disable-line
+        if(type !== localStorage.getItem('type')){
+            localStorage.setItem('type', type);
+            setSelectedGenres([]);
+            setSelectedProviders([]);
+            localStorage.setItem('selectedGenres', JSON.stringify([]));
+            localStorage.setItem('selectedProviders', JSON.stringify([]));
+        }
+    }, [type]); // eslint-disable-line 
 
     useEffect(() => {
         genres.forEach(g => {
@@ -119,9 +142,16 @@ export default function Content() {
                         onChange={handleProviderChange}
                         renderValue={(selected) => (
                             <div>
-                                {selected.map((id) => (
-                                    <Chip key={id} className="customChip" label={<img src={streamingProviders.find(p => p.id === id).logo} className="providerLogo" alt={selectedProviders+' logo'}/>} />
-                                ))}
+                                {selected.map((id) => {
+                                    const provider = streamingProviders.find(p => p.id === id);
+                                    return provider ? (
+                                        <Chip 
+                                            key={id} 
+                                            className="customChip" 
+                                            label={<img src={provider.logo} className="providerLogo" alt={provider.name + ' logo'}/>} 
+                                        />
+                                    ) : null;
+                                })}
                             </div>
                         )}
                     >
@@ -136,7 +166,7 @@ export default function Content() {
                         ))}
                     </Select>
                 </FormControl>
-                <Close onClick={handleDeleteFilters} />
+                <Close />
             </div>
 
             {loading ? 
