@@ -65,12 +65,3 @@
     width: 95%;
     margin: 70px auto;
 }
-
-.backgroundGradient {
-    position: fixed;
-    z-index: 4; 
-    background: linear-gradient(to top, rgba(0, 0, 0, 0), rgb(0, 0, 0, 1));
-    height: 200px;
-    width: 100%;
-    margin-top: -140px;
-}
