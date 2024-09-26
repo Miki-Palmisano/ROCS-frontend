@@ -1,9 +1,8 @@
 .infoCardContainer {
-    width: 95%;
     display: flex;
-    margin: 10px auto;
     border: 1px solid #ffffff;
     border-radius: 24px;
+    margin-bottom: 10px;
 }
 
 .infoCardContainer img{
@@ -26,7 +25,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
 
@@ -84,7 +83,7 @@
 }
 
 .addList {
-    margin: 0 5px 0 5px;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -6,11 +6,10 @@ import '../styles/content.css';
 import { FormControl, InputLabel, Select, MenuItem, Checkbox, Chip, Grid } from '@mui/material';
 import { FilterAlt, Close } from '@mui/icons-material';
 import qs from 'qs';
-import { genreEndpoint, providerEndpoint, queryEndpoint, searchEndpoint } from "../endpoints/contentEndpoint";
+import { genreEndpoint, providerEndpoint, queryEndpoint } from "../endpoints/contentEndpoint";
 
 export default function Content() {
     const [contents, setContents] = useState([]);
-    const [searchResults, setSearchResults] = useState({id: 0, name: 'Risultati per: ', content: [], loading: true});
     const [loading, setLoading] = useState(true);
 
     // Recupera selectedGenres dal localStorage o imposta un array vuoto se non esiste
@@ -28,7 +27,6 @@ export default function Content() {
     const type = useLocation().pathname;
     const [genres, setGenres] = useState([]);
     const [streamingProviders, setStreamingProviders] = useState([]);
-    const keywords = new URLSearchParams(useLocation().search).get('search');
 
     useEffect(() => {
         setLoading(true);
@@ -92,12 +90,7 @@ export default function Content() {
                     console.error('Errore durante la richiesta GET:', error);
                 })
         });
-    }, [loading, selectedGenres, selectedProviders]); // eslint-disable-line
-
-    useEffect(() => { 
-        if(keywords !== null)
-            axios.get(searchEndpoint(type, keywords)).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
-    }, [keywords]); //eslint-disable-line
+    }, [loading, selectedGenres, selectedProviders, type]); // eslint-disable-line
 
     return (
         <div>
@@ -172,7 +165,6 @@ export default function Content() {
             {loading ? 
                 <Slider elements={null} loading={true} title={'Caricamento...'} />
              : <>
-                {searchResults.loading ? null : <Slider key={searchResults.id} elements={searchResults.content} loading={searchResults.loading} title={searchResults.name + keywords}/>}
                 {contents.filter(c => c.content.length !== 0).map(c => (
                     <Slider key={c.id} 
                             elements={c.content} 

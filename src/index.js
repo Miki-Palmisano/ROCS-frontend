@@ -12,9 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
     <BrowserRouter>
-      <React.StrictMode>
-          <Auth0Configuration children={<UserProvider> <App /> </UserProvider>} />
-      </React.StrictMode>
+      <Auth0Configuration children={<UserProvider> <App /> </UserProvider>} />
     </BrowserRouter>
 );
 

@@ -6,7 +6,7 @@ import Info from './pages/info';
 import Header from './components/header';
 import Footer from './components/footer';
 import Account from './pages/account';
-import Searchbar from './pages/searchbar';
+import SearchPage from './pages/search';
 import { useContext } from 'react';
 import UserContext from './contexts/userContext';
 
@@ -21,7 +21,7 @@ export default function App() {
         <Route path="/*" element={<Home />} />
         <Route path="/films/*" element={<Content />} />
         <Route path="/series/*" element={<Content />} />
-        <Route path="/search" element={<Searchbar />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/account/*" element={isLogged ? <Account /> : <Home />} />
         <Route path="/info/:type/:id" element={<Info />} />
       </Routes>

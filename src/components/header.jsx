@@ -1,7 +1,7 @@
 import Logo from '../assets/Logo.png'
 import '../styles/header.css'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Avatar } from '@mui/material';
 import { Home, Movie, Tv, Person, Search} from '@mui/icons-material';
 import { useContext } from 'react';
@@ -12,20 +12,13 @@ import {authorization, authEndpoint} from '../endpoints/userEndpoint';
 
 export default function Header() {
     const location = useLocation();
-    const navigate = useNavigate();
-    const [activePage, setActivePage] = useState();
-    const [search, setSearch] = useState(false);
-    const [searchValue, setSearchValue] = useState('');
-    const searchInputRef = useRef(null);
     const [isExpanded, setIsExpanded] = useState(true);
 
     const { loginWithPopup, isAuthenticated, isLoading, getAccessTokenSilently,  user } = useAuth0();
     const { setIsLogged, isLogged, setUsername , username, logOut, setId } = useContext(UserContext);
 
     useEffect(() => {
-        setActivePage(location.pathname);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        setSearchValue(new URLSearchParams(location.search).get('search') || '');
     }, [location.pathname]); // eslint-disable-line
 
     // Login with Auth0
@@ -59,16 +52,6 @@ export default function Header() {
         }
     }, [isAuthenticated]); // eslint-disable-line
 
-    const handleSearch = () => {
-        setSearch(!search);
-        if(!search) searchInputRef.current.focus();
-    }
-
-    const handleSearchChange = (event) => { 
-        event.preventDefault();
-        setSearchValue(event.target.value);
-    };
-
     function stringToColor(string) {
         let hash = 0;
         let i;
@@ -88,15 +71,6 @@ export default function Header() {
       
         return color;
     }
-
-    useEffect(() => {
-        if (searchValue !== '') {
-            const encodedSearchValue = encodeURIComponent(searchValue);
-            navigate(`${activePage}?search=${encodedSearchValue} `);
-        } else {
-            navigate(activePage);
-        }
-    }, [searchValue]); // eslint-disable-line
 
     const currentPage = () => {
         if (location.pathname.includes('/films')) {
@@ -150,23 +124,30 @@ export default function Header() {
                         </div>
                     </Link>
                     <div className="menu">
-                        <li className={!location.pathname.includes('films') && !location.pathname.includes('series') ? 'activeDesktopPage' : ''}>
-                            <Link to={`/${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
+                        <li className={!location.pathname.includes('films') 
+                            && !location.pathname.includes('series') 
+                            && !location.pathname.includes('search')
+                            && !location.pathname.includes('account')
+                            ? 'activeDesktopPage' : ''}>
+                            <Link to="/" className="linkPage">
                                 <div className="linkLabel"> <Home className="linkIcon"/> Home </div>
                             </Link> 
                         </li>
                         <li className={location.pathname.includes('films') ? 'activeDesktopPage' : ''}>
-                            <Link to={`/films${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
+                            <Link to="/films" className="linkPage">
                                 <div className="linkLabel"><Movie className="linkIcon"/> Film</div>
                             </Link>
                         </li>
                         <li className={location.pathname.includes('series') ? 'activeDesktopPage' : ''}>
-                            <Link to={`/series${searchValue.length === 0 ? '' : `?search=${searchValue}`}`} className="linkPage">
+                            <Link to="/series" className="linkPage">
                                 <div className="linkLabel"><Tv className="linkIcon"/> Serie TV</div>
                             </Link>
                         </li>
-                        <li onClick={handleSearch} className="linkLabel"><Search /></li>
-                        <li className={`searchBar ${search ? 'active':''}`}><input type="search" placeholder="Cerca..." value={searchValue} onChange={handleSearchChange} ref={searchInputRef}/></li>
+                        <li className={location.pathname.includes('search') ? 'activeDesktopPage' : ''}>
+                            <Link to="/search" className="linkPage">
+                                <div className="linkLabel"><Search className="linkIcon"/> Cerca</div>
+                            </Link>
+                        </li>
                     </div>
                     {isLogged ? <Link to ="/account" className='linkPage'><div className="iconContainer"> <Avatar sx={{bgcolor: stringToColor(username)}}>{username.substring(0, 2).toUpperCase()}</Avatar> </div> </Link>
                     : <div className="iconContainer" onClick={handleLogin}>

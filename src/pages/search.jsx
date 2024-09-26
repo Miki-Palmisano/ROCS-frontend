@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react';
-import '../styles/searchbar.css';
+import '../styles/search.css';
 import { Search } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import qs from 'qs';
 import InfoCard from '../components/infoCard';
 import { allPopularEndpoint, allSearchEndpoint } from '../endpoints/contentEndpoint';
 
-export default function Searchbar() {
+export default function SearchPage() {
     const location = useLocation();
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState();
@@ -85,9 +85,11 @@ export default function Searchbar() {
                 <Search className="searchIcon"/>
                 <input type="text" placeholder="Search..." value={searchValue || ''} onChange={handleSearchChange}/>
             </div>
-            {searchResults && searchResults.map((result, index) => 
-                <InfoCard key={index} content={result} />
+            <div className="searchCard">
+                {searchResults && searchResults.map((result, index) => 
+                    <InfoCard key={index} content={result} />
                 )}
+            </div>
             {pageCount !== totalPages ? <button onClick={() => setPageCount(pageCount + 1)} className="pageButton"><p>+</p></button> : null}
         </div>
     );

@@ -6,9 +6,13 @@ import Slider from "../components/slider";
 import { Favorite, PlaylistAdd, PlayArrow, PlaylistAddCheck } from "@mui/icons-material";
 import { Button, Select, MenuItem, TextField, FormControl, InputLabel } from "@mui/material";
 import UserContext from "../contexts/userContext";
+import { authorization, favoriteEndpoint, listEndpoint, favoriteStateEndpoint, favoriteListEndpoint, listRemoveEndpoint } from "../endpoints/userEndpoint";
+import { infoEndpoint, queryEndpoint, searchEndpoint } from "../endpoints/contentEndpoint";
+import {useAuth0} from '@auth0/auth0-react';
 
 export default function Info() {
     const { type, id } = useParams();
+    const {getAccessTokenSilently} = useAuth0();
     const [info, setInfo] = useState({});
     const [loading, setLoading] = useState(true);
     const [contents, setContents] = useState([]);
@@ -17,7 +21,7 @@ export default function Info() {
     const [addList, setAddList] = useState(false);
     const [list, setList] = useState([]);
     const [inList, setInList] = useState(false);
-    const {isLogged, logOut} = useContext(UserContext);
+    const {isLogged, logOut, id: userId} = useContext(UserContext);
     const [searchResults, setSearchResults] = useState({id: 0, name: 'Risultati per: ', content: [], loading: true});
     const keywords = new URLSearchParams(useLocation().search).get('search');
 
@@ -27,18 +31,19 @@ export default function Info() {
 
     useEffect(() => {
         if(isLogged) {
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/users/favorite/state?itemId=${id}&type=${type}`, 
-            { 
-                withCredentials: true 
-            }).then((res) => {
+            getAccessTokenSilently().then((token) => 
+                axios.get(favoriteStateEndpoint({id: id, type: type}), authorization(token, userId))
+            .then((res) => {
                 if(res.status === 200) setFavorite(true);
-            }).catch(error => {
+            })
+            .catch(error => {
                 if(error.response.status === 401) logOut();
                 else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
-            });
+            })
+            )
         }
 
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/${type}/info/${id}`).then((res) => {
+        axios.get(infoEndpoint({id: id, type: type})).then((res) => {
             setInfo(res.data);
             setLoading(false);
             setContents(res.data.genres.map(genre => ({ id: genre.id, name: genre.name, content: [], loading: true })));
@@ -51,24 +56,25 @@ export default function Info() {
 
     useEffect(() => {
         if(isLogged) {
-        axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list/state?itemId=${id}&type=${type}`,
-            { 
-                withCredentials: true 
-            }).then((res) => {
-                if(res.status === 200) {
-                    setList({state: res.data.status, vote: res.data.vote});
-                    setInList(true);
-                }
-            }).catch(error => {
-                if(error.response.status === 401) logOut();
-                else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
-            });
+            getAccessTokenSilently().then((token) =>
+                axios.get(favoriteListEndpoint({id: id, type: type}), authorization(token, userId))
+                .then((res) => {
+                    if(res.status === 200) {
+                        setList({state: res.data.status, vote: res.data.vote});
+                        setInList(true);
+                    }
+                }).catch(error => {
+                    if(error.response.status === 401) logOut();
+                    else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
+                })
+            )
         }
     }, [id, type, inList]); //eslint-disable-line
 
     useEffect(() => {
         contents.forEach(content => {
-            axios.get(`${process.env.REACT_APP_API_GATEWAY_URL}/${type}?genreId=${content.id}`).then((res) => {
+            axios.get(queryEndpoint('/'+type, `?genreId=${content.id}`))
+            .then((res) => {
                 setContents(prevContent => prevContent.map(c => c.id === content.id ? { ...c, content: res.data.filter(f => f.img !== null), loading: false } : c));
             }).catch(error => {
                 console.error('Errore durante la richiesta GET:', error);
@@ -78,26 +84,29 @@ export default function Info() {
 
     useEffect(() => {
         if(keywords !== null){
-            const url = `${process.env.REACT_APP_API_GATEWAY_URL}/${type}/search?keywords=${keywords}`
-            axios.get(url).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
+            axios.get(searchEndpoint('/'+type, keywords)).then((res) => setSearchResults({...searchResults, content: res.data.filter(item => item.img !== null), loading: false}))
         } else setSearchResults({...searchResults, content: [], loading: true})
     }, [keywords]); //eslint-disable-line
 
     const handleAddFavorite = () => {
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/favorite`, 
-            {
-                itemId: id,
-                type: type,
-                image: info.img
-            }, 
-            { 
-                withCredentials: true 
-            }).then((res) => {
+        getAccessTokenSilently().then((token) =>
+            axios.post(favoriteEndpoint, 
+                {
+                    itemId: id,
+                    type: type,
+                    image: info.img,
+                    title: info.title,
+                    year: info.release_date,
+                    description: info.description
+                }, authorization(token, userId))
+            .then((res) => {
                 if(res.status === 200) setFavorite(!favorite);
-            }).catch(error => {
+            })
+            .catch(error => {
                 if(error.response.status === 401) logOut();
                 else console.error('Errore durante la richiesta POST:', error);
-        });
+            })
+        );
     }
 
     const handleChange = (event) => {
@@ -110,55 +119,59 @@ export default function Info() {
     }
 
     const handleAddList = () => {
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list`, 
-            {
-                itemId: id,
-                type: type,
-                image: info.img,
-                status: list.state,
-                vote: list.vote
-            }, 
-            { 
-                withCredentials: true 
-            }).then((res) => {
+        getAccessTokenSilently().then((token) =>
+            axios.post(listEndpoint(), 
+                {
+                    itemId: id,
+                    type: type,
+                    image: info.img,
+                    status: list.state,
+                    description: info.description,
+                    year: info.release_date,
+                    title: info.title,
+                    vote: list.vote
+                }, authorization(token, userId))
+            .then((res) => {
                 setInList(true);
                 if(res.status === 200) setAddList(false);
-            }).catch(error => {
+            })
+            .catch(error => {
                 if(error.response.status === 401) logOut();
                 else console.error('Errore durante la richiesta POST:', error);
-        });
+            })
+        )
     }
 
     const handleRemoveList = () => {
-        axios.post(`${process.env.REACT_APP_API_GATEWAY_URL}/users/list/remove`, 
-            {
-                itemId: id,
-                type: type
-            }, 
-            { 
-                withCredentials: true 
-            }).then((res) => {
+        getAccessTokenSilently().then((token) =>
+            axios.post(listRemoveEndpoint,
+                {
+                    itemId: id,
+                    type: type
+                }, authorization(token, userId))
+            .then((res) => {
                 setInList(false);
                 if(res.status === 200) setAddList(false);
-            }).catch(error => {
+            })
+            .catch(error => {
                 if(error.response.status === 401) logOut();
                 else console.error('Errore durante la richiesta POST:', error);
-        });
+            })
+        );
     }
 
     return (
         <>
-        { !loading ?
-        <div className="infoContainer">
+        { !loading ? <>
             <div className="videoBackground">
                 {info.video.key !== null ? <iframe
                     src={`https://www.youtube.com/embed/${info.video.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${info.video.key}`}
                     title={info.title}
-                    frameBorder="0"
                     allowFullScreen
-                ></iframe> : null}
+                /> : null}
                 <div className="gradientOverlay"></div>
             </div>
+        <div className="infoContainer">
             <div className="infoContent">
                 <div className="imageContainer ">
                     <img src={info.img} alt={info.title} className="infoImage" />
@@ -258,7 +271,7 @@ export default function Info() {
             {searchResults.loading ? null : <Slider key={searchResults.id} elements={searchResults.content} loading={searchResults.loading} title={searchResults.name + keywords}/>}
             {contents.map(content => <Slider key={content.id} elements={content.content} loading={content.loading} title={content.name}/>)}
         </div>
-        : null }
+        </> : null }
         </>
     )
 }

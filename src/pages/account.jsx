@@ -1,60 +1,90 @@
 import { useContext, useEffect, useState} from "react";
 import axios from "axios";
-import Slider from "../components/slider";
 import '../styles/account.css';
-import { Link } from "react-router-dom";
+import InfoCard from "../components/infoCard";
 import UserContext from "../contexts/userContext";
+import {Avatar} from '@mui/material';
 import { authorization, listEndpoint } from "../endpoints/userEndpoint";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Account() {
     const {logOut, username, id} = useContext(UserContext);
-    const [loadingList, setLoadingList] = useState(true);
+    const [contentType, setContentType] = useState('films');
+    const [contentState, setContentState] = useState('Visto');
     const { getAccessTokenSilently } = useAuth0();
-    const [list, setList] = useState([
-        {
-            id: 'filmList',
-            type: 'film',
-            list: [],
-            name: 'I Tuoi Film'
-        },
-        {
-            id: 'serieList',
-            type: 'serie',
-            list: [],
-            name: 'Le Tue Serie'
-        },
-        {
-            id: 'favoriteList',
-            list: [],
-            name: 'I tuoi Preferiti'
-        }
-    ]);
+    const [list, setList] = useState([]);
 
     useEffect(() => {
-        getAccessTokenSilently().then((token) => {
-            list.map(l => axios.get(listEndpoint(l.id), authorization(token, id)).then((res) => {
-                    if(res.data.length !== 0) setLoadingList(false);
-                    setList(prev => prev.map(item => item.id === l.id ? { ...item, list: res.data } : item));
-                }).catch(error => {
-                    if(error.response.status === 401) logOut();
-                    else console.error('Errore durante la richiesta GET:', error);
-                }
-            ))
-        });
+        getList();
     }, []); // eslint-disable-line
 
+    const getList = () => {
+        getAccessTokenSilently().then((token) => {
+            axios.get(listEndpoint({type: contentType, state: contentState}), authorization(token, id))
+            .then((res) => {
+                setList(res.data);
+                console.log(res.data);
+            })
+            .catch(error => {
+                if(error.response.status === 401) logOut();
+                else console.error('Errore durante la richiesta GET:', error);
+            });
+        });
+    }
+
+    function stringToColor(string) {
+        let hash = 0;
+        let i;
+      
+        /* eslint-disable no-bitwise */
+        for (i = 0; i < string.length; i += 1) {
+          hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+      
+        let color = '#';
+      
+        for (i = 0; i < 3; i += 1) {
+          const value = (hash >> (i * 8)) & 0xff;
+          color += `00${value.toString(16)}`.slice(-2);
+        }
+        /* eslint-enable no-bitwise */
+      
+        return color;
+    }
+
     return (
-        <>
-            <div className="accountSettings">
-                <h1>Ciao {username}{loadingList ? ', comincia ad aggiungere qualcosa alla tua lista!' : ', queste sono le tue liste!'}</h1>
-                <button className="logoutButton" onClick={logOut}>Logout</button>
-                {loadingList ? <>
-                    <p>Per aggiungere un Film o una Serie TV alla tua lista, cercale nelle sezioni dedicate nel menu, clicca sulla copertina e aggiungile tramite le icone disposte sopra</p>
-                    <Link to="/" > <button className="addListButton">Aggiungi</button> </Link>
-                </> : null}
+        <div className="accountPage">
+            <div className="profileSettings">
+                <div className="profileSection">
+                    <Avatar sx={{bgcolor: stringToColor(username)}} className="profileImage">{username.substring(0, 2).toUpperCase()}</Avatar>
+                    <div className="profileDetails">
+                        <p>Ciao, <strong>{username}</strong></p>
+                        <button className="logoutButton" onClick={logOut}>Esci dall'Account</button>
+                    </div>
+                </div>
+                <div className="profileDivider"/>
+                <div className="filterSection">
+                        <h2>La tua lista</h2>
+                        <p>Tipologia:</p>
+                        <div className="contentType">
+                            <p onClick={() => setContentType('films')} className={contentType === 'films' ? 'active' : ''}>Film</p>
+                            <p onClick={() => setContentType('series')} className={contentType === 'series' ? 'active' : ''}>Serie</p>
+                        </div>
+                        <p>Stato:</p>
+                        <div className="contentState">
+                            <p onClick={() => setContentState('Visto')} className={contentState === 'Visto' ? 'active' : ''}>Visti</p>
+                            <p onClick={() => setContentState('Da Vedere')} className={contentState === 'Da Vedere' ? 'active' : ''}>Da Vedere</p>
+                            <p onClick={() => setContentState('In Visione')} className={contentState === 'In Visione' ? 'active' : ''}>In Visione</p>
+                        </div>
+                        <button onClick={getList}>Filtra</button>
+                    </div>
             </div>
-            {list.filter(l => l.list.length !== 0).map((item, index) => <Slider key={index} elements={item.list} loading={false} title={item.name}/> )}
-        </>
+            <div className="listSection">
+                {list.length === 0 && <h2 className="emptyList">Non ci sono elementi nella tua lista</h2>}
+                {list.map((item) => (
+                    <InfoCard key={item.id} content={item}/>
+                ))}
+            </div>
+        </div>
     );
 }

@@ -66,6 +66,9 @@ export default function InfoCard({content}) {
                     type: content.type,
                     image: content.img,
                     status: list.state,
+                    description: content.description,
+                    year: content.year,
+                    title: content.title,
                     vote: list.vote
                 }, authorization( token, id )).then((res) => {
                     setInList(true);

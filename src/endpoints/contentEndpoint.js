@@ -4,6 +4,8 @@ const queryEndpoint = (type, queryString) => `${process.env.REACT_APP_API_GATEWA
 const searchEndpoint = (type, keywords) => `${process.env.REACT_APP_API_GATEWAY_URL}${type}/search?keywords=${keywords}`;
 const allSearchEndpoint = (queryString) => `${process.env.REACT_APP_API_GATEWAY_URL}/all/search${queryString}`;
 const allPopularEndpoint = (queryString) => `${process.env.REACT_APP_API_GATEWAY_URL}/all/popular${queryString}`;
+const infoEndpoint = (content) => `${process.env.REACT_APP_API_GATEWAY_URL}/${content.type}/info/${content.id}`;
+const getListEndpoint = (type) => `${process.env.REACT_APP_API_GATEWAY_URL}${type}`;
 
 export {
     genreEndpoint,
@@ -11,5 +13,7 @@ export {
     queryEndpoint,
     searchEndpoint,
     allSearchEndpoint,
-    allPopularEndpoint
+    allPopularEndpoint,
+    infoEndpoint,
+    getListEndpoint
 };
