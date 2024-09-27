@@ -63,13 +63,16 @@ export default function Content() {
         setSelectedProviders(event.target.value);
     };
 
+    const deleteFilter = () => {
+        setSelectedGenres([]);
+        setSelectedProviders([]);
+        localStorage.setItem('selectedGenres', JSON.stringify([]));
+        localStorage.setItem('selectedProviders', JSON.stringify([]));
+    }
+
     useEffect(() => {
         if(type !== localStorage.getItem('type')){
-            localStorage.setItem('type', type);
-            setSelectedGenres([]);
-            setSelectedProviders([]);
-            localStorage.setItem('selectedGenres', JSON.stringify([]));
-            localStorage.setItem('selectedProviders', JSON.stringify([]));
+            deleteFilter();
         }
     }, [type]); // eslint-disable-line 
 
@@ -159,7 +162,7 @@ export default function Content() {
                         ))}
                     </Select>
                 </FormControl>
-                <Close />
+                <Close onClick={deleteFilter}/>
             </div>
 
             {loading ? 

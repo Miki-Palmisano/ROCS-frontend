@@ -3,7 +3,7 @@ import axios from "axios";
 import '../styles/account.css';
 import InfoCard from "../components/infoCard";
 import UserContext from "../contexts/userContext";
-import {Avatar} from '@mui/material';
+import { Avatar } from '@mui/material';
 import { authorization, listEndpoint } from "../endpoints/userEndpoint";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -23,7 +23,6 @@ export default function Account() {
             axios.get(listEndpoint({type: contentType, state: contentState}), authorization(token, id))
             .then((res) => {
                 setList(res.data);
-                console.log(res.data);
             })
             .catch(error => {
                 if(error.response.status === 401) logOut();
@@ -32,7 +31,7 @@ export default function Account() {
         });
     }
 
-    function stringToColor(string) {
+    const stringToColor = (string) => {
         let hash = 0;
         let i;
       
@@ -59,7 +58,7 @@ export default function Account() {
                     <Avatar sx={{bgcolor: stringToColor(username)}} className="profileImage">{username.substring(0, 2).toUpperCase()}</Avatar>
                     <div className="profileDetails">
                         <p>Ciao, <strong>{username}</strong></p>
-                        <button className="logoutButton" onClick={logOut}>Esci dall'Account</button>
+                        <button className="logoutButton" onClick={logOut}>Esci</button>
                     </div>
                 </div>
                 <div className="profileDivider"/>

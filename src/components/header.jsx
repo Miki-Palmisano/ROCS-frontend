@@ -149,7 +149,10 @@ export default function Header() {
                             </Link>
                         </li>
                     </div>
-                    {isLogged ? <Link to ="/account" className='linkPage'><div className="iconContainer"> <Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar> Profilo </div> </Link>
+                    {isLogged ?
+                        <Link to ="/account" className='linkPage'>
+                            <div className="iconContainer"> <Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar> Profilo </div>
+                        </Link>
                     : <div className="iconContainer" onClick={handleLogin}>
                         <Person />
                         <p>Account</p>

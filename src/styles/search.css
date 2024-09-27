@@ -61,10 +61,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 95%;
-        position: fixed;
-        bottom: 2%;
-        z-index: 5;
+        width: 75%;
+        margin: 0 0 20px 0;
     }
 }
 
