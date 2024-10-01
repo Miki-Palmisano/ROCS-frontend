@@ -110,6 +110,7 @@ export default function InfoCard({content, setSelectedImage}) {
     return (
             <div className="infoCardContainer">
                 <Link to={`/info/${content.type}/${content.id}`} className="linkPage" onClick={handleImageClick}>
+                    {content.vote && <div className="voteCard">{content.vote}</div>}
                     <img src={content.img} alt={content.title}/>
                 </Link>
                 <div className="infoCardText">
