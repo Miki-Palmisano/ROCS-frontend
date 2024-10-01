@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/films/*" element={<Content />} />
         <Route path="/series/*" element={<Content />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/account/*" element={isLogged ? <Account /> : <Home />} />
+        <Route path="/account/*" element={isLogged ? <Account /> : <Home /> } />
         <Route path="/info/:type/:id" element={<Info />} />
       </Routes>
       <Footer />

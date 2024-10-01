@@ -2,14 +2,18 @@ import { useEffect, useState } from "react";
 import Slider from "../components/slider";
 import axios from "axios";
 import { getListEndpoint } from "../endpoints/contentEndpoint";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [films, setFilms] = useState([]);
   const [loadingFilm, setLoadingFilm] = useState(true);
   const [series, setSeries] = useState([]);
   const [loadingSeries, setLoadingSeries] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    navigate('/');
+
     axios.get(getListEndpoint('/films')).then((res)=>{
       setFilms(res.data.filter(film => film.img !== null));
       setLoadingFilm(false);

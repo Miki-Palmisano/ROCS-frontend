@@ -6,7 +6,7 @@ import Slider from "../components/slider";
 import { Favorite, PlaylistAdd, PlayArrow, PlaylistAddCheck } from "@mui/icons-material";
 import { Button, Select, MenuItem, TextField, FormControl, InputLabel } from "@mui/material";
 import UserContext from "../contexts/userContext";
-import { authorization, favoriteEndpoint, listEndpoint, favoriteStateEndpoint, favoriteListEndpoint, listRemoveEndpoint } from "../endpoints/userEndpoint";
+import { authorization, favouriteEndpoint, listEndpoint, favouriteStateEndpoint, stateListEndpoint, listRemoveEndpoint } from "../endpoints/userEndpoint";
 import { infoEndpoint, queryEndpoint, searchEndpoint } from "../endpoints/contentEndpoint";
 import {useAuth0} from '@auth0/auth0-react';
 
@@ -32,7 +32,7 @@ export default function Info() {
     useEffect(() => {
         if(isLogged) {
             getAccessTokenSilently().then((token) => 
-                axios.get(favoriteStateEndpoint({id: id, type: type}), authorization(token, userId))
+                axios.get(favouriteStateEndpoint({id: id, type: type}), authorization(token, userId))
             .then((res) => {
                 if(res.status === 200) setFavorite(true);
             })
@@ -57,7 +57,7 @@ export default function Info() {
     useEffect(() => {
         if(isLogged) {
             getAccessTokenSilently().then((token) =>
-                axios.get(favoriteListEndpoint({id: id, type: type}), authorization(token, userId))
+                axios.get(stateListEndpoint({id: id, type: type}), authorization(token, userId))
                 .then((res) => {
                     if(res.status === 200) {
                         setList({state: res.data.status, vote: res.data.vote});
@@ -90,7 +90,7 @@ export default function Info() {
 
     const handleAddFavorite = () => {
         getAccessTokenSilently().then((token) =>
-            axios.post(favoriteEndpoint, 
+            axios.post(favouriteEndpoint,
                 {
                     itemId: id,
                     type: type,

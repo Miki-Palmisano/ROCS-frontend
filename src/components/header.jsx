@@ -1,21 +1,25 @@
 import Logo from '../assets/Logo.png'
 import '../styles/header.css'
 import { Link, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar } from '@mui/material';
 import { Home, Movie, Tv, Person, Search} from '@mui/icons-material';
 import { useContext } from 'react';
 import UserContext from '../contexts/userContext';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
-import {authorization, authEndpoint} from '../endpoints/userEndpoint';
+import {authorization, authEndpoint, getProfileImageEndpoint} from '../endpoints/userEndpoint';
 
 export default function Header() {
     const location = useLocation();
     const [isExpanded, setIsExpanded] = useState(true);
 
     const { loginWithPopup, isAuthenticated, isLoading, getAccessTokenSilently,  user } = useAuth0();
-    const { setIsLogged, isLogged, setUsername , username, logOut, setId } = useContext(UserContext);
+    const { id, setIsLogged, isLogged, setUsername , username, logOut, setId } = useContext(UserContext);
+
+    const [selection, setSelection] = useState(null);
+    const [radius, setRadius] = useState(50);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -34,6 +38,7 @@ export default function Header() {
                     {
                         email: user.email,
                         username: user.nickname,
+                        sub: user.sub
                     },
                     authorization(token)
                 ).then((response) => {
@@ -51,6 +56,22 @@ export default function Header() {
             });
         }
     }, [isAuthenticated]); // eslint-disable-line
+
+    useEffect(() => {
+        if(isLogged)
+            getAccessTokenSilently().then((token) => {
+                axios.get(getProfileImageEndpoint, authorization(token, id))
+                    .then((res) => {
+                        console.log(res)
+                        setSelection({x: res.data.crop.selection.x, y: res.data.crop.selection.y});
+                        setRadius(res.data.crop.radius);
+                        setSelectedImage(res.data.img);
+                    }).catch(error => {
+                    if(error.response.status === 401) logOut();
+                    else console.error('Errore durante la richiesta GET:', error);
+                })
+            })
+    }, ); // eslint-disable-line
 
     function stringToColor(string) {
         let hash = 0;
@@ -151,34 +172,69 @@ export default function Header() {
                     </div>
                     {isLogged ?
                         <Link to ="/account" className='linkPage'>
-                            <div className="iconContainer"> <Avatar sx={{bgcolor: stringToColor(username), marginRight: '5px'}}>{username.substring(0, 2).toUpperCase()}</Avatar> Profilo </div>
-                        </Link>
-                    : <div className="iconContainer" onClick={handleLogin}>
-                        <Person />
-                        <p>Account</p>
-                    </div> }
-                </div>
-                
-                <div className={`mobileDisplay ${isExpanded ? 'expanded' : ''}`}>
-                {!isExpanded && (
-                        currentPage()
-                )}
+                            <div className="iconContainer">
+                                <div className="headerImageContainer">
+                                {selectedImage ? <>
+                                    <div
+                                        style={{
+                                            position: 'relative',
+                                            width: `${radius * 2}px`,
+                                            height: `${radius * 2}px`,
+                                            overflow: 'hidden',
+                                            borderRadius: '50%',
+                                            border: '1px solid black',
+                                            transform: `scale(${50 / (radius * 2)})`,
+                                            transformOrigin: 'top left',
+                                        }}>
+                                        <img
+                                            src={selectedImage}
+                                            alt="Selected Portion"
+                                            style={{
+                                                position: 'absolute',
+                                                left: `-${selection.x - radius}px`, // Centra l'immagine selezionata
+                                                top: `-${selection.y - radius}px`,  // Centra l'immagine selezionata
+                                                width: 250, // Larghezza originale
+                                                height: 375, // Altezza originale
+                                            }}
+                                        />
+                                    </div>
+                                </> : <Avatar
+                                    sx={{
+                                    bgcolor: stringToColor(username),
+                                    width: '100%',
+                                    height: '100%',
+                                    fontSize: '2rem'
+                                }}>{username.substring(0, 2).toUpperCase()}</Avatar>
+                                } </div>
+                            </div>
+                                    </Link>
+                                    : <div className="iconContainer" onClick={handleLogin}>
+                                <Person/>
+                                <p>Account</p>
+                            </div>
+                            }
+                        </div>
 
-                    {isExpanded && (
-                        <>
-                            <Link to="/films" className="linkPage">
-                                <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                    <Movie className="icon"/> Film
-                                </div>
-                            </Link>
+                        <div className={`mobileDisplay ${isExpanded ? 'expanded' : ''}`}>
+                            {!isExpanded && (
+                                currentPage()
+                            )}
 
-                            <Link to="/series" className="linkPage">
-                                <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                    <Tv className="icon"/> Serie TV
-                                </div>
-                            </Link>
+                            {isExpanded && (
+                                <>
+                                    <Link to="/films" className="linkPage">
+                                        <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                            <Movie className="icon"/> Film
+                                        </div>
+                                    </Link>
 
-                            <Link to="/" className="linkPage">
+                                    <Link to="/series" className="linkPage">
+                                        <div className="pageContainer" onClick={() => setIsExpanded(false)}>
+                                            <Tv className="icon"/> Serie TV
+                                        </div>
+                                    </Link>
+
+                                    <Link to="/" className="linkPage">
                                 <div className="pageContainer" onClick={() => setIsExpanded(false)}>
                                     <img src={Logo} alt="logo" />
                                     <h1>ROCS</h1>

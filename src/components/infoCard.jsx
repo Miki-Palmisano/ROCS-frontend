@@ -6,9 +6,9 @@ import { Favorite, PlaylistAdd, PlaylistAddCheck } from '@mui/icons-material';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { authorization, favoriteEndpoint, favoriteListEndpoint, favoriteStateEndpoint, listEndpoint, listRemoveEndpoint } from '../endpoints/userEndpoint';
+import { authorization, favouriteEndpoint, stateListEndpoint, favouriteStateEndpoint, listEndpoint, listRemoveEndpoint } from '../endpoints/userEndpoint';
 
-export default function InfoCard({content}) {
+export default function InfoCard({content, setSelectedImage}) {
     const {isLogged, logOut, id} = useContext(UserContext);
     const [favorite, setFavorite] = useState(false);
     const [inList, setInList] = useState(false);
@@ -20,14 +20,14 @@ export default function InfoCard({content}) {
     useEffect(() => {
         if(isLogged)
             getAccessTokenSilently().then((token) => {
-                axios.get( favoriteStateEndpoint(content), authorization(token, id)).then((res) => {
+                axios.get( favouriteStateEndpoint(content), authorization(token, id)).then((res) => {
                     setFavorite(true);
                 }).catch(error => {
                     if(error.response.status === 401) logOut();
                     else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
                 });
 
-                axios.get( favoriteListEndpoint(content), authorization( token, id )).then((res) => {
+                axios.get( stateListEndpoint(content), authorization( token, id )).then((res) => {
                     setList({state: res.data.status, vote: res.data.vote});
                     setInList(true);
                 }).catch(error => {
@@ -39,7 +39,7 @@ export default function InfoCard({content}) {
 
     const handleAddFavorite = () => {
         getAccessTokenSilently().then((token) => {
-            axios.post( favoriteEndpoint, 
+            axios.post( favouriteEndpoint,
                 {
                     itemId: content.id,
                     type: content.type,
@@ -100,9 +100,16 @@ export default function InfoCard({content}) {
         setAddList(!addList);
     }
 
+    const handleImageClick = (event) => {
+        if (setSelectedImage) {
+            event.preventDefault();
+            setSelectedImage(content.img);
+        }
+    }
+
     return (
             <div className="infoCardContainer">
-                <Link to={`/info/${content.type}/${content.id}`} className="linkPage">
+                <Link to={`/info/${content.type}/${content.id}`} className="linkPage" onClick={handleImageClick}>
                     <img src={content.img} alt={content.title}/>
                 </Link>
                 <div className="infoCardText">
