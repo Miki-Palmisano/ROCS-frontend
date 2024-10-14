@@ -27,10 +27,12 @@ export default function InfoCard({content, setSelectedImage}) {
                     else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
                 });
 
-                axios.get( stateListEndpoint(content), authorization( token, id )).then((res) => {
-                    setList({state: res.data.status, vote: res.data.vote});
-                    setInList(true);
-                }).catch(error => {
+                axios.get( stateListEndpoint(content), authorization( token, id ))
+                    .then((res) => {
+                        setList({state: res.data.status, vote: res.data.vote});
+                        setInList(true);
+                    })
+                    .catch(error => {
                     if(error.response.status === 401) logOut();
                     else if(error.response.status !== 404) console.error('Errore durante la richiesta GET:', error);
                 });
@@ -110,7 +112,7 @@ export default function InfoCard({content, setSelectedImage}) {
     return (
             <div className="infoCardContainer">
                 <Link to={`/info/${content.type}/${content.id}`} className="linkPage" onClick={handleImageClick}>
-                    {content.vote && <div className="voteCard">{content.vote}</div>}
+                    {list.vote && <div className="voteCard">{list.vote}</div>}
                     <img src={content.img} alt={content.title}/>
                 </Link>
                 <div className="infoCardText">

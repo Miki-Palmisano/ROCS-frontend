@@ -8,6 +8,7 @@
 
 .contentCoverSelector h3 {
     margin: 0 0 10px 0;
+    width: 95%;
 }
 
 .custom-dropdown {
@@ -62,4 +63,11 @@
     height: 60px;
     object-fit: cover;
     margin-right: 10px;
+}
+
+.radiusSelector{
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

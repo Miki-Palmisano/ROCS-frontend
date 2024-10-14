@@ -7,6 +7,7 @@ import { Avatar } from '@mui/material';
 import {authorization, getProfileImageEndpoint, listEndpoint, setProfileImageEndpoint} from "../endpoints/userEndpoint";
 import { useAuth0 } from "@auth0/auth0-react";
 import ImageSelector from "../components/contentCoverSelector";
+import {FormControl, InputLabel, MenuItem, Select, Checkbox, FormControlLabel, Box, Switch} from "@mui/material";
 
 export default function Account() {
     const {logOut, username, id} = useContext(UserContext);
@@ -92,37 +93,33 @@ export default function Account() {
         setShowSelection(!showSelection);
     }
 
+    const handleChangeType = (event) => {
+        setContentType(event.target.value);
+    };
 
+    const handleChangeState = (event) => {
+        setContentState(event.target.value);
+    }
+
+    const handleFavouriteChange = (event) => {
+        setContentFavourite(event.target.checked);
+    }
 
     return (
         <div className="accountPage">
             <div className="profileSettings">
                 <div className="profileSection">
                     <div className="profileImageContainer">
-                        {selection ? <div
-                                style={{
-                                position: 'relative',
-                                width: `${radius * 2}px`,
-                                height: `${radius * 2}px`,
-                                overflow: 'hidden',
-                                borderRadius: '50%',
-                                border: '1px solid black',
-                                transform: `scale(${150 / (radius * 2)})`,
-                                transformOrigin: 'top left',
-                            }}>
+                        {selection ? <div style={{ '--radius': `${radius}px`, '--scale':`${150/(radius*2)}` }} className="dynamicContainer">
                                 <img
                                     src={selectedImage}
                                     alt="Selected Portion"
-                                    style={{
-                                        position: 'absolute',
-                                        left: `-${selection.x - radius}px`, // Centra l'immagine selezionata
-                                        top: `-${selection.y - radius}px`,  // Centra l'immagine selezionata
-                                        width: 250, // Larghezza originale
-                                        height: 375, // Altezza originale
-                                    }}
+                                    style={{'--selection-x': `${selection.x}px`, '--selection-y': `${selection.y}px`}}
+                                    className="dynamicProfileImage"
                                 />
                             </div> :
-                            <div style={{
+                            <div
+                                style={{
                                 display: 'flex',  // Usa Flexbox per il posizionamento
                                 justifyContent: 'center',  // Centra orizzontalmente
                                 alignItems: 'center',  // Centra verticalmente
@@ -158,38 +155,54 @@ export default function Account() {
                 {!showSelection ?
                     <div className="filterSection">
                         <h2>La tua lista</h2>
-                        <p>Tipologia:</p>
-                        <div className="contentType">
-                            <p onClick={() => setContentType('films')}
-                           className={contentType === 'films' ? 'active' : ''}>Film</p>
-                        <p onClick={() => setContentType('series')}
-                           className={contentType === 'series' ? 'active' : ''}>Serie</p>
-                    </div>
-                    <p>Stato:</p>
-                    <div className="contentState">
-                        <p onClick={() => setContentState('Visto')}
-                           className={contentState === 'Visto' ? 'active' : ''}>Visti</p>
-                        <p onClick={() => setContentState('Da Vedere')}
-                           className={contentState === 'Da Vedere' ? 'active' : ''}>Da Vedere</p>
-                        <p onClick={() => setContentState('In Visione')} className={contentState === 'In Visione' ? 'active' : ''}>In Visione</p>
+                        <div className="contentRow">
+                            <FormControl fullWidth variant="outlined" className="custom-Form">
+                                <InputLabel sx={{color: '#000', marginLeft: '6px'}}>Tipo</InputLabel>
+                                <Select
+                                    value={contentType}
+                                    onChange={handleChangeType}
+                                    label="Tipo"
+                                    className="custom-switch"
+                                >
+                                    <MenuItem value="films">Film</MenuItem>
+                                    <MenuItem value="series">Serie</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth variant="outlined" className="custom-Form">
+                                <InputLabel sx={{color: '#000', marginLeft: '6px'}}>Stato</InputLabel>
+                                <Select
+                                    value={contentState}
+                                    onChange={handleChangeState}
+                                    label="Stato"
+                                    className="custom-switch"
+                                >
+                                    <MenuItem value="Visto">Visto</MenuItem>
+                                    <MenuItem value="Da Vedere">Da Vedere</MenuItem>
+                                    <MenuItem value="In Visione">Sto Vedendo</MenuItem>
+                                </Select>
+                            </FormControl>
                         </div>
-                        <p>Solo Preferiti:</p>
-                        <div className="contentState">
-                            <p onClick={() => setContentFavourite(true)} className={contentFavourite ? 'active' : ''}>Si</p>
-                            <p onClick={() => setContentFavourite(false)} className={!contentFavourite ? 'active' : ''}>No</p>
+                        <div className="contentRow">
+                            <p>Solo Preferiti:</p>
+                            <Switch
+                                checked={contentFavourite}
+                                onChange={handleFavouriteChange}
+                                className="custom-switch"
+                            />
+                            <button onClick={getList}>Filtra</button>
                         </div>
-                        <button onClick={getList}>Filtra</button>
                     </div> :
                     <ImageSelector selection={selection} setSelection={handleSetSelection}
-                                     radius={radius} setRadius={setRadius} list={list}
-                                    src={selectedImage}/>
+                                   radius={radius} setRadius={setRadius} list={list}
+                                   src={selectedImage} />
                 }
 
             </div>
             <div className="listSection">
                 {list.length === 0 && <h2 className="emptyList">Non ci sono elementi nella tua lista</h2>}
                 {list.map((item) => (
-                    <InfoCard key={item.id} content={item} setSelectedImage={showSelection ? handleSetSelectedImage : null}/>
+                    <InfoCard key={item.id} content={item}
+                              setSelectedImage={showSelection ? handleSetSelectedImage : null}/>
                 ))}
             </div>
         </div>

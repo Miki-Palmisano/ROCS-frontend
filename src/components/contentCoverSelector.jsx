@@ -83,7 +83,7 @@ export default function ImageSelector ({ src, radius, setRadius, selection, setS
 
     return (
         <div className="contentCoverSelector">
-            <h3>Seleziona un'Immagine da uno dei film nella lista accanto e Modificala!</h3>
+            <h3>Seleziona un'Immagine dalla tua lista e Modificala!</h3>
             <canvas
                 ref={canvasRef}
                 width={originalImageDimensions.width}
@@ -99,8 +99,8 @@ export default function ImageSelector ({ src, radius, setRadius, selection, setS
                 onLoad={handleImageLoad}
             />
 
-            <div>
-                <label htmlFor="radius">Dimensione del cerchio: </label>
+            <div className="radiusSelector">
+                <label htmlFor="radius">Dimensione: </label>
                 <input
                     type="range"
                     id="radius"
