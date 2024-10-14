@@ -250,7 +250,7 @@
         justify-content: space-around;
         margin: 10px;
         align-items: center;
-        width: 95%;
+        width: 100%;
         background-color: #EEEEEE;
         border-radius: 24px;
     }
@@ -298,7 +298,7 @@
         justify-content: center;
         background-color: #EEEEEE;
         border-radius: 24px;
-        width: 95%;
+        width: 100%;
     }
     
     .profileDetails > p:first-child {
