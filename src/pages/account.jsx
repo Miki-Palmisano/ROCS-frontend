@@ -7,7 +7,7 @@ import { Avatar } from '@mui/material';
 import {authorization, getProfileImageEndpoint, listEndpoint, setProfileImageEndpoint} from "../endpoints/userEndpoint";
 import { useAuth0 } from "@auth0/auth0-react";
 import ImageSelector from "../components/contentCoverSelector";
-import {FormControl, InputLabel, MenuItem, Select, Checkbox, FormControlLabel, Box, Switch} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Select, Switch} from "@mui/material";
 
 export default function Account() {
     const {logOut, username, id} = useContext(UserContext);
