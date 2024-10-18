@@ -109,9 +109,40 @@ export default function Header() {
         } else if (location.pathname.includes('/account')) {
             return (
                 <div className="logoOnly" onClick={() => setIsExpanded(true)}>
-                    <Avatar sx={{ bgcolor: stringToColor(username) }}>
-                        {username.substring(0, 2).toUpperCase()}
-                    </Avatar>
+                    <div className="headerImageContainer">
+                        {selectedImage ? <>
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    width: `${radius * 2}px`,
+                                    height: `${radius * 2}px`,
+                                    overflow: 'hidden',
+                                    borderRadius: '50%',
+                                    border: '1px solid black',
+                                    transform: `scale(${50 / (radius * 2)})`,
+                                    transformOrigin: 'top left',
+                                }}>
+                                <img
+                                    src={selectedImage}
+                                    alt="Selected Portion"
+                                    style={{
+                                        position: 'absolute',
+                                        left: `-${selection.x - radius}px`, // Centra l'immagine selezionata
+                                        top: `-${selection.y - radius}px`,  // Centra l'immagine selezionata
+                                        width: 250, // Larghezza originale
+                                        height: 375, // Altezza originale
+                                    }}
+                                />
+                            </div>
+                        </> : <Avatar
+                            sx={{
+                                bgcolor: stringToColor(username),
+                                width: '100%',
+                                height: '100%',
+                                fontSize: '2rem'
+                            }}>{username.substring(0, 2).toUpperCase()}</Avatar>
+                        }
+                    </div>
                     Profilo
                 </div>
             );
@@ -125,7 +156,7 @@ export default function Header() {
             // Default: Logo
             return (
                 <div className="logoOnly" onClick={() => setIsExpanded(true)}>
-                    <img src={Logo} alt="logo" />
+                    <img src={Logo} alt="logo"/>
                     <h1>ROCS</h1>
                 </div>
             );
@@ -134,35 +165,35 @@ export default function Header() {
 
     return (
         <>
-        <div className="backgroundGradient"></div>
-        <header>
-            <div className="header">
-                <div className="desktopDisplay">
-                    <Link to="/" className="linkPage">
-                        <div className="logoContainer">
-                            <img src={Logo} alt="logo" />
-                            <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
-                        </div>
-                    </Link>
-                    <div className="menu">
-                        <li className={!location.pathname.includes('films') 
-                            && !location.pathname.includes('series') 
+            <div className="backgroundGradient"></div>
+            <header>
+                <div className="header">
+                    <div className="desktopDisplay">
+                        <Link to="/" className="linkPage">
+                            <div className="logoContainer">
+                                <img src={Logo} alt="logo"/>
+                                <h1>ROCS</h1> {/* Repertorio Opere Cinematografiche e Serie */}
+                            </div>
+                        </Link>
+                        <div className="menu">
+                            <li className={!location.pathname.includes('films')
+                            && !location.pathname.includes('series')
                             && !location.pathname.includes('search')
                             && !location.pathname.includes('account')
-                            ? 'activeDesktopPage' : ''}>
-                            <Link to="/" className="linkPage">
-                                <div className="linkLabel"> <Home className="linkIcon"/> Home </div>
-                            </Link> 
-                        </li>
-                        <li className={location.pathname.includes('films') ? 'activeDesktopPage' : ''}>
-                            <Link to="/films" className="linkPage">
-                                <div className="linkLabel"><Movie className="linkIcon"/> Film</div>
-                            </Link>
-                        </li>
-                        <li className={location.pathname.includes('series') ? 'activeDesktopPage' : ''}>
-                            <Link to="/series" className="linkPage">
-                                <div className="linkLabel"><Tv className="linkIcon"/> Serie TV</div>
-                            </Link>
+                                ? 'activeDesktopPage' : ''}>
+                                <Link to="/" className="linkPage">
+                                    <div className="linkLabel"><Home className="linkIcon"/> Home</div>
+                                </Link>
+                            </li>
+                            <li className={location.pathname.includes('films') ? 'activeDesktopPage' : ''}>
+                                <Link to="/films" className="linkPage">
+                                    <div className="linkLabel"><Movie className="linkIcon"/> Film</div>
+                                </Link>
+                            </li>
+                            <li className={location.pathname.includes('series') ? 'activeDesktopPage' : ''}>
+                                <Link to="/series" className="linkPage">
+                                    <div className="linkLabel"><Tv className="linkIcon"/> Serie TV</div>
+                                </Link>
                         </li>
                         <li className={location.pathname.includes('search') ? 'activeDesktopPage' : ''}>
                             <Link to="/search" className="linkPage">
@@ -243,9 +274,40 @@ export default function Header() {
 
                             {isLogged ? <Link to="/account" className="linkPage">
                                 <div className="pageContainer" onClick={() => setIsExpanded(false)}>
-                                    <Avatar sx={{ bgcolor: stringToColor(username) }}>
-                                        {username.substring(0, 2).toUpperCase()}
-                                    </Avatar>
+                                    <div className="headerImageContainer">
+                                        {selectedImage ? <>
+                                            <div
+                                                style={{
+                                                    position: 'relative',
+                                                    width: `${radius * 2}px`,
+                                                    height: `${radius * 2}px`,
+                                                    overflow: 'hidden',
+                                                    borderRadius: '50%',
+                                                    border: '1px solid black',
+                                                    transform: `scale(${50 / (radius * 2)})`,
+                                                    transformOrigin: 'top left',
+                                                }}>
+                                                <img
+                                                    src={selectedImage}
+                                                    alt="Selected Portion"
+                                                    style={{
+                                                        position: 'absolute',
+                                                        left: `-${selection.x - radius}px`, // Centra l'immagine selezionata
+                                                        top: `-${selection.y - radius}px`,  // Centra l'immagine selezionata
+                                                        width: 250, // Larghezza originale
+                                                        height: 375, // Altezza originale
+                                                    }}
+                                                />
+                                            </div>
+                                        </> : <Avatar
+                                            sx={{
+                                            bgcolor: stringToColor(username),
+                                            width: '100%',
+                                            height: '100%',
+                                            fontSize: '2rem'
+                                        }}>{username.substring(0, 2).toUpperCase()}</Avatar>
+                                        }
+                                    </div>
                                     Profilo
                                 </div>
                             </Link> : <div className="pageContainer" onClick={handleLogin}>

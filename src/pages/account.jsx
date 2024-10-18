@@ -119,16 +119,7 @@ export default function Account() {
                                 />
                             </div> :
                             <div
-                                style={{
-                                display: 'flex',  // Usa Flexbox per il posizionamento
-                                justifyContent: 'center',  // Centra orizzontalmente
-                                alignItems: 'center',  // Centra verticalmente
-                                width: '150px',  // Dimensione fissa
-                                height: '150px', // Dimensione fissa
-                                borderRadius: '50%', // Bordo circolare per l'Avatar
-                                overflow: 'hidden',  // Clip contenuto extra
-                                border: '1px solid black' // Stesso stile del cerchio
-                            }}>
+                                className="avatarContainer">
                                 <Avatar
                                     sx={{
                                         bgcolor: stringToColor(username),

@@ -212,6 +212,17 @@
         left: calc(var(--radius) - var(--selection-x));
         top: calc(var(--radius) - var(--selection-y));
     }
+
+    .avatarContainer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid #222831;
+    }
 }
 
 @media (min-width: 1440px) {
@@ -279,6 +290,17 @@
         margin: 10px 10px;
         width: 78px;
         height: 78px;
+    }
+
+    .avatarContainer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid #222831;
     }
 
     .profileImage {
